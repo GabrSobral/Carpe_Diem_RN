@@ -117,7 +117,6 @@ export function Clock(){
   return(
     <View style={styles.container}>
       <Header canGoBack/>
-
       <View style={styles.contentContainer}>
         <Text style={styles.title}>{message}</Text>
         

@@ -14,26 +14,28 @@ export function Home(){
       <Header/>
 
       <ScrollView style={{ padding: 16 }}>
-        <Text style={styles.title}>Tarefas concluídas</Text>
-        
-        <View style={styles.progressBarContainer}>
-          <CircularProgress 
-            value={75}
-            radius={100}
-            textColor={theme.colors.text}
-            fontSize={40}
-            valueSuffix={'%'}
-            activeStrokeWidth={7}
-            activeStrokeColor={theme.colors.green300}
-            inActiveStrokeWidth={4}
-            inActiveStrokeColor={theme.colors.green300}
-            inActiveStrokeOpacity={0.5}
-          />
+        <View style={{ paddingBottom: 16 }}>
+          <Text style={styles.title}>Tarefas concluídas</Text>
+          
+          <View style={styles.progressBarContainer}>
+            <CircularProgress 
+              value={75}
+              radius={100}
+              textColor={theme.colors.text}
+              fontSize={40}
+              valueSuffix={'%'}
+              activeStrokeWidth={7}
+              activeStrokeColor={theme.colors.green300}
+              inActiveStrokeWidth={4}
+              inActiveStrokeColor={theme.colors.green300}
+              inActiveStrokeOpacity={0.5}
+            />
+          </View>
+
+          <Text style={styles.title}>Confira também</Text>
+
+          <HomeItem/>
         </View>
-
-        <Text style={styles.title}>Confira também</Text>
-
-        <HomeItem/>
       </ScrollView>
 
     </View>
