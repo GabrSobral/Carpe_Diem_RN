@@ -33,7 +33,7 @@ export function Questionnaire(){
         
       if(user?.hasAnswered) {
         const answers = await api.get('/answer/my-list')
-        
+
         data.forEach((item: Question, index: number) => {
           questionsAnsAnswers.push({
             question: item, answer: Number(answers.data[index].answer)
@@ -67,7 +67,7 @@ export function Questionnaire(){
   async function AnswerQuestionnaire(){
     setIsLoading(true)
     const answersFormatted = questions.map(item => item.answer)
-
+    
     try {
       await api.post('/answer/new', { answer: answersFormatted })
     } catch(error) {
@@ -75,7 +75,7 @@ export function Questionnaire(){
     } finally {
       setIsLoading(false)
     }
-    // navigate('Home')
+    navigate('Home')
   }
 
   useEffect(() => { 
