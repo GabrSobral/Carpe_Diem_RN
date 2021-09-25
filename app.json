@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "CarpeDiem_RN",
-    "slug": "CarpeDiem_RN",
+    "name": "Carpe Diem",
+    "slug": "Carpe_Diem",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

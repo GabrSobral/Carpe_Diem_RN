@@ -40,29 +40,24 @@ export function Questionnaire(){
         <View style={{ paddingBottom: 30 }}>
         <Text style={styles.title}>Permita-nos conhecê-lo melhor</Text>
         
-        <FlatList
-          data={data}
-          keyExtractor={item => String(item.id)}
-          showsVerticalScrollIndicator={false}
-          renderItem={(item: any) => (
-            <View style={styles.questionContainer}>
-              <View style={styles.questionTextContainer}>
-                <Text style={styles.questionText}>{item.body}</Text>
-              </View>
-
-              <View style={styles.inputsContainer}>
-                <RadioButton value={item.index}/>
-                <RadioButton value={item.index} selected/>
-                <RadioButton value={item.index}/>
-                <RadioButton value={item.index}/>
-                <RadioButton value={item.index}/>
-                <RadioButton value={item.index}/>
-              </View>
+        { data.map((item, index) => (
+          <View style={styles.questionContainer} key={item.id}>
+            <View style={styles.questionTextContainer}>
+              <Text style={styles.questionText}>{item.body}</Text>
             </View>
-          )}
-        
-        />
-        
+
+            <View style={styles.inputsContainer}>
+              <RadioButton value={index}/>
+              <RadioButton value={index} selected/>
+              <RadioButton value={index}/>
+              <RadioButton value={index}/>
+              <RadioButton value={index}/>
+              <RadioButton value={index}/>
+            </View>
+          </View>
+        )) }
+
+
 
         <Button
           title="Confirmar"
