@@ -9,6 +9,7 @@ import { Home } from '../screens/Home'
 
 import { useUsers } from '../contexts/UserContext'
 import { Clock } from '../screens/Clock'
+import { BottomTabs } from './bottomTabs'
 
 export function Routes(){
   const { Navigator, Screen } = createStackNavigator()
@@ -36,7 +37,7 @@ export function Routes(){
 
         <Screen
           name="Home"
-          component={Home}
+          component={BottomTabs}
         />
 
         <Screen
