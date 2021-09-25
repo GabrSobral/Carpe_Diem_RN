@@ -10,7 +10,7 @@ interface RadioButtonProps extends TouchableOpacityProps {
 
 export function RadioButton({ selected = false, value, ...rest }: RadioButtonProps) {
   return (
-    <TouchableOpacity {...rest} style={styles.buttonContainer}>
+    <TouchableOpacity {...rest} style={styles.buttonContainer} activeOpacity={0.8}>
       <View style={styles.button}>
         {
           selected ?

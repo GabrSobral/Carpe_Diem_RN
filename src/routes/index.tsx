@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { SignIn } from '../screens/SignIn'
 import { SignUp } from '../screens/SignUp'
 import { Questionnaire } from '../screens/Questionnaire'
+import { useUsers } from '../contexts/UserContext'
 
 export function Routes(){
   const { Navigator, Screen } = createStackNavigator()
@@ -25,7 +26,7 @@ export function Routes(){
           name="Questionnaire"
           component={Questionnaire}
         />
-      </Navigator>
+      </Navigator>   
     </NavigationContainer>
   )
 }

@@ -37,5 +37,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 18
-  }
+  },
+  errorMessage: {
+    width: '100%',
+    textAlign: 'left',
+    color: theme.colors.red900,
+    fontSize: 18
+  },
 })

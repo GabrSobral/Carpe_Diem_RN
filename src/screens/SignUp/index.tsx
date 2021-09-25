@@ -8,23 +8,37 @@ import { Input } from '../../components/Input';
 
 import { styles } from './style'
 import { useNavigation } from '@react-navigation/native';
+import { useUsers } from '../../contexts/UserContext';
 
 export function SignUp() {
-  const { navigate } = useNavigation()
   const [ name, setName ] = useState('')
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ confirmPassword, setConfirmPassword ] = useState('')
   const [ isLoading, setIsLoading ] = useState(false)
+  const [ errorMessage, setErrorMessage ] = useState('')
+  
+  const { navigate } = useNavigation() as any
+  const { Sign } = useUsers()
 
-  async function SignIn(){
+  async function SignUp(){
+    name.trim()
+    email.trim()
+    
+    if(password !== confirmPassword){
+      return setErrorMessage("Sua confirmação de senha está inválida!")
+    }
     setIsLoading(true)
-
-    setTimeout(() => {
-      setIsLoading(false)
+    
+    const result = await Sign({name, email, password, query: "/users"})
+    if(result.message === "ok") {
       navigate('Questionnaire')
-    }, 1300)
+    } else {
+      setErrorMessage(result.message)
+      setIsLoading(false)
+    }
   }
+
 
   return (
     <View style={styles.container}>
@@ -72,10 +86,12 @@ export function SignUp() {
           textContentType="password"
         />
 
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+
         <Button
           title="Confirmar"
           isLoading={isLoading}
-          onPress={SignIn}
+          onPress={SignUp}
           disabled={(name && email && password && confirmPassword && !isLoading) ? false : true}
         />
       </View>

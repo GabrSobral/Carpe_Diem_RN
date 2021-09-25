@@ -14,6 +14,12 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  errorMessage: {
+    width: '100%',
+    textAlign: 'left',
+    color: theme.colors.red900,
+    fontSize: 18
+  },
   forgotPasswordText: {
     color: theme.colors.blue300,
     fontSize: 18

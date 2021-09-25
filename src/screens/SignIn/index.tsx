@@ -8,20 +8,35 @@ import { Input } from '../../components/Input';
 
 import { styles } from './style'
 import { useNavigation } from '@react-navigation/native';
+import { useUsers } from '../../contexts/UserContext';
 
 export function SignIn() {
-  const { navigate } = useNavigation()
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ isLoading, setIsLoading ] = useState(false)
+  const [ errorMessage, setErrorMessage ] = useState("")
+
+  const { Sign } = useUsers()
+  const { navigate } = useNavigation() as any
 
   async function SignIn(){
-    setIsLoading(true)
+    setIsLoading(true);
 
-    setTimeout(() => {
+    const result = await Sign({ email, password });
+    if(result.message === "ok") {
+      if(result.data.user.hasAnswered === true) {
+        setIsLoading(false);
+        navigate("Questionnaire")
+        return;
+      } else{
+        setIsLoading(false)
+        navigate("Questionnaire");
+        return;
+      }
+    } else {
+      setErrorMessage(result.message)
       setIsLoading(false)
-      navigate('Questionnaire')
-    }, 1300)
+    }
   }
 
   return (
@@ -51,6 +66,8 @@ export function SignIn() {
           value={password}
           textContentType="password"
         />
+
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
 
         <RectButton>
           <Text style={styles.forgotPasswordText}>Esqueci minha senha</Text>
