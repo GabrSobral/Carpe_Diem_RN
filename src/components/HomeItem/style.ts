@@ -7,8 +7,8 @@ export const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 7,
     backgroundColor: theme.colors.blue300,
-    flexDirection: 'row'
-
+    flexDirection: 'row',
+    elevation: 3
   },
   iconContainer: {
     height: 60,
