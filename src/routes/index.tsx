@@ -8,13 +8,17 @@ import { Questionnaire } from '../screens/Questionnaire'
 import { Home } from '../screens/Home'
 
 import { useUsers } from '../contexts/UserContext'
+import { Clock } from '../screens/Clock'
 
 export function Routes(){
   const { Navigator, Screen } = createStackNavigator()
 
   return (
     <NavigationContainer>
-      <Navigator screenOptions={{ headerShown: false }}>
+      <Navigator 
+        screenOptions={{ headerShown: false }} 
+        initialRouteName="Home"
+      >
         <Screen
           name="SignIn"
           component={SignIn}
@@ -33,6 +37,11 @@ export function Routes(){
         <Screen
           name="Home"
           component={Home}
+        />
+
+        <Screen
+          name="Clock"
+          component={Clock}
         />
       </Navigator>   
     </NavigationContainer>

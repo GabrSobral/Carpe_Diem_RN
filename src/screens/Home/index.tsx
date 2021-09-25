@@ -6,6 +6,7 @@ import { Header } from '../../components/Header'
 
 import { styles } from './style'
 import { theme } from '../../styles/theme';
+import { HomeItem } from '../../components/HomeItem';
 
 export function Home(){
   return (
@@ -20,6 +21,7 @@ export function Home(){
             value={75}
             radius={100}
             textColor={theme.colors.text}
+            fontSize={40}
             valueSuffix={'%'}
             activeStrokeWidth={7}
             activeStrokeColor={theme.colors.green300}
@@ -31,7 +33,7 @@ export function Home(){
 
         <Text style={styles.title}>Confira também</Text>
 
-        
+        <HomeItem/>
       </ScrollView>
 
     </View>
