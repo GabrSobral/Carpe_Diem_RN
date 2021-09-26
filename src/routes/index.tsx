@@ -10,6 +10,7 @@ import { Home } from '../screens/Home'
 import { useUsers } from '../contexts/UserContext'
 import { Clock } from '../screens/Clock'
 import { BottomTabs } from './bottomTabs'
+import { ActivityDetails } from '../screens/ActivityDetails'
 
 export function Routes(){
   const { Navigator, Screen } = createStackNavigator()
@@ -43,6 +44,11 @@ export function Routes(){
         <Screen
           name="Clock"
           component={Clock}
+        />
+
+        <Screen
+          name="ActivityDetails"
+          component={ActivityDetails}
         />
       </Navigator>   
     </NavigationContainer>
