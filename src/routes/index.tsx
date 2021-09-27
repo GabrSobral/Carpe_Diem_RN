@@ -19,37 +19,14 @@ export function Routes(){
     <NavigationContainer>
       <Navigator 
         screenOptions={{ headerShown: false }} 
-        initialRouteName="Home"
+        initialRouteName="SignIn"
       >
-        <Screen
-          name="SignIn"
-          component={SignIn}
-        />
-
-        <Screen
-          name="SignUp"
-          component={SignUp}
-        />
-
-        <Screen
-          name="Questionnaire"
-          component={Questionnaire}
-        />
-
-        <Screen
-          name="Home"
-          component={BottomTabs}
-        />
-
-        <Screen
-          name="Clock"
-          component={Clock}
-        />
-
-        <Screen
-          name="ActivityDetails"
-          component={ActivityDetails}
-        />
+        <Screen name="SignIn"          component={SignIn}/>
+        <Screen name="SignUp"          component={SignUp}/>
+        <Screen name="Questionnaire"   component={Questionnaire}/>
+        <Screen name="Home"            component={BottomTabs}/>
+        <Screen name="Clock"           component={Clock}/>
+        <Screen name="ActivityDetails" component={ActivityDetails}/>
       </Navigator>   
     </NavigationContainer>
   )

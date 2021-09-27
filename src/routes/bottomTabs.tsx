@@ -33,7 +33,7 @@ export function BottomTabs(){
       />
 
       <Screen
-        name="Home"
+        name="HomeScreen"
         component={Home}
         options={{
           tabBarIcon: (({ size, color}) => (
