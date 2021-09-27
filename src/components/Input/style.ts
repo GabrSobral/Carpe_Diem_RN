@@ -14,26 +14,25 @@ export const styles = StyleSheet.create({
     color: theme.colors.gray500,
   },
   inputTextActive: {
-    position: 'absolute',
     top: 0,
-    left: 16,
-    zIndex: 5,
     color: theme.colors.blue300
   },
   input: {
     width: '100%',
-    paddingHorizontal: 16,
+    paddingLeft: 16,
+    paddingRight: 45,
     height: 55,
     zIndex: 1,
     borderBottomColor: theme.colors.gray200,
     borderBottomWidth: 1,
   },
   inputActive: {
-    width: '100%',
-    paddingHorizontal: 16,
-    height: 55,
-    zIndex: 1,
     borderBottomColor: theme.colors.blue300,
-    borderBottomWidth: 1,
+  },
+  inputIcon: {
+    position: 'absolute',
+    transform: [{ translateY: -12 }],
+    top: '50%',
+    right: 16,
   }
 })
