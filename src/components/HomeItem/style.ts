@@ -8,13 +8,16 @@ export const styles = StyleSheet.create({
     borderRadius: 7,
     backgroundColor: theme.colors.blue300,
     flexDirection: 'row',
-    elevation: 3
+    elevation: 3,
+    marginBottom: 16
   },
   iconContainer: {
     height: 60,
     width: 60,
     borderRadius: 30,
     marginRight: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: theme.colors.blue600
   },
   contentContainer: {

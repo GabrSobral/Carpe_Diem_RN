@@ -2,6 +2,7 @@ import React,{ useCallback } from "react";
 import { createContext, ReactNode, useContext, useState, useEffect } from "react";
 import { api } from "../services/api";
 import { User } from "../types/user";
+import { loadUser, removeActivity, removeUser, saveUser } from "../utils/handleStorage";
 import { getToken, removeToken, setToken } from "../utils/handleToken";
 
 interface UserProviderProps {
@@ -42,27 +43,26 @@ export function UserProvider({ children }: UserProviderProps){
   const [ username, setUsername ] = useState('')
   const [ user, setUser ] = useState<User>()
 
-  // const updateUserState = useCallback(async () => {
-  //   const userStore = await storage.get('user')
-  //   if(userStore){
-  //     setUser(userStore)
-  //     if(userStore){
-  //       const firstName = userStore.name.split(' ')[0]
+  const updateUserState = useCallback(async () => {
+    const userStore = await loadUser()
+    if(userStore){
+      setUser(userStore)
+      if(userStore){
+        const firstName = userStore.name.split(' ')[0]
 
-  //       console.log(firstName)
-  //       setUsername(firstName)
-  //     }
-  //   }
-  // },[])
+        console.log(firstName)
+        setUsername(firstName)
+      }
+    }
+  },[])
 
-  // useEffect(() => {
-  //   (async () => {
-  //     if(getToken()) {
-  //       setIsAuthenticated(true) 
-  //       updateUserState()
-  //     }
-  //   })()
-  // },[ updateUserState ])
+  useEffect(() => {
+    (async () => {
+      if(getToken()) {
+        updateUserState()
+      }
+    })()
+  },[ updateUserState ])
 
 
   async function Sign({name, email, password, query = '/login'}: SignProps) {
@@ -72,7 +72,7 @@ export function UserProvider({ children }: UserProviderProps){
       const { data } = await api.post(query, { name, email, password })
       
       setToken(data.token)
-      // await storage.set('user', data.user)
+      await saveUser(data.user)
       setUser(data.user)
       const firstName = data.user.name.split(' ')[0]
       setUsername(firstName)
@@ -88,8 +88,8 @@ export function UserProvider({ children }: UserProviderProps){
 
   function Logout(){
     return new Promise((resolve, reject) => {
-      // storage.remove('user')
-      // storage.remove('activities')
+      removeUser()
+      removeActivity()
       removeToken()
       setUsername('')
       setUser(undefined)
@@ -104,9 +104,9 @@ export function UserProvider({ children }: UserProviderProps){
         prev.all_activities_finished++
         prev.activities_finished_today++
 
-        // (async () => {
-        //   await storage.set('user', prev)
-        // })()
+        (async () => {
+          await saveUser(prev)
+        })()
 
         return prev
       }
@@ -119,7 +119,7 @@ export function UserProvider({ children }: UserProviderProps){
       if(prev) {
         (async () => {
           prev.hasAnswered = true
-          // await storage.set('user', prev)
+          await saveUser(prev)
         })()
         return prev
       }
