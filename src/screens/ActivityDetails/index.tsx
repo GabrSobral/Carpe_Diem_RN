@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useRoute } from '@react-navigation/native'
 import { Text, View, ScrollView } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -9,6 +9,7 @@ import { ActivityDetailsButtons } from '../../components/ActivityDetailsButtons'
 import { ActivitiesProps } from '../../types/activity'
 
 import { styles } from './style'
+import { ModalComponent } from '../../components/Modal'
 
 interface Params {
   activity: ActivitiesProps;

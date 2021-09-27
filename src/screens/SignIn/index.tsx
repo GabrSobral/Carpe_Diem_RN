@@ -26,7 +26,7 @@ export function SignIn() {
     if(result.message === "ok") {
       if(result.data.user.hasAnswered === true) {
         setIsLoading(false);
-        navigate("Questionnaire")
+        navigate("Home")
         return;
       } else{
         setIsLoading(false)
@@ -51,6 +51,7 @@ export function SignIn() {
 
       <View style={styles.formContainer}>
         <Input 
+          icon="email"
           title="Email"
           isFilled={!!email}
           onChangeText={setEmail}
@@ -60,6 +61,7 @@ export function SignIn() {
         />
 
         <Input 
+          icon="password"
           title="Senha"
           isFilled={!!password}
           onChangeText={setPassword}

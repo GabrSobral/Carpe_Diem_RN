@@ -10,19 +10,26 @@ import { useEffect } from 'react'
 import { api } from '../../services/api'
 import { ActivitiesProps } from '../../types/activity'
 import { theme } from '../../styles/theme'
+import { saveActivity } from '../../utils/handleStorage'
 
 export function Activities(){
   const [ activities, setActivities ] = useState<ActivitiesProps[]>([])
 
   useEffect(() => {
     api.get('/activity/get-activities')
-      .then(({ data }) => setActivities(data))
+      .then(({ data }) => {
+        (async () => await saveActivity(data))();
+        setActivities(data);
+      })
       .catch((error) => {
 
         if(error.response.data.error === 
           "You already request the activities, try again tomorrow") {
             api.get('/activity/my-list')
-              .then(({data}) => setActivities(data))
+              .then(({data}) => {
+                (async () => await saveActivity(data))();
+                setActivities(data);
+              })
           }
       })
   },[])

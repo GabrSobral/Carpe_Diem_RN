@@ -39,7 +39,6 @@ export function SignUp() {
     }
   }
 
-
   return (
     <View style={styles.container}>
       <StatusBar  
@@ -52,6 +51,7 @@ export function SignUp() {
 
       <View style={styles.formContainer}>
         <Input 
+          icon="person"
           title="Nome"
           isFilled={!!name}
           onChangeText={setName}
@@ -60,6 +60,7 @@ export function SignUp() {
         />
 
         <Input 
+          icon="email"
           title="Email"
           isFilled={!!email}
           onChangeText={setEmail}
@@ -69,6 +70,7 @@ export function SignUp() {
         />
 
         <Input 
+          icon="password"
           title="Senha"
           isFilled={!!password}
           onChangeText={setPassword}
@@ -78,6 +80,7 @@ export function SignUp() {
         />
 
         <Input 
+          icon="password"
           title="Confirmação de senha"
           isFilled={!!confirmPassword}
           onChangeText={setConfirmPassword}
