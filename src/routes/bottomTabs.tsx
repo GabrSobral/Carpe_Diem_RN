@@ -12,6 +12,7 @@ export function BottomTabs(){
   return (
     <Navigator 
       detachInactiveScreens
+      initialRouteName="HomeScreen"
       screenOptions={{ 
         headerShown: false, 
         tabBarShowLabel: false, 
