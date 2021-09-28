@@ -16,11 +16,13 @@ export const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   nameGreeting: {
-    fontSize: 24
+    fontSize: 24,
+    color: theme.colors.text
   },
   name: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginLeft: 7
+    marginLeft: 7,
+    color: theme.colors.text
   }
 })

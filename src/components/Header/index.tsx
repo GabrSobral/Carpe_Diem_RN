@@ -5,13 +5,16 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
 import { theme } from "../../styles/theme";
+import { useUsers } from "../../contexts/UserContext";
 
 interface HeaderProps {
   canGoBack?: boolean;
 }
 
 export function Header({ canGoBack = false }: HeaderProps){
+  const { username } = useUsers()
   const { goBack } = useNavigation()
+
   return(
     <View style={styles.container}>
       { canGoBack && (
@@ -24,7 +27,7 @@ export function Header({ canGoBack = false }: HeaderProps){
 
       <View style={styles.nameContainer}>
         <Text style={styles.nameGreeting}>Olá</Text> 
-        <Text style={styles.name}>Gabriel</Text>
+        <Text style={styles.name}>{username}</Text>
       </View>
     </View>
   )

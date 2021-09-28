@@ -32,6 +32,6 @@ export const styles = StyleSheet.create({
     height: 3,
     flex: 1,
     marginHorizontal: 5,
-    backgroundColor: theme.colors.green300
+    backgroundColor: theme.colors.gray100
   }
 })
