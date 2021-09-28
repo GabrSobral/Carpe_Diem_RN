@@ -7,7 +7,7 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 
 import { styles } from './style'
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 import { useUsers } from '../../contexts/UserContext';
 
 export function SignIn() {
@@ -17,7 +17,7 @@ export function SignIn() {
   const [ errorMessage, setErrorMessage ] = useState("")
 
   const { Sign } = useUsers()
-  const { navigate } = useNavigation() as any
+  const { dispatch } = useNavigation()
 
   async function SignIn(){
     setIsLoading(true);
@@ -26,11 +26,11 @@ export function SignIn() {
     if(result.message === "ok") {
       if(result.data.user.hasAnswered === true) {
         setIsLoading(false);
-        navigate("Home")
+        dispatch( StackActions.replace("BottomTabs") )
         return;
       } else{
         setIsLoading(false)
-        navigate("Questionnaire");
+        dispatch( StackActions.replace("Questionnaire") )
         return;
       }
     } else {

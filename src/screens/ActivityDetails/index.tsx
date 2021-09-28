@@ -52,7 +52,7 @@ export function ActivityDetails({}){
 
           <Player/>
 
-          <ActivityDetailsButtons/>
+          <ActivityDetailsButtons activity={activity}/>
         </View>
         
       </ScrollView>

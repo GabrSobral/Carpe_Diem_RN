@@ -11,14 +11,6 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
     color: theme.colors.text
   },
-  progressBarContainer: {
-    position: 'relative',
-    width: '100%',
-    height: 200,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 16
-  },
   progressBarText: {
     position: 'absolute'
   }

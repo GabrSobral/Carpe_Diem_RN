@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Text, View, StatusBar } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler'
 
 import { SignHeader } from '../../components/SignHeader'
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 
 import { styles } from './style'
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, StackActions } from '@react-navigation/native';
 import { useUsers } from '../../contexts/UserContext';
 
 export function SignUp() {
@@ -18,7 +17,7 @@ export function SignUp() {
   const [ isLoading, setIsLoading ] = useState(false)
   const [ errorMessage, setErrorMessage ] = useState('')
   
-  const { navigate } = useNavigation() as any
+  const { dispatch } = useNavigation() as any
   const { Sign } = useUsers()
 
   async function SignUp(){
@@ -32,7 +31,7 @@ export function SignUp() {
     
     const result = await Sign({name, email, password, query: "/users"})
     if(result.message === "ok") {
-      navigate('Questionnaire')
+      dispatch( StackActions.replace("BottomTabs") )
     } else {
       setErrorMessage(result.message)
       setIsLoading(false)

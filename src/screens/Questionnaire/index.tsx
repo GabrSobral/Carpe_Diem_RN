@@ -1,7 +1,7 @@
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, StackActions } from '@react-navigation/native'
 import React, { useState } from 'react'
 import { useEffect } from 'react'
-import { View, Text, FlatList, ScrollView } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import { Button } from '../../components/Button'
 import { Header } from '../../components/Header'
 import { RadioButton } from '../../components/RadioButton'
@@ -22,9 +22,9 @@ export function Questionnaire(){
   const [ errorMessage, setErrorMessage ] = useState('')
   const [ isFilled, setIsFilled ] = useState(false)
 
-  const { navigate } = useNavigation()
+  const { dispatch } = useNavigation()
 
-  const { user } = useUsers()
+  const { user, setHasAnswered } = useUsers()
 
   useEffect(() => {
     (async () => {
@@ -70,12 +70,13 @@ export function Questionnaire(){
     
     try {
       await api.post('/answer/new', { answer: answersFormatted })
+      setHasAnswered()
+      dispatch( StackActions.replace("BottomTabs") )
     } catch(error) {
       setErrorMessage(error.response.data.error)
     } finally {
       setIsLoading(false)
     }
-    navigate('Home')
   }
 
   useEffect(() => { 

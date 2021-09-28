@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'column',
     alignItems: 'center',
+    backgroundColor:theme.colors.white
   },
   errorMessage: {
     width: '100%',
