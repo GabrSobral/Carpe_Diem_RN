@@ -1,8 +1,9 @@
 import React,{ useCallback } from "react";
 import { createContext, ReactNode, useContext, useState, useEffect } from "react";
 import { api } from "../services/api";
+import { ActivitiesProps } from "../types/activity";
 import { User } from "../types/user";
-import { loadUser, removeActivity, removeUser, saveUser } from "../utils/handleStorage";
+import { loadUser, removeActivity, removeUser, saveActivities, saveUser } from "../utils/handleStorage";
 import { getToken, removeToken, setToken } from "../utils/handleToken";
 
 interface UserProviderProps {
@@ -32,9 +33,12 @@ interface UserContextProps {
   username: String;
   Logout: () => Promise<unknown>;
   user?: User;
-  handleFinishActivityInUser: () => void;
+  handleFinishActivity: (activity_id: string) => Promise<void>;
   setHasAnswered: () => void;
-  // updateUserState: () => void;
+  fetchActivities: () => Promise<unknown>;
+  activities: ActivitiesProps[];
+  handleDeleteActivity:(activity_id: string) => Promise<void>;
+  handleUpdate: (...args: any) => Promise<User>
 }
 
 const UserContext = createContext({} as UserContextProps)
@@ -42,27 +46,49 @@ const UserContext = createContext({} as UserContextProps)
 export function UserProvider({ children }: UserProviderProps){
   const [ username, setUsername ] = useState('')
   const [ user, setUser ] = useState<User>()
-
-  const updateUserState = useCallback(async () => {
-    const userStore = await loadUser()
-    if(userStore){
-      setUser(userStore)
-      if(userStore){
-        const firstName = userStore.name.split(' ')[0]
-
-        console.log(firstName)
-        setUsername(firstName)
-      }
-    }
-  },[])
+  const [ activities, setActivities ] = useState<ActivitiesProps[]>([])
 
   useEffect(() => {
     (async () => {
-      if(getToken()) {
-        updateUserState()
+      if(!await getToken()) { return }
+      const userStore = await loadUser()
+      if(userStore.id){
+        setUser(userStore)
+        if(userStore){
+          const firstName = userStore.name.split(' ')[0]
+          setUsername(firstName)
+        }
       }
     })()
-  },[ updateUserState ])
+  },[])
+  
+  const fetchActivities = useCallback(() => {
+    return new Promise(resolve => {
+      api.get('/activity/get-activities')
+      .then(({ data }) => {
+        (async () => {
+          await saveActivities(data)
+          const storedUser = await loadUser()
+          storedUser.activities_finished_today = 0;
+          setUser(storedUser)
+        })();
+        setActivities(data);
+        
+        resolve('ok')
+      })
+      .catch((error) => {
+  
+        if(error.response.data.error === 
+          "You already request the activities, try again tomorrow") {
+            api.get('/activity/my-list')
+              .then(({data}) => {
+                (async () => await saveActivities(data))();
+                setActivities(data);
+              })
+          }
+      })
+    })
+  },[])
 
 
   async function Sign({name, email, password, query = '/login'}: SignProps) {
@@ -93,25 +119,42 @@ export function UserProvider({ children }: UserProviderProps){
       removeToken()
       setUsername('')
       setUser(undefined)
+      setActivities([])
 
       return resolve('ok')
     })
   }
 
-  async function handleFinishActivityInUser(){
-    setUser(prev => {
-      if(prev){
-        prev.all_activities_finished++
-        prev.activities_finished_today++
+  const handleUpdate = useCallback(async({...args}): Promise<User> => {
+    let newUser: User;
 
-        (async () => {
-          await saveUser(prev)
-        })()
-
-        return prev
-      }
-      return undefined
+    return new Promise(resolve => {
+      setUser(prevUser => {
+        prevUser = { ...prevUser, ...args } as User;
+        newUser = prevUser;
+        return newUser;
+      });
+      
+      (async () => await saveUser(newUser))();
+      return resolve(newUser)
     })
+  },[])
+
+  async function handleFinishActivity(activity_id: string){
+    const newArray: ActivitiesProps[] = []
+    let newUser = {} as User
+
+    await api.delete(`/activity/finish/${activity_id}`)
+    activities.forEach(item => item.id !== activity_id && newArray.push(item))
+    setActivities(newArray)
+    
+    await saveActivities(newArray)
+
+    const all_activities_finished = (user?.all_activities_finished || 0) + 1;
+    const activities_finished_today = (user?.activities_finished_today || 0) + 1;
+
+    await handleUpdate({ all_activities_finished, activities_finished_today })
+    await saveUser(newUser)
   }
 
   function setHasAnswered(){
@@ -127,6 +170,16 @@ export function UserProvider({ children }: UserProviderProps){
     })
   }
 
+  async function handleDeleteActivity(activity_id: string){
+    const newArray: ActivitiesProps[] = []
+
+    await api.delete(`/activity/my-delete/${activity_id}`)
+    activities.forEach(item => item.id !== activity_id && newArray.push(item))
+
+    setActivities(newArray)
+    await saveActivities(newArray)
+  }
+
   return(
     <UserContext.Provider 
       value={{
@@ -134,9 +187,12 @@ export function UserProvider({ children }: UserProviderProps){
         username,
         Logout,
         user,
-        handleFinishActivityInUser,
+        handleFinishActivity,
         setHasAnswered,
-        // updateUserState
+        fetchActivities,
+        activities,
+        handleDeleteActivity,
+        handleUpdate
       }}>
       {children}
     </UserContext.Provider>
