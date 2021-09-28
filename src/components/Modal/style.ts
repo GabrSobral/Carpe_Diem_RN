@@ -18,11 +18,13 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: theme.colors.text
+    color: theme.colors.text,
+    textAlign: 'center'
   },
   description: {
     marginTop: 6,
-    color: theme.colors.text
+    color: theme.colors.text,
+    textAlign: 'center'
   },
 
   dualButtonsContainer: {

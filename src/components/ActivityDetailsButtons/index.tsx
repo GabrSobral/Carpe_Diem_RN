@@ -1,13 +1,32 @@
 import React, { useState } from 'react'
 import { RectButton } from "react-native-gesture-handler";
-import { Text, View } from 'react-native'
+import { Text, View, ActivityIndicator } from 'react-native'
 
 import { ModalComponent } from '../Modal'
 import { styles } from './style'
+import { ActivitiesProps } from '../../types/activity';
+import { useUsers } from '../../contexts/UserContext';
+import { theme } from '../../styles/theme';
 
-export function ActivityDetailsButtons(){
+interface ActivityDetailsButtonsProps {
+  activity: ActivitiesProps;
+}
+
+export function ActivityDetailsButtons({ activity }: ActivityDetailsButtonsProps){
   const [ isFinishModalVisible, setIsFinishModalVisible ] = useState(false)
   const [ isDenyModalVisible, setIsDenyModalVisible ] = useState(false)
+  const [ isLoading, setIsLoading ] = useState(false)
+
+  const { handleFinishActivity, handleDeleteActivity } = useUsers()
+
+  async function Finish(){
+    setIsLoading(true)
+    handleFinishActivity(activity.id)
+      .then(() => {
+        setIsLoading(false)
+        setIsFinishModalVisible(true)
+      })
+  }
 
   return (
     <View style={styles.handleButtonsContainer}>  
@@ -23,6 +42,7 @@ export function ActivityDetailsButtons(){
         description="Você tem certeza de que deseja descartar essa tarefa?"
         isVisible={isDenyModalVisible}
         dualButtons 
+        confirmFunction={() => handleDeleteActivity(activity.id)}
         closeModal={() => setIsDenyModalVisible(false)}
       />
 
@@ -35,9 +55,13 @@ export function ActivityDetailsButtons(){
 
       <RectButton 
         style={[styles.handleButton, styles.confirm]} 
-        onPress={() => setIsFinishModalVisible(true)}
+        onPress={Finish}
       >
-        <Text style={styles.handleText}>Concluir</Text>
+        { isLoading ?
+          <ActivityIndicator size={20} color={theme.colors.white}/> 
+          :
+          <Text style={styles.handleText}>Concluir</Text>
+        }
       </RectButton>
     </View>
   )

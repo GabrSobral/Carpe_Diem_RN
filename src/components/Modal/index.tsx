@@ -10,6 +10,7 @@ interface ModalComponentProps {
   closeModal: () => void;
   title: string;
   description: string;
+  confirmFunction?: () => void;
 }
 
 export function ModalComponent({ 
@@ -17,7 +18,8 @@ export function ModalComponent({
   closeModal, 
   dualButtons = false,
   title,
-  description
+  description,
+  confirmFunction
 }: ModalComponentProps){
   const { goBack } = useNavigation()
 
@@ -46,7 +48,13 @@ export function ModalComponent({
 
               <TouchableOpacity 
                 activeOpacity={0.7}
-                style={[styles.button, styles.accept]}>
+                style={[styles.button, styles.accept]}
+                onPress={() => {
+                  confirmFunction && confirmFunction()
+                  closeModal();
+                  goBack();
+                }}
+              >
                 <Text style={styles.buttonText}>sim</Text>
               </TouchableOpacity>
               </>
