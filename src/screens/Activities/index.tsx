@@ -1,38 +1,25 @@
 import React, { useState }  from 'react'
 import { View, Text, ScrollView, ActivityIndicator } from 'react-native'
 
-
 import { Header } from '../../components/Header'
 import { ActivityItem } from '../../components/ActivityItem'
 
 import { styles } from './style'
 import { useEffect } from 'react'
-import { api } from '../../services/api'
-import { ActivitiesProps } from '../../types/activity'
 import { theme } from '../../styles/theme'
-import { saveActivity } from '../../utils/handleStorage'
+import { useUsers } from '../../contexts/UserContext'
 
 export function Activities(){
-  const [ activities, setActivities ] = useState<ActivitiesProps[]>([])
+  const { fetchActivities, activities } = useUsers()
+  const [ isFetching, setIsFetching ] = useState(false)
 
   useEffect(() => {
-    api.get('/activity/get-activities')
-      .then(({ data }) => {
-        (async () => await saveActivity(data))();
-        setActivities(data);
-      })
-      .catch((error) => {
-
-        if(error.response.data.error === 
-          "You already request the activities, try again tomorrow") {
-            api.get('/activity/my-list')
-              .then(({data}) => {
-                (async () => await saveActivity(data))();
-                setActivities(data);
-              })
-          }
-      })
-  },[])
+    (async () => {
+      setIsFetching(true)
+      await fetchActivities()
+      setIsFetching(false)
+    })()
+  },[fetchActivities])
 
   return(
     <View style={styles.container}>
@@ -49,10 +36,10 @@ export function Activities(){
           </Text>
          </View>
 
-        { !activities &&  
+        { (isFetching && activities.length === 0) &&  
           <ActivityIndicator 
-            style={{ marginTop: 16 }}
-            size={32} 
+            style={{  marginTop: 125 }}
+            size={52} 
             color={theme.colors.blue300}/> }
         
         { activities.map(item => 

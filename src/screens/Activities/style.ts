@@ -4,7 +4,7 @@ import { theme } from "../../styles/theme";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.white
+    backgroundColor: theme.colors.white,
   },
   titleContainer: {
     width: '100%',
