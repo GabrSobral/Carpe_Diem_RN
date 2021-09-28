@@ -20,8 +20,8 @@ export async function removeUser() {
 
 //Activity storage
 
-export async function saveActivity(user: User) {
-  await AsyncStorage.setItem(activityCode, JSON.stringify(user))
+export async function saveActivities(activities: ActivitiesProps[]) {
+  await AsyncStorage.setItem(activityCode, JSON.stringify(activities))
 }
 export async function loadActivities(): Promise<ActivitiesProps> {
   const data = await AsyncStorage.getItem(activityCode)
