@@ -9,9 +9,13 @@ import { ModalComponent } from '../../components/Modal'
 
 import { styles } from './style'
 import { theme } from '../../styles/theme'
+import { useUsers } from '../../contexts/UserContext'
+import { useNavigation, CommonActions } from '@react-navigation/native'
 
 export function Profile(){
+  const { reset, navigate, dispatch } = useNavigation()
   const [ isLogoutModalVisible, setIsLogoutModalVisible ] = useState(false)
+  const { user, Logout } = useUsers()
 
   return(
     <View style={styles.container}>
@@ -19,7 +23,8 @@ export function Profile(){
         title="Volte sempre..."
         description="Você tem certeza de que deseja sair do nosso app?"
         isVisible={isLogoutModalVisible}
-        dualButtons 
+        dualButtons
+        confirmFunction={Logout}
         closeModal={() => setIsLogoutModalVisible(false)}
       />
       <Header/>
@@ -30,11 +35,9 @@ export function Profile(){
             
           </View>
 
-          <Text style={styles.userName}>
-            Gabriel Sobral dos Santos
-          </Text>
+          <Text style={styles.userName}>{user?.name}</Text>
 
-          <Text style={styles.registratedAt}>Registrado em: 05/03/2018 ás 15:04</Text>
+          <Text style={styles.registratedAt}>Registrado em: {user?.created_at}</Text>
         </View>
 
         <View style={styles.profileContentContainer}>
@@ -43,7 +46,7 @@ export function Profile(){
               Atividades Realizadas:
             </Text>
 
-            <Text style={styles.profileContentValueText}>12</Text>
+            <Text style={styles.profileContentValueText}>{user?.all_activities_finished}</Text>
           </View>
 
           <OptionsButtons/>
@@ -51,7 +54,7 @@ export function Profile(){
           <View style={styles.logoutButtonContainer}>
             <RectButton style={styles.logoutButton} onPress={() => setIsLogoutModalVisible(true)}>
               <Text style={styles.logoutText}>Sair</Text>
-              <Feather name="log-out" size={32} color={theme.colors.red300}/>
+              <Feather name="log-out" size={32} color={theme.colors.red900}/>
             </RectButton>
           </View>
 

@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
   logoutButtonContainer: {
     marginTop: 16,
     borderWidth: 2,
-    borderColor: theme.colors.red300,
+    borderColor: theme.colors.red900,
     borderRadius: 7,
   },
   logoutButton: {
@@ -80,7 +80,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: theme.colors.white,
     borderWidth: 5,
-    borderColor: theme.colors.red300,
+    borderColor: theme.colors.red900,
   },
   logoutText: {
     position: 'absolute',
