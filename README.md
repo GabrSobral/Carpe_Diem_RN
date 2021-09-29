@@ -4,8 +4,6 @@ This is a React Native application, and is being built as my final project of my
 The CarpeDiem can lsit activities to user, based in his life style, and if he has a crisis, an emergency protocol system will be activated, showing a step by step to calm down, and automatically sending a message to a contact previously registered by the user.
 
 The `CarpeDiem API` can be found <a href="https://github.com/GabrSobral/CarpeDIem-API">here<a>
-  
-  ![ProjectImage](https://github.com/GabrSobral/React-time-chat-application-FRONTEND/blob/master/.github/Landing.png?raw=true)
 
 ## Features 🔥
   <p>🟢 Login and register with JsonWebToken</p>
@@ -25,7 +23,7 @@ The `CarpeDiem API` can be found <a href="https://github.com/GabrSobral/CarpeDIe
 ## Prerequisites 🧶
   - NodeJS <img alt="Nodejs" src="https://img.shields.io/badge/-Nodejs-43853d?style=flat-square&logo=node.js&logoColor=white" />
   - A Package Manager <img alt="yarn" src="https://img.shields.io/badge/-Yarn-2168B6?style=flat-square&logo=yarn&logoColor=white" />
-  -Expo
+  - Expo
   
 ## Instalation ⚙️
 
