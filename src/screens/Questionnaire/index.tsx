@@ -65,11 +65,9 @@ export function Questionnaire(){
   }
 
   async function AnswerQuestionnaire(){
-    setIsLoading(true)
-    const answersFormatted = questions.map(item => item.answer)
-    
+    setIsLoading(true)    
     try {
-      await api.post('/answer/new', { answer: answersFormatted })
+      await api.post('/answer/new', questions)
       setHasAnswered()
       dispatch( StackActions.replace("BottomTabs") )
     } catch(error) {
@@ -92,7 +90,7 @@ export function Questionnaire(){
 
   return (
     <View style={styles.container}>
-      <Header/>
+      <Header canGoBack={user?.hasAnswered}/>
 
       <ScrollView style={{ padding: 16 }}>
         <View style={{ paddingBottom: 30 }}>

@@ -79,7 +79,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     backgroundColor: theme.colors.white,
-    borderWidth: 5,
+    borderWidth: 2,
+    marginTop: 16,
     borderColor: theme.colors.red900,
   },
   logoutText: {

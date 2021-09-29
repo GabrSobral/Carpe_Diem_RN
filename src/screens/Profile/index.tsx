@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, ScrollView } from 'react-native'
 import { Feather } from '@expo/vector-icons'
-import { RectButton } from 'react-native-gesture-handler'
+import { RectButton, TouchableOpacity } from 'react-native-gesture-handler'
 
 import { Header } from '../../components/Header'
 import { OptionsButtons } from '../../components/OptionsButtons'
@@ -19,14 +19,18 @@ export function Profile(){
 
   return(
     <View style={styles.container}>
-      <ModalComponent 
-        title="Volte sempre..."
-        description="Você tem certeza de que deseja sair do nosso app?"
-        isVisible={isLogoutModalVisible}
-        dualButtons
-        confirmFunction={Logout}
-        closeModal={() => setIsLogoutModalVisible(false)}
-      />
+      { isLogoutModalVisible &&
+        <ModalComponent 
+          title="Volte sempre..."
+          description="Você tem certeza de que deseja sair do nosso app?"
+          isVisible={isLogoutModalVisible}
+          dualButtons
+          animation="logout"
+          confirmFunction={Logout}
+          closeModal={() => setIsLogoutModalVisible(false)}
+        />
+      }
+
       <Header/>
 
       <ScrollView>
@@ -51,12 +55,14 @@ export function Profile(){
 
           <OptionsButtons/>
 
-          <View style={styles.logoutButtonContainer}>
-            <RectButton style={styles.logoutButton} onPress={() => setIsLogoutModalVisible(true)}>
-              <Text style={styles.logoutText}>Sair</Text>
-              <Feather name="log-out" size={32} color={theme.colors.red900}/>
-            </RectButton>
-          </View>
+          <TouchableOpacity 
+            style={styles.logoutButton} 
+            onPress={() => setIsLogoutModalVisible(true)}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.logoutText}>Sair</Text>
+            <Feather name="log-out" size={32} color={theme.colors.red900}/>
+          </TouchableOpacity>
 
         </View>
       </ScrollView>
