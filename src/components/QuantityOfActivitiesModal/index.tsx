@@ -1,11 +1,13 @@
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { useState } from "react";
+import LottieView from 'lottie-react-native'
 import { View, Text, Modal, TouchableOpacity } from 'react-native'
 import { useUsers } from "../../contexts/UserContext";
 import { api } from "../../services/api";
 
-import { styles } from './style';
+import activityAnimation from '../../../assets/activity.json'
+import { styles } from './style'
+import { theme } from "../../styles/theme";
 
 interface QuantityOfActivitiesModalProps {
   isVisible: boolean;
@@ -18,17 +20,15 @@ export function QuantityOfActivitiesModal({
   closeModal,
   initialValue
 }: QuantityOfActivitiesModalProps){
-  const [ selectedValue, setSelectedValue ] = useState<number>(initialValue)
+  const [ selectedValue, setSelectedValue ] = useState<number>(initialValue || 3)
   
   const { handleUpdate } = useUsers()
-  const { goBack } = useNavigation()
 
   async function confirmFunction(){
     await api.patch('/users', { quantity_of_activities: selectedValue })
 
-    // handleUpdateQuantityOfActivities(selectedValue)
     await handleUpdate({ quantity_of_activities: selectedValue })
-    closeModal()
+      .then(() => closeModal())    
   }
 
   return(
@@ -40,6 +40,12 @@ export function QuantityOfActivitiesModal({
     >
       <View style={styles.container}>
         <View style={styles.popup}>
+          <LottieView
+            source={activityAnimation}
+            autoPlay
+            loop
+            style={{ backgroundColor: 'transparent', width: 150, height: 150 }}
+          />
           <Text style={styles.title}>Olá...</Text>
           <Text style={styles.description}>
             Selecione a quantidade de atividades diárias que você deseja 

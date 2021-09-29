@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
   buttonTextQuantity: {
     color: theme.colors.text,
     fontWeight: 'bold',
-    fontSize: 20
+    fontSize: 20,
   },
   selected:{
     backgroundColor: theme.colors.blue300,
