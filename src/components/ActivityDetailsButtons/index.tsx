@@ -35,6 +35,7 @@ export function ActivityDetailsButtons({ activity }: ActivityDetailsButtonsProps
         description="Você conseguiu realizar uma tarefa, isso é ótimo!"
         isVisible={isFinishModalVisible} 
         closeModal={() => setIsFinishModalVisible(false)}
+        animation="congrats"
       />
 
       <ModalComponent 
@@ -44,6 +45,7 @@ export function ActivityDetailsButtons({ activity }: ActivityDetailsButtonsProps
         dualButtons 
         confirmFunction={() => handleDeleteActivity(activity.id)}
         closeModal={() => setIsDenyModalVisible(false)}
+        animation="trash"
       />
 
       <RectButton 

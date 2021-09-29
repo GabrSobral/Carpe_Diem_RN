@@ -1,10 +1,10 @@
 import React from "react";
 import { RectButton } from "react-native-gesture-handler";
 import { View, Text } from 'react-native'
-import { SvgUri } from 'react-native-svg'
 import { Feather } from '@expo/vector-icons'
-import ClockSVG from '../../images/clock.svg'
+// import LottieView from 'lottie-react-native'
 
+// import clockAnimation from '../../../assets/clock.json'
 import { styles } from './style'
 import { useNavigation } from "@react-navigation/native";
 import { theme } from "../../styles/theme";

@@ -1,7 +1,7 @@
-import React from 'react'
-import { View, Text } from 'react-native'
+import React, { useRef } from 'react'
+import { View, Text, Animated } from 'react-native'
 import { Octicons } from '@expo/vector-icons'
-import { RectButton } from 'react-native-gesture-handler'
+import { RectButton, TouchableOpacity } from 'react-native-gesture-handler'
 
 import { styles } from './style'
 import { theme } from '../../styles/theme'
@@ -14,6 +14,26 @@ export function OptionsButtons(){
   const { user } = useUsers()
   const [ isOpen, setIsOpen ] = useState(false)
   const [ isQuantityModalVisible, setIsQuantityModalVisible ] = useState(false)
+
+  const sizeValue = useRef(new Animated.Value(0)).current;
+  const sizeAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 180] })
+
+  function sizeMotionGrown(){
+    if(!isOpen){
+      Animated.timing(sizeValue, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: false
+      }).start();
+    } else {
+      Animated.timing(sizeValue, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: false
+      }).start();
+    }
+  }
+  const sizeAnim = { height: sizeAnimation }
 
   const { navigate } = useNavigation()
 
@@ -30,7 +50,13 @@ export function OptionsButtons(){
       }
       
 
-      <RectButton style={styles.optionsButton} onPress={() => setIsOpen(!isOpen)}>
+      <RectButton 
+        style={styles.optionsButton} 
+        activeOpacity={0.6}
+        onPress={() => {
+          setIsOpen(!isOpen)
+          sizeMotionGrown()
+        }}>
         <Text style={styles.itemText}>Configurações</Text>
       
         <Octicons 
@@ -40,19 +66,19 @@ export function OptionsButtons(){
         />
       </RectButton>
 
-      <View style={[styles.optionsContainer, isOpen ? { height: "auto" }:{ height: 0 }]}>
-        <RectButton style={styles.optionItemButton} onPress={() => navigate("Questionnaire")}>
+      <Animated.View style={[styles.optionsContainer,  sizeAnim]}>
+        <TouchableOpacity style={styles.optionItemButton} onPress={() => navigate("Questionnaire")}>
           <Text style={styles.optionItemText}>Alterar questionário</Text>
-        </RectButton>
+        </TouchableOpacity>
 
-        <RectButton style={styles.optionItemButton}>
+        <TouchableOpacity style={styles.optionItemButton}>
           <Text style={styles.optionItemText}>Alterar senha</Text>
-        </RectButton>
+        </TouchableOpacity>
 
-        <RectButton style={styles.optionItemButton} onPress={() => setIsQuantityModalVisible(true)}>
+        <TouchableOpacity style={styles.optionItemButton} onPress={() => setIsQuantityModalVisible(true)}>
           <Text style={styles.optionItemText}>Alterar quantidade de atividades</Text>
-        </RectButton>
-      </View>
+        </TouchableOpacity>
+      </Animated.View>
     </View>
   )
 }
