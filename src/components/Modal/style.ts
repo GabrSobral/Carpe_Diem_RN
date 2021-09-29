@@ -57,5 +57,11 @@ export const styles = StyleSheet.create({
   finishButton: {
     width: '100%',
     backgroundColor: theme.colors.blue300
+  },
+
+  animation: {
+    backgroundColor: 'transparent',
+    width: 200,
+    height: 200
   }
 })
