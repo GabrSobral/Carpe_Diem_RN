@@ -9,18 +9,28 @@ import { ActivityDetailsButtons } from '../../components/ActivityDetailsButtons'
 import { ActivitiesProps } from '../../types/activity'
 
 import { styles } from './style'
-import { ModalComponent } from '../../components/Modal'
+
+import { FeedbackModal } from '../../components/FeedbackModal'
 
 interface Params {
   activity: ActivitiesProps;
 }
 
 export function ActivityDetails({}){
+  const [ isFeedbackModalVisible, setIsFeedbackModalVisible ] = useState(false)
+
   const { params } = useRoute()
   const { activity } = params as Params
 
   return(
     <View style={styles.container}>
+      { isFeedbackModalVisible && 
+        <FeedbackModal
+          closeModal={() => setIsFeedbackModalVisible(false) }
+          isVisible={isFeedbackModalVisible}
+        />
+      }
+
       <Header canGoBack/>
 
       <ScrollView>
@@ -45,7 +55,7 @@ export function ActivityDetails({}){
               O que achou da atividade? 
             </Text>
 
-            <TouchableOpacity style={{ marginLeft: 5 }}>
+            <TouchableOpacity style={{ marginLeft: 5 }} onPress={() => setIsFeedbackModalVisible(true)}>
               <Text style={styles.feedbackButtonText}>Nos dê um feedback!</Text>
             </TouchableOpacity>
           </View>

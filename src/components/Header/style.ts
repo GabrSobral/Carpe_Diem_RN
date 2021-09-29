@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderBottomWidth: 5,
     borderBottomColor: theme.colors.gray100,
+    justifyContent: 'space-between'
   },
   nameContainer: {
     flexDirection: 'row'
@@ -24,5 +25,13 @@ export const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 7,
     color: theme.colors.text
+  },
+  urgentButton: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.red300,
   }
 })
