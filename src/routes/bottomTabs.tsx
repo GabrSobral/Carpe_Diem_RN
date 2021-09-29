@@ -10,13 +10,13 @@ export function BottomTabs(){
   const { Navigator, Screen } = createBottomTabNavigator()
 
   return (
-    <Navigator 
+    <Navigator
       detachInactiveScreens
       initialRouteName="HomeScreen"
       screenOptions={{ 
         headerShown: false, 
         tabBarShowLabel: false, 
-        tabBarStyle: { height: 60 } 
+        tabBarStyle: { height: 60 }
       }}
     >
       <Screen
