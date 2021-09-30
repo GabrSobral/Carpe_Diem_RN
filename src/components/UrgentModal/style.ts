@@ -61,9 +61,16 @@ export const styles = StyleSheet.create({
 
   quantityContainer: {
     width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 16
+    height: 15,
+    overflow: 'hidden',
+    borderRadius: 7,
+    marginTop: 16,
+    backgroundColor: theme.colors.gray100
+  },
+  slider: {
+    height: '100%',
+    width: 80,
+    backgroundColor: theme.colors.blue300
   },
   buttonTextQuantity: {
     color: theme.colors.text,

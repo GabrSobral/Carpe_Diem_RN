@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
 import LottieView from 'lottie-react-native'
-import { View, Text, Modal, TouchableOpacity } from 'react-native'
+import { View, Text, Modal, TouchableOpacity, Animated } from 'react-native'
 
 import alertAnimation from '../../../assets/alert.json'
 import { styles } from './style'
@@ -14,9 +14,25 @@ interface UrgentModalModalProps {
 }
 
 export function UrgentModal({ isVisible, closeModal }: UrgentModalModalProps){
+  const widthValue = useRef(new Animated.Value(0)).current
+  const widthAnim = widthValue.interpolate({ inputRange: [0, 1], outputRange: ['0%', '100%'] })
+  let timer: NodeJS.Timeout;
+
+  useEffect(() => startAnimation(), [])
+
   async function confirmFunction(){
     await api.post('/users/sms', { to: "5513991599324" })
     closeModal()
+  }
+  
+  function startAnimation(){
+    Animated.timing(widthValue, {
+      toValue: 1,
+      duration: 7000,
+      useNativeDriver: false
+    }).start();
+
+    timer = setTimeout(confirmFunction, 7000)
   }
 
   return(
@@ -42,13 +58,14 @@ export function UrgentModal({ isVisible, closeModal }: UrgentModalModalProps){
           </Text>
 
           <View style={styles.quantityContainer}>
+            <Animated.View style={[styles.slider, { width: widthAnim }]}/>
           </View>
 
           <View style={styles.dualButtonsContainer}>
             <TouchableOpacity 
               activeOpacity={0.7}
               style={[styles.button, styles.deny]} 
-              onPress={closeModal}
+              onPress={() => {clearTimeout(timer); closeModal();}}
             >
               <Text style={styles.buttonText}>Não</Text>
             </TouchableOpacity>
