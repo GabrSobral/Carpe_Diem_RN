@@ -55,14 +55,17 @@ export function Profile(){
 
           <OptionsButtons/>
 
-          <TouchableOpacity 
+        <View style={styles.logoutButtonContainer}>
+          <RectButton 
+            rippleColor={theme.colors.red900}
             style={styles.logoutButton} 
             onPress={() => setIsLogoutModalVisible(true)}
             activeOpacity={0.7}
           >
             <Text style={styles.logoutText}>Sair</Text>
             <Feather name="log-out" size={32} color={theme.colors.red900}/>
-          </TouchableOpacity>
+          </RectButton>
+        </View>
 
         </View>
       </ScrollView>
