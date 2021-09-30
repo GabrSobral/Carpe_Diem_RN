@@ -53,6 +53,7 @@ export function UserProvider({ children }: UserProviderProps){
       if(!await getToken()) { return }
       const userStore = await loadUser()
       if(userStore.id){
+        console.log(userStore)
         setUser(userStore)
         if(userStore){
           const firstName = userStore.name.split(' ')[0]

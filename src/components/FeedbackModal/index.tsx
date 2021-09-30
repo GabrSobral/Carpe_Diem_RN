@@ -29,6 +29,10 @@ export function FeedbackModal({ isVisible, closeModal }: FeedbackModalProps){
     >
       <View style={styles.container}>
         <View style={styles.popup}>
+          <TouchableOpacity onPress={closeModal} style={styles.closeModalButton}>
+            <Feather name="x" size={32} color={theme.colors.text}/>
+          </TouchableOpacity>
+
           <Text style={styles.title}>Sua opinião é muito importante para nós!</Text>
           <Text style={styles.description}>O que achou desta atividade?</Text>
 

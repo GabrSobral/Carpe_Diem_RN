@@ -15,6 +15,9 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     alignItems: 'center'
   },
+  closeModalButton:{
+    marginLeft: 'auto'
+  },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
