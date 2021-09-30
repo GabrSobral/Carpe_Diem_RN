@@ -26,11 +26,9 @@ export function SignIn() {
     if(result.message === "ok") {
       if(result.data.user.hasAnswered === true) {
         setIsLoading(false);
-        dispatch( StackActions.replace("BottomTabs") )
         return;
       } else{
         setIsLoading(false)
-        dispatch( StackActions.replace("Questionnaire") )
         return;
       }
     } else {

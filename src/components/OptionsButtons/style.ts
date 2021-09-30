@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import fonts from "../../styles/fonts";
 import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
@@ -21,7 +22,8 @@ export const styles = StyleSheet.create({
   },
   itemText: {
     color: theme.colors.text,
-    fontSize: 19
+    fontSize: 19,
+    fontFamily: fonts.text
   },
   optionsContainer: {
     width: '100%',
@@ -42,6 +44,7 @@ export const styles = StyleSheet.create({
   optionItemText: {
     color: theme.colors.text,
     fontSize: 16,
-    textAlign: 'left'
+    textAlign: 'left',
+    fontFamily: fonts.text
   }
 })

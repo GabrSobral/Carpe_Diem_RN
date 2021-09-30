@@ -1,5 +1,5 @@
 import React, { useState }  from 'react'
-import { View, Text, ScrollView, ActivityIndicator } from 'react-native'
+import { View, Text, ActivityIndicator, FlatList } from 'react-native'
 
 import { Header } from '../../components/Header'
 import { ActivityItem } from '../../components/ActivityItem'
@@ -8,21 +8,28 @@ import { FeedbackModal } from '../../components/FeedbackModal'
 import { styles } from './style'
 import { useEffect } from 'react'
 import { theme } from '../../styles/theme'
-import { useUsers } from '../../contexts/UserContext'
 import { ActivitiesProps } from '../../types/activity'
 import { useNavigation } from '@react-navigation/native'
-import { FlatList } from 'react-native-gesture-handler'
+import { useUsers } from '../../contexts/UserContext'
 
 export function MyFeedbacks(){
-  const { fetchActivities, activities } = useUsers()
+  const { feedbacks, fetchFeedbacks } = useUsers()
+  const [ selectedActivity, setSelectedActivity ] = useState<ActivitiesProps | undefined>(undefined)
   const [ isFetching, setIsFetching ] = useState(false)
   const [ isFeedbackModalVisible, setIsFeedbackModalVisible ] = useState(false)
   const { navigate } = useNavigation()
+
+  useEffect(() => {
+    setIsFetching(true)
+    fetchFeedbacks()
+    setIsFetching(false)
+  },[feedbacks.length, fetchFeedbacks])
 
   return(
     <View style={styles.container}>
       { isFeedbackModalVisible &&
         <FeedbackModal
+          activity={selectedActivity}
           closeModal={() => setIsFeedbackModalVisible(false)}
           isVisible={isFeedbackModalVisible}
         />
@@ -41,22 +48,26 @@ export function MyFeedbacks(){
         </Text>
         </View>
 
-      { (isFetching && (activities.length === 0)) &&  
+      { (isFetching && (feedbacks.length === 0)) &&  
         <ActivityIndicator 
           style={{  marginTop: 125 }}
           size={52} 
           color={theme.colors.blue300}/> }
       
         <FlatList
-          data={activities}
+          style={{ minHeight: 100 }}
+          data={feedbacks}
           keyExtractor={(item: ActivitiesProps) => item.id}
           renderItem={({item}) => 
             <ActivityItem 
-              onPress={() => navigate('ActivityDetails', { activity: item })}
+              onPress={() => {
+                setIsFeedbackModalVisible(true)
+                setSelectedActivity(item)
+              }}
               key={item.id}
               item={item}
             />}
-          onRefresh={async () => await fetchActivities()}
+          onRefresh={async () => await fetchFeedbacks()}
           refreshing={false}
         />
 

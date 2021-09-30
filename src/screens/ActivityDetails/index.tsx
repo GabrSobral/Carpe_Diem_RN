@@ -26,6 +26,7 @@ export function ActivityDetails({}){
     <View style={styles.container}>
       { isFeedbackModalVisible && 
         <FeedbackModal
+          activity={activity}
           closeModal={() => setIsFeedbackModalVisible(false) }
           isVisible={isFeedbackModalVisible}
         />

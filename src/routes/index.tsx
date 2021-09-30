@@ -14,22 +14,23 @@ import { ChangePassword } from '../screens/ChangePassword'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { MyFeedbacks } from '../screens/MyFeedbacks'
+import { ActivityDetailsFeedback } from '../screens/ActivityDetailsFeedback'
 
 export function Routes(){
   const { user } = useUsers()
-  const [ answered, setAnswered ] = useState(false)
+  const [ initialRoute, setInitialRoute ] = useState('BottomTabs')
   const { Navigator, Screen } = createStackNavigator()
 
   useEffect(() => {
     if(user?.hasAnswered)
-      return setAnswered(true)
+      return setInitialRoute("Questionnaire")
   },[user?.hasAnswered])
 
   return (
     <NavigationContainer>
       <Navigator 
         screenOptions={{ headerShown: false }} 
-        initialRouteName={ answered ? "Questionnaire" : "BottomTabs"}
+        initialRouteName={initialRoute}
       >
         { !user ? 
           <>
@@ -44,6 +45,7 @@ export function Routes(){
             <Screen name="ActivityDetails" component={ActivityDetails}/>
             <Screen name="ChangePassword" component={ChangePassword}/>
             <Screen name="MyFeedbacks" component={MyFeedbacks}/>
+            <Screen name="ActivityDetailsFeedback" component={ActivityDetailsFeedback}/>
           </>
          }
       </Navigator>   

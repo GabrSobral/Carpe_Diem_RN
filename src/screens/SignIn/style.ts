@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import fonts from "../../styles/fonts";
 import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
@@ -18,10 +19,12 @@ export const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'left',
     color: theme.colors.red900,
-    fontSize: 18
+    fontSize: 18,
+    fontFamily: fonts.text,
   },
   forgotPasswordText: {
     color: theme.colors.blue300,
-    fontSize: 18
+    fontSize: 18,
+    fontFamily: fonts.text,
   }
 });

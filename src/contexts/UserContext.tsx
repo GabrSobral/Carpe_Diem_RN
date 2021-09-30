@@ -38,59 +38,62 @@ interface UserContextProps {
   fetchActivities: () => Promise<unknown>;
   activities: ActivitiesProps[];
   handleDeleteActivity:(activity_id: string) => Promise<void>;
-  handleUpdate: (...args: any) => Promise<User>
+  handleUpdate: (...args: any) => Promise<User>;
+  fetchFeedbacks: () => Promise<void>,
+  feedbacks: ActivitiesProps[];
+  changeFeedbackFromState: (activity: ActivitiesProps, newFeedback: boolean | undefined) => void;
+  removeFeedbackFromState: (activity_id: string) => void;
 }
 
 const UserContext = createContext({} as UserContextProps)
 
 export function UserProvider({ children }: UserProviderProps){
   const [ username, setUsername ] = useState('')
-  const [ user, setUser ] = useState<User>()
   const [ activities, setActivities ] = useState<ActivitiesProps[]>([])
+  const [ feedbacks, setFeedbacks ] = useState<ActivitiesProps[]>([])
+  const [ isRequested, setIsRequested ] = useState(false)
+  const [ user, setUser ] = useState<User>()
 
   useEffect(() => {
     (async () => {
       if(!await getToken()) { return }
       const userStore = await loadUser()
-      if(userStore.id){
+      if(userStore !== undefined){
         console.log(userStore)
         setUser(userStore)
-        if(userStore){
-          const firstName = userStore.name.split(' ')[0]
-          setUsername(firstName)
-        }
+        const firstName = userStore.name.split(' ')[0]
+        setUsername(firstName)
       }
     })()
-  },[])
+  },[]);
   
-  const fetchActivities = useCallback(() => {
-    return new Promise(resolve => {
-      api.get('/activity/get-activities')
-      .then(({ data }) => {
-        (async () => {
+  const fetchActivities = useCallback(async () => {
+    try{
+      const { data } = await api.get('/activity/get-activities')
+
+      await saveActivities(data)
+      const storedUser = await loadUser()
+
+      storedUser.activities_finished_today = 0;
+      setUser(storedUser)
+      setActivities(data);
+
+    } catch(error) {
+      if(error.response.data.error === 
+        "You already request the activities, try again tomorrow") {
+          const { data } = await api.get('/activity/my-list')
           await saveActivities(data)
-          const storedUser = await loadUser()
-          storedUser.activities_finished_today = 0;
-          setUser(storedUser)
-        })();
-        setActivities(data);
-        
-        resolve('ok')
-      })
-      .catch((error) => {
-  
-        if(error.response.data.error === 
-          "You already request the activities, try again tomorrow") {
-            api.get('/activity/my-list')
-              .then(({data}) => {
-                (async () => await saveActivities(data))();
-                setActivities(data);
-              })
-          }
-      })
-    })
+          setActivities(data);
+        }
+      }  
   },[])
 
+  const fetchFeedbacks = useCallback(async() => {
+    if(isRequested) { return }
+    const { data } = await api.get('/feedback/my-list')
+    setFeedbacks(data)
+    setIsRequested(true)
+  },[])
 
   async function Sign({name, email, password, query = '/login'}: SignProps) {
     const result = {} as SignResult
@@ -181,6 +184,57 @@ export function UserProvider({ children }: UserProviderProps){
     await saveActivities(newArray)
   }
 
+  function changeFeedbackFromState(activity: ActivitiesProps, newFeedback: boolean | undefined){
+    const allFeedbacks: ActivitiesProps[] = []
+    let exists = false;
+    
+    feedbacks.forEach(item => {
+      if(item.id === activity.id) {
+        exists = true;
+        item.feedback.feedback = newFeedback
+        allFeedbacks.push(item)
+      }
+    })
+    if(exists) {
+      setFeedbacks(allFeedbacks)
+    } else {
+      setFeedbacks(prev => [ activity, ...prev])
+    }
+
+    setFeedbacks(prev => prev.map(item => {
+      let exists = false;
+      if(item.id === activity.id){
+        exists = true
+        item.feedback.feedback = newFeedback
+      }
+      return item
+    }))
+
+    setActivities(prev => prev.map(item => {
+      if(item.id === activity.id){
+        item.feedback.feedback = newFeedback
+      }
+      return item
+    }))
+  }
+  function removeFeedbackFromState(activity_id: string){
+    setFeedbacks(prev => {
+      prev.forEach((item, index) => {
+        if(item.id === activity_id){
+          prev.splice(index, 1)
+        }
+      })
+      return prev
+    })
+
+    setActivities(prev => prev.map(item => {
+      if(item.id === activity_id){
+        item.feedback.feedback = undefined
+      }
+      return item
+    }))
+  }
+
   return(
     <UserContext.Provider 
       value={{
@@ -193,7 +247,11 @@ export function UserProvider({ children }: UserProviderProps){
         fetchActivities,
         activities,
         handleDeleteActivity,
-        handleUpdate
+        handleUpdate,
+        fetchFeedbacks,
+        feedbacks,
+        changeFeedbackFromState,
+        removeFeedbackFromState,
       }}>
       {children}
     </UserContext.Provider>

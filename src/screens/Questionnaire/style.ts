@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import fonts from "../../styles/fonts";
 import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
@@ -8,8 +9,8 @@ export const styles = StyleSheet.create({
   },
   title : {
     fontSize: 34,
-    fontWeight: '400',
-    color: theme.colors.text
+    color: theme.colors.text,
+    fontFamily: fonts.heading,
   },
   questionContainer: {
     width: '100%',
@@ -27,7 +28,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   questionText: {
-    color: theme.colors.text
+    color: theme.colors.text,
+    fontFamily: fonts.text,
   },
   inputsContainer: {
     width: '100%',
@@ -42,6 +44,7 @@ export const styles = StyleSheet.create({
     width: '100%',
     textAlign: 'left',
     color: theme.colors.red900,
-    fontSize: 18
+    fontSize: 18,
+    fontFamily: fonts.text,
   },
 })

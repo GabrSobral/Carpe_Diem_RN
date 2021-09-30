@@ -7,5 +7,11 @@ export interface ActivitiesProps{
   body: string;
   description: string;
   files: File[]
-  category : Category
+  category : Category;
+  created_at_feedback?: Date;
+  updated_at_feedback?: Date;
+  feedback: {
+    feedback?: boolean;
+    created_at?: Date
+  };
 }

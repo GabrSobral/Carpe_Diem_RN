@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import fonts from "../../styles/fonts";
 import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
@@ -17,13 +18,14 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontFamily: fonts.heading,
     color: theme.colors.text
   },
   description: {
     marginTop: 6,
     color: theme.colors.text,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: fonts.text
   },
 
   dualButtonsContainer: {
@@ -35,8 +37,8 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     color: theme.colors.white,
-    fontWeight: 'bold',
-    fontSize: 20
+    fontSize: 20,
+    fontFamily: fonts.heading
   },
   button: {
     width: '49%',
@@ -66,8 +68,8 @@ export const styles = StyleSheet.create({
   },
   buttonTextQuantity: {
     color: theme.colors.text,
-    fontWeight: 'bold',
     fontSize: 20,
+    fontFamily: fonts.heading
   },
   selected:{
     backgroundColor: theme.colors.blue300,

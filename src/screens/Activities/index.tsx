@@ -30,13 +30,13 @@ export function Activities(){
 
         <View style={{ padding: 16 }}>
 
-         <View style={styles.titleContainer}>
-           <Text style={styles.title}>Atividades</Text>
-           <Text style={styles.subtitle}>
-            Aqui você pode encontrar atividades {'\n'}
-            que serão geradas diariamente
-          </Text>
-         </View>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Atividades</Text>
+            <Text style={styles.subtitle}>
+              Aqui você pode encontrar atividades {'\n'}
+              que serão geradas diariamente
+            </Text>
+          </View>
 
         { (isFetching && (activities.length === 0)) &&  
           <ActivityIndicator 
@@ -45,6 +45,7 @@ export function Activities(){
             color={theme.colors.blue300}/> }
 
           <FlatList
+            style={{ minHeight: 100 }}
             data={activities}
             keyExtractor={(item: ActivitiesProps) => item.id}
             renderItem={({item}) => 
@@ -56,7 +57,7 @@ export function Activities(){
             onRefresh={async () => await fetchActivities()}
             refreshing={false}
           />
-        </View>
+      </View>
     </View>
   )
 }

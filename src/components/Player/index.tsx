@@ -19,24 +19,24 @@ export function Player({ file }: PlayerProps){
   const [ sound ] = useState(new Audio.Sound())
   
   useEffect(() => {
-      (async () => await sound.unloadAsync())();
-      (async () => await sound.loadAsync(
-        { uri: file.url }, { isLooping: false, shouldPlay: false }) )()
+      // (async () => await sound.unloadAsync())();
+      // (async () => await sound.loadAsync(
+      //   { uri: file.url }, { isLooping: false, shouldPlay: false }) )()
   },[sound])
 
   useEffect(() => {
-    if(isStarted) {
-      (async () => await sound.replayAsync())()
-    } else {
-      (async () => await sound.pauseAsync())()
-    }
+    // if(isStarted) {
+    //   (async () => await sound.replayAsync())()
+    // } else {
+    //   (async () => await sound.pauseAsync())()
+    // }
   },[isStarted, sound])
 
   function handleSeek(amount : number){
-    sound.setPositionAsync(
-      amount, 
-      { toleranceMillisAfter: 1, toleranceMillisBefore: 1 })
-    .then(() => sound.playAsync())
+    // sound.setPositionAsync(
+    //   amount, 
+    //   { toleranceMillisAfter: 1, toleranceMillisBefore: 1 })
+    // .then(() => sound.playAsync())
     
     setProgress(Math.round(amount))
   }

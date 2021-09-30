@@ -6,7 +6,7 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { ModalComponent } from '../../components/Modal';
 
-import { styles } from './style'
+import { styles } from '../SignIn/style'
 import { useNavigation } from '@react-navigation/native';
 import { api } from '../../services/api';
 
@@ -17,8 +17,6 @@ export function ChangePassword() {
   const [ errorMessage, setErrorMessage ] = useState("")
   const [ isLoading, setIsLoading ] = useState(false)
   const [ isModalVisible, setIsModalVisible ] = useState(false)
-
-  const { goBack } = useNavigation()
 
   async function Change(){
     if(newPassword !== confirmPassword){

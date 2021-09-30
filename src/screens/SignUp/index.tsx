@@ -30,9 +30,7 @@ export function SignUp() {
     setIsLoading(true)
     
     const result = await Sign({name, email, password, query: "/users"})
-    if(result.message === "ok") {
-      dispatch( StackActions.replace("Questionnaire") )
-    } else {
+    if(result.message !== "ok") {
       setErrorMessage(result.message)
       setIsLoading(false)
     }
