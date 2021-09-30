@@ -47,7 +47,7 @@ export function SignIn() {
         translucent
       />
 
-      <SignHeader title="Entrar"/>
+      <SignHeader title="Entrar" button="Cadastrar"/>
 
       <View style={styles.formContainer}>
         <Input 
@@ -61,6 +61,7 @@ export function SignIn() {
         />
 
         <Input 
+          secureTextEntry={true}
           icon="password"
           title="Senha"
           isFilled={!!password}

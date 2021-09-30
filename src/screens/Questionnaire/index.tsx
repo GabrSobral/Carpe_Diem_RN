@@ -1,12 +1,13 @@
 import { useNavigation, StackActions } from '@react-navigation/native'
-import React, { useState } from 'react'
-import { useEffect } from 'react'
-import { View, Text, ScrollView } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text, ScrollView, ActivityIndicator } from 'react-native'
+
 import { Button } from '../../components/Button'
 import { Header } from '../../components/Header'
 import { RadioButton } from '../../components/RadioButton'
 import { useUsers } from '../../contexts/UserContext'
 import { api } from '../../services/api'
+import { theme } from '../../styles/theme'
 import { Question } from '../../types/question'
 
 import { styles } from './style'
@@ -22,7 +23,7 @@ export function Questionnaire(){
   const [ errorMessage, setErrorMessage ] = useState('')
   const [ isFilled, setIsFilled ] = useState(false)
 
-  const { dispatch } = useNavigation()
+  const { dispatch, goBack } = useNavigation()
 
   const { user, setHasAnswered } = useUsers()
 
@@ -36,7 +37,7 @@ export function Questionnaire(){
 
         data.forEach((item: Question, index: number) => {
           questionsAnsAnswers.push({
-            question: item, answer: Number(answers.data[index].answer)
+            question: item, answer: Number(answers.data[index].answer) || 0
           })
         })
 
@@ -65,9 +66,17 @@ export function Questionnaire(){
   }
 
   async function AnswerQuestionnaire(){
-    setIsLoading(true)    
+    setIsLoading(true) 
+    const dataFormatted = questions.map(item => ({
+      question: item.question.id,
+      answer: item.answer
+    }))
+
     try {
-      await api.post('/answer/new', questions)
+      await api.post('/answer/new', dataFormatted)
+      if(user?.hasAnswered) {
+        return goBack();
+      }
       setHasAnswered()
       dispatch( StackActions.replace("BottomTabs") )
     } catch(error) {
@@ -97,7 +106,15 @@ export function Questionnaire(){
         { user?.hasAnswered ? 
           <Text style={styles.title}>Revise e selecione suas {'\n'}respostas novamente</Text> :
           <Text style={styles.title}>Permita-nos conhecê-lo(a) {'\n'}melhor</Text>
-         }
+        }
+
+        {questions.length === 0 && 
+          <ActivityIndicator 
+            size={56} 
+            color={theme.colors.blue300} 
+            style={{ marginTop: 16 }}
+          />
+        }
         
         { questions.map((item, index) => (
           <View style={styles.questionContainer} key={item.question.id}>

@@ -31,7 +31,7 @@ export function SignUp() {
     
     const result = await Sign({name, email, password, query: "/users"})
     if(result.message === "ok") {
-      dispatch( StackActions.replace("BottomTabs") )
+      dispatch( StackActions.replace("Questionnaire") )
     } else {
       setErrorMessage(result.message)
       setIsLoading(false)
@@ -40,13 +40,7 @@ export function SignUp() {
 
   return (
     <View style={styles.container}>
-      <StatusBar  
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        translucent
-      />
-
-      <SignHeader title="Cadastrar"/>
+      <SignHeader title="Cadastrar" button="Entrar"/>
 
       <View style={styles.formContainer}>
         <Input 
@@ -69,6 +63,7 @@ export function SignUp() {
         />
 
         <Input 
+          secureTextEntry={true}
           icon="password"
           title="Senha"
           isFilled={!!password}
@@ -79,6 +74,7 @@ export function SignUp() {
         />
 
         <Input 
+          secureTextEntry={true}
           icon="password"
           title="Confirmação de senha"
           isFilled={!!confirmPassword}

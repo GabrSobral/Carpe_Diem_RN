@@ -60,7 +60,12 @@ export function ActivityDetails({}){
             </TouchableOpacity>
           </View>
 
-          <Player/>
+          { activity.files.map(item => {
+            if(item.format === "mp3")
+              return <Player file={item} key={item.id}/>
+
+            return <Text key={item.id}></Text>
+          }) }
 
           <ActivityDetailsButtons activity={activity}/>
         </View>

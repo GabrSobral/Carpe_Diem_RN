@@ -1,5 +1,5 @@
 import React, { useState }  from 'react'
-import { View, Text, ScrollView, ActivityIndicator } from 'react-native'
+import { View, Text, ScrollView, ActivityIndicator, FlatList } from 'react-native'
 
 import { Header } from '../../components/Header'
 import { ActivityItem } from '../../components/ActivityItem'
@@ -8,10 +8,13 @@ import { styles } from './style'
 import { useEffect } from 'react'
 import { theme } from '../../styles/theme'
 import { useUsers } from '../../contexts/UserContext'
+import { useNavigation } from '@react-navigation/native'
+import { ActivitiesProps } from '../../types/activity'
 
 export function Activities(){
   const { fetchActivities, activities } = useUsers()
   const [ isFetching, setIsFetching ] = useState(false)
+  const { navigate } = useNavigation()
 
   useEffect(() => {
     (async () => {
@@ -25,7 +28,6 @@ export function Activities(){
     <View style={styles.container}>
       <Header/>
 
-      <ScrollView>
         <View style={{ padding: 16 }}>
 
          <View style={styles.titleContainer}>
@@ -36,21 +38,25 @@ export function Activities(){
           </Text>
          </View>
 
-        { (isFetching && activities.length === 0) &&  
+        { (isFetching && (activities.length === 0)) &&  
           <ActivityIndicator 
             style={{  marginTop: 125 }}
             size={52} 
             color={theme.colors.blue300}/> }
-        
-        { activities.map(item => 
-          <ActivityItem 
-            key={item.id}
-            item={item}
-          />
-        ) }
 
+          <FlatList
+            data={activities}
+            keyExtractor={(item: ActivitiesProps) => item.id}
+            renderItem={({item}) => 
+              <ActivityItem 
+              onPress={() => navigate('ActivityDetails', { activity: item })}
+              key={item.id}
+              item={item}
+            />}
+            onRefresh={async () => await fetchActivities()}
+            refreshing={false}
+          />
         </View>
-      </ScrollView>
     </View>
   )
 }
