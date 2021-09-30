@@ -13,6 +13,7 @@ export const theme = {
     green300 : "#5DB075",
     green350 : "#54A06A",
     green500: "#1FBE4D",
+    green100: "#83CD98",
     
     purple300: "#9F75FF",
     purple400: "#9164FA", 
@@ -26,6 +27,7 @@ export const theme = {
     blue400 : "#5B7FD6",
     blue300 : "#658FF3",
 
+    red100: "#DE8D8D",
     red300 : "#C85959",
     red900 : "#E23A3A",
   }
