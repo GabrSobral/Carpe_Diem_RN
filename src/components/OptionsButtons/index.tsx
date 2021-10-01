@@ -72,7 +72,7 @@ export function OptionsButtons(){
           <Text style={styles.optionItemText}>Meus feedbacks</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionItemButton} onPress={() => navigate("Questionnaire")}>
+        <TouchableOpacity style={styles.optionItemButton} onPress={() => navigate("QuestionnaireAfter")}>
           <Text style={styles.optionItemText}>Alterar questionário</Text>
         </TouchableOpacity>
 

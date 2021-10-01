@@ -2,7 +2,7 @@ import React, { useState }  from 'react'
 import { View, Text, ActivityIndicator, FlatList } from 'react-native'
 
 import { Header } from '../../components/Header'
-import { ActivityItem } from '../../components/ActivityItem'
+import { ActivityItemSwipeable } from '../../components/ActivityItemSwipeable'
 import { FeedbackModal } from '../../components/FeedbackModal'
 
 import { styles } from './style'
@@ -59,7 +59,7 @@ export function MyFeedbacks(){
           data={feedbacks}
           keyExtractor={(item: ActivitiesProps) => item.id}
           renderItem={({item}) => 
-            <ActivityItem 
+            <ActivityItemSwipeable 
               onPress={() => {
                 setIsFeedbackModalVisible(true)
                 setSelectedActivity(item)

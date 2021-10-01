@@ -34,7 +34,6 @@ interface UserContextProps {
   Logout: () => Promise<unknown>;
   user?: User;
   handleFinishActivity: (activity_id: string) => Promise<void>;
-  setHasAnswered: () => void;
   fetchActivities: () => Promise<unknown>;
   activities: ActivitiesProps[];
   handleDeleteActivity:(activity_id: string) => Promise<void>;
@@ -43,11 +42,13 @@ interface UserContextProps {
   feedbacks: ActivitiesProps[];
   changeFeedbackFromState: (activity: ActivitiesProps, newFeedback: boolean | undefined) => void;
   removeFeedbackFromState: (activity_id: string) => void;
+  firstAccess: boolean;
 }
 
 const UserContext = createContext({} as UserContextProps)
 
 export function UserProvider({ children }: UserProviderProps){
+  const [ firstAccess, setFirstAccess ] = useState(true)
   const [ username, setUsername ] = useState('')
   const [ activities, setActivities ] = useState<ActivitiesProps[]>([])
   const [ feedbacks, setFeedbacks ] = useState<ActivitiesProps[]>([])
@@ -58,8 +59,8 @@ export function UserProvider({ children }: UserProviderProps){
     (async () => {
       if(!await getToken()) { return }
       const userStore = await loadUser()
+      setFirstAccess(false)
       if(userStore !== undefined){
-        console.log(userStore)
         setUser(userStore)
         const firstName = userStore.name.split(' ')[0]
         setUsername(firstName)
@@ -103,12 +104,12 @@ export function UserProvider({ children }: UserProviderProps){
       
       setToken(data.token)
       await saveUser(data.user)
-      setUser(data.user)
       const firstName = data.user.name.split(' ')[0]
       setUsername(firstName)
-
+      
       result.data = data
       result.message = "ok"
+      setUser(data.user)
     } catch(error: any) {
       result.message = error.response.data.error
     } finally {
@@ -124,6 +125,7 @@ export function UserProvider({ children }: UserProviderProps){
       setUsername('')
       setUser(undefined)
       setActivities([])
+      setFeedbacks([])
 
       return resolve('ok')
     })
@@ -161,19 +163,6 @@ export function UserProvider({ children }: UserProviderProps){
     await saveUser(newUser)
   }
 
-  function setHasAnswered(){
-    setUser(prev => {
-      if(prev) {
-        (async () => {
-          prev.hasAnswered = true
-          await saveUser(prev)
-        })()
-        return prev
-      }
-      return undefined
-    })
-  }
-
   async function handleDeleteActivity(activity_id: string){
     const newArray: ActivitiesProps[] = []
 
@@ -185,30 +174,20 @@ export function UserProvider({ children }: UserProviderProps){
   }
 
   function changeFeedbackFromState(activity: ActivitiesProps, newFeedback: boolean | undefined){
-    const allFeedbacks: ActivitiesProps[] = []
-    let exists = false;
-    
-    feedbacks.forEach(item => {
-      if(item.id === activity.id) {
-        exists = true;
-        item.feedback.feedback = newFeedback
-        allFeedbacks.push(item)
+    setFeedbacks(prev => {
+      let exists = false;
+      prev.forEach(item => {
+        if(item.id === activity.id) {
+          exists = true;
+          item.feedback.feedback = newFeedback
+        }
+      })
+      if(exists){
+        return prev
+      } else {
+        return [ activity, ...prev ]
       }
     })
-    if(exists) {
-      setFeedbacks(allFeedbacks)
-    } else {
-      setFeedbacks(prev => [ activity, ...prev])
-    }
-
-    setFeedbacks(prev => prev.map(item => {
-      let exists = false;
-      if(item.id === activity.id){
-        exists = true
-        item.feedback.feedback = newFeedback
-      }
-      return item
-    }))
 
     setActivities(prev => prev.map(item => {
       if(item.id === activity.id){
@@ -243,7 +222,6 @@ export function UserProvider({ children }: UserProviderProps){
         Logout,
         user,
         handleFinishActivity,
-        setHasAnswered,
         fetchActivities,
         activities,
         handleDeleteActivity,
@@ -252,6 +230,7 @@ export function UserProvider({ children }: UserProviderProps){
         feedbacks,
         changeFeedbackFromState,
         removeFeedbackFromState,
+        firstAccess
       }}>
       {children}
     </UserContext.Provider>

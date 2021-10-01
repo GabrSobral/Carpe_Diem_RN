@@ -43,7 +43,7 @@ export function QuantityOfActivitiesModal({
           <LottieView
             source={activityAnimation}
             autoPlay
-            loop
+            loop={false}
             style={{ backgroundColor: 'transparent', width: 150, height: 150 }}
           />
           <Text style={styles.title}>Olá...</Text>

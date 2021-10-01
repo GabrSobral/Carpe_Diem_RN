@@ -17,21 +17,12 @@ export function SignIn() {
   const [ errorMessage, setErrorMessage ] = useState("")
 
   const { Sign } = useUsers()
-  const { dispatch } = useNavigation()
 
   async function SignIn(){
     setIsLoading(true);
 
     const result = await Sign({ email, password });
-    if(result.message === "ok") {
-      if(result.data.user.hasAnswered === true) {
-        setIsLoading(false);
-        return;
-      } else{
-        setIsLoading(false)
-        return;
-      }
-    } else {
+    if(result.message !== "ok") {
       setErrorMessage(result.message)
       setIsLoading(false)
     }
