@@ -34,62 +34,67 @@ interface UserContextProps {
   Logout: () => Promise<unknown>;
   user?: User;
   handleFinishActivity: (activity_id: string) => Promise<void>;
-  setHasAnswered: () => void;
   fetchActivities: () => Promise<unknown>;
   activities: ActivitiesProps[];
   handleDeleteActivity:(activity_id: string) => Promise<void>;
-  handleUpdate: (...args: any) => Promise<User>
+  handleUpdate: (...args: any) => Promise<User>;
+  fetchFeedbacks: () => Promise<void>,
+  feedbacks: ActivitiesProps[];
+  changeFeedbackFromState: (activity: ActivitiesProps, newFeedback: boolean | undefined) => void;
+  removeFeedbackFromState: (activity_id: string) => void;
+  firstAccess: boolean;
 }
 
 const UserContext = createContext({} as UserContextProps)
 
 export function UserProvider({ children }: UserProviderProps){
+  const [ firstAccess, setFirstAccess ] = useState(true)
   const [ username, setUsername ] = useState('')
-  const [ user, setUser ] = useState<User>()
   const [ activities, setActivities ] = useState<ActivitiesProps[]>([])
+  const [ feedbacks, setFeedbacks ] = useState<ActivitiesProps[]>([])
+  const [ isRequested, setIsRequested ] = useState(false)
+  const [ user, setUser ] = useState<User>()
 
   useEffect(() => {
     (async () => {
       if(!await getToken()) { return }
       const userStore = await loadUser()
-      if(userStore.id){
+      setFirstAccess(false)
+      if(userStore !== undefined){
         setUser(userStore)
-        if(userStore){
-          const firstName = userStore.name.split(' ')[0]
-          setUsername(firstName)
-        }
+        const firstName = userStore.name.split(' ')[0]
+        setUsername(firstName)
       }
     })()
-  },[])
+  },[]);
   
-  const fetchActivities = useCallback(() => {
-    return new Promise(resolve => {
-      api.get('/activity/get-activities')
-      .then(({ data }) => {
-        (async () => {
+  const fetchActivities = useCallback(async () => {
+    try{
+      const { data } = await api.get('/activity/get-activities')
+
+      await saveActivities(data)
+      const storedUser = await loadUser()
+
+      storedUser.activities_finished_today = 0;
+      setUser(storedUser)
+      setActivities(data);
+
+    } catch(error) {
+      if(error.response.data.error === 
+        "You already request the activities, try again tomorrow") {
+          const { data } = await api.get('/activity/my-list')
           await saveActivities(data)
-          const storedUser = await loadUser()
-          storedUser.activities_finished_today = 0;
-          setUser(storedUser)
-        })();
-        setActivities(data);
-        
-        resolve('ok')
-      })
-      .catch((error) => {
-  
-        if(error.response.data.error === 
-          "You already request the activities, try again tomorrow") {
-            api.get('/activity/my-list')
-              .then(({data}) => {
-                (async () => await saveActivities(data))();
-                setActivities(data);
-              })
-          }
-      })
-    })
+          setActivities(data);
+        }
+      }  
   },[])
 
+  const fetchFeedbacks = useCallback(async() => {
+    if(isRequested) { return }
+    const { data } = await api.get('/feedback/my-list')
+    setFeedbacks(data)
+    setIsRequested(true)
+  },[])
 
   async function Sign({name, email, password, query = '/login'}: SignProps) {
     const result = {} as SignResult
@@ -99,12 +104,12 @@ export function UserProvider({ children }: UserProviderProps){
       
       setToken(data.token)
       await saveUser(data.user)
-      setUser(data.user)
       const firstName = data.user.name.split(' ')[0]
       setUsername(firstName)
-
+      
       result.data = data
       result.message = "ok"
+      setUser(data.user)
     } catch(error: any) {
       result.message = error.response.data.error
     } finally {
@@ -120,6 +125,7 @@ export function UserProvider({ children }: UserProviderProps){
       setUsername('')
       setUser(undefined)
       setActivities([])
+      setFeedbacks([])
 
       return resolve('ok')
     })
@@ -157,19 +163,6 @@ export function UserProvider({ children }: UserProviderProps){
     await saveUser(newUser)
   }
 
-  function setHasAnswered(){
-    setUser(prev => {
-      if(prev) {
-        (async () => {
-          prev.hasAnswered = true
-          await saveUser(prev)
-        })()
-        return prev
-      }
-      return undefined
-    })
-  }
-
   async function handleDeleteActivity(activity_id: string){
     const newArray: ActivitiesProps[] = []
 
@@ -180,6 +173,47 @@ export function UserProvider({ children }: UserProviderProps){
     await saveActivities(newArray)
   }
 
+  function changeFeedbackFromState(activity: ActivitiesProps, newFeedback: boolean | undefined){
+    setFeedbacks(prev => {
+      let exists = false;
+      prev.forEach(item => {
+        if(item.id === activity.id) {
+          exists = true;
+          item.feedback.feedback = newFeedback
+        }
+      })
+      if(exists){
+        return prev
+      } else {
+        return [ activity, ...prev ]
+      }
+    })
+
+    setActivities(prev => prev.map(item => {
+      if(item.id === activity.id){
+        item.feedback.feedback = newFeedback
+      }
+      return item
+    }))
+  }
+  function removeFeedbackFromState(activity_id: string){
+    setFeedbacks(prev => {
+      prev.forEach((item, index) => {
+        if(item.id === activity_id){
+          prev.splice(index, 1)
+        }
+      })
+      return prev
+    })
+
+    setActivities(prev => prev.map(item => {
+      if(item.id === activity_id){
+        item.feedback.feedback = undefined
+      }
+      return item
+    }))
+  }
+
   return(
     <UserContext.Provider 
       value={{
@@ -188,11 +222,15 @@ export function UserProvider({ children }: UserProviderProps){
         Logout,
         user,
         handleFinishActivity,
-        setHasAnswered,
         fetchActivities,
         activities,
         handleDeleteActivity,
-        handleUpdate
+        handleUpdate,
+        fetchFeedbacks,
+        feedbacks,
+        changeFeedbackFromState,
+        removeFeedbackFromState,
+        firstAccess
       }}>
       {children}
     </UserContext.Provider>

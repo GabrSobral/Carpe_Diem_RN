@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import fonts from "../../styles/fonts";
 import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
@@ -13,7 +14,7 @@ export const styles = StyleSheet.create({
     borderRadius: 7,
     backgroundColor: theme.colors.blue300,
     flexDirection: 'row',
-    elevation: 3
+    elevation: 3,
   },
   iconContainer: {
     height: 60,
@@ -28,10 +29,12 @@ export const styles = StyleSheet.create({
   title: {
     color: theme.colors.white,
     fontSize: 24,
-    textAlign: 'left'
+    textAlign: 'left',
+    fontFamily: fonts.heading,
   },
   subtitle: {
-    color: theme.colors.gray100
+    color: theme.colors.gray100,
+    fontFamily: fonts.text,
   },
   bodyContainer: {
     width: '100%',
@@ -41,7 +44,8 @@ export const styles = StyleSheet.create({
     marginVertical: 16,
   },
   body: {
-    color: theme.colors.text
+    color: theme.colors.text,
+    fontFamily: fonts.text,
   },
   feedbackTextContainer: {
     flexDirection: 'row',
@@ -49,12 +53,14 @@ export const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   feedbackText: {
-    color: theme.colors.text
+    color: theme.colors.text,
+    fontFamily: fonts.text,
   },
   feedbackButtonText:{
     fontSize: 16,
     padding: 5,
     color: theme.colors.blue300,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontFamily: fonts.heading,
   }
 })

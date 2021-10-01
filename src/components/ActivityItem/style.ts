@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import fonts from "../../styles/fonts";
 import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
@@ -21,12 +22,21 @@ export const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
   },
+  titleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
   title: {
     color: theme.colors.white,
     fontSize: 24,
-    textAlign: 'left'
+    textAlign: 'left',
+    fontFamily: fonts.heading,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   subtitle: {
-    color: theme.colors.gray100
+    color: theme.colors.gray100,
+    fontFamily: fonts.text
   }
 })

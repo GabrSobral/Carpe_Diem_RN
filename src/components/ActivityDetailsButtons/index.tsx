@@ -31,7 +31,7 @@ export function ActivityDetailsButtons({ activity }: ActivityDetailsButtonsProps
   return (
     <View style={styles.handleButtonsContainer}>  
       <ModalComponent 
-        title="Parabéns!"
+        title="Parabéns! 😃"
         description="Você conseguiu realizar uma tarefa, isso é ótimo!"
         isVisible={isFinishModalVisible} 
         closeModal={() => setIsFinishModalVisible(false)}
@@ -39,7 +39,7 @@ export function ActivityDetailsButtons({ activity }: ActivityDetailsButtonsProps
       />
 
       <ModalComponent 
-        title="Oh não..."
+        title="Oh não...😟"
         description="Você tem certeza de que deseja descartar essa tarefa?"
         isVisible={isDenyModalVisible}
         dualButtons 
@@ -58,6 +58,7 @@ export function ActivityDetailsButtons({ activity }: ActivityDetailsButtonsProps
       <RectButton 
         style={[styles.handleButton, styles.confirm]} 
         onPress={Finish}
+        enabled={!isLoading}
       >
         { isLoading ?
           <ActivityIndicator size={20} color={theme.colors.white}/> 

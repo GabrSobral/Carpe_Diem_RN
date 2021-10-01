@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import fonts from "../../styles/fonts";
 import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
@@ -18,11 +19,12 @@ export const styles = StyleSheet.create({
   },
   nameGreeting: {
     fontSize: 24,
+    fontFamily: fonts.text,
     color: theme.colors.text
   },
   name: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: fonts.heading,
     marginLeft: 7,
     color: theme.colors.text
   },

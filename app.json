@@ -45,9 +45,12 @@
       "favicon": "./assets/favicon.png"
     },
     "androidNavigationBar": {
-     "visible": "true",
-     "barStyle": "dark-content",
-     "backgroundColor": "#FFFFFF"
-   }
+      "visible": "true",
+      "barStyle": "dark-content",
+      "backgroundColor": "#FFFFFF"
+    },
+    "plugins": [
+      "expo-av"
+    ]
   }
 }

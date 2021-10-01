@@ -16,7 +16,7 @@ export function OptionsButtons(){
   const [ isQuantityModalVisible, setIsQuantityModalVisible ] = useState(false)
 
   const sizeValue = useRef(new Animated.Value(0)).current;
-  const sizeAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 180] })
+  const sizeAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 240] })
 
   function sizeMotionGrown(){
     if(!isOpen){
@@ -51,6 +51,7 @@ export function OptionsButtons(){
       
 
       <RectButton 
+        rippleColor={theme.colors.gray200}
         style={styles.optionsButton} 
         activeOpacity={0.6}
         onPress={() => {
@@ -67,11 +68,15 @@ export function OptionsButtons(){
       </RectButton>
 
       <Animated.View style={[styles.optionsContainer,  sizeAnim]}>
-        <TouchableOpacity style={styles.optionItemButton} onPress={() => navigate("Questionnaire")}>
+        <TouchableOpacity style={styles.optionItemButton} onPress={() => navigate("MyFeedbacks")}>
+          <Text style={styles.optionItemText}>Meus feedbacks</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.optionItemButton} onPress={() => navigate("QuestionnaireAfter")}>
           <Text style={styles.optionItemText}>Alterar questionário</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionItemButton}>
+        <TouchableOpacity style={styles.optionItemButton} onPress={() => navigate("ChangePassword")}>
           <Text style={styles.optionItemText}>Alterar senha</Text>
         </TouchableOpacity>
 

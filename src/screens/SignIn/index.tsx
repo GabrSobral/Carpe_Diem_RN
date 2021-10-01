@@ -17,23 +17,12 @@ export function SignIn() {
   const [ errorMessage, setErrorMessage ] = useState("")
 
   const { Sign } = useUsers()
-  const { dispatch } = useNavigation()
 
   async function SignIn(){
     setIsLoading(true);
 
     const result = await Sign({ email, password });
-    if(result.message === "ok") {
-      if(result.data.user.hasAnswered === true) {
-        setIsLoading(false);
-        dispatch( StackActions.replace("BottomTabs") )
-        return;
-      } else{
-        setIsLoading(false)
-        dispatch( StackActions.replace("Questionnaire") )
-        return;
-      }
-    } else {
+    if(result.message !== "ok") {
       setErrorMessage(result.message)
       setIsLoading(false)
     }
@@ -47,7 +36,7 @@ export function SignIn() {
         translucent
       />
 
-      <SignHeader title="Entrar"/>
+      <SignHeader title="Entrar" button="Cadastrar"/>
 
       <View style={styles.formContainer}>
         <Input 
@@ -61,6 +50,7 @@ export function SignIn() {
         />
 
         <Input 
+          secureTextEntry={true}
           icon="password"
           title="Senha"
           isFilled={!!password}

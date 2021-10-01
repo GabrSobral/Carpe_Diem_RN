@@ -12,7 +12,11 @@ import { theme } from "../../styles/theme";
 export function HomeItem(){
   const { navigate } = useNavigation() as any
   return(
-    <RectButton style={styles.container} onPress={() => navigate('Clock')}>
+    <RectButton 
+      style={styles.container} 
+      onPress={() => navigate('Clock')}
+      rippleColor={theme.colors.blue600}
+    >
       <View style={styles.iconContainer}>
         <Feather name="clock" size={34} color={theme.colors.white}/>
       </View>

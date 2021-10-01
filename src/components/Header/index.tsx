@@ -14,7 +14,7 @@ interface HeaderProps {
 
 export function Header({ canGoBack = false }: HeaderProps){
   const [ isUrgentModalVisible, setIsUrgentModalVisible ] = useState(false)
-  const { username } = useUsers()
+  const { username, user } = useUsers()
   const { goBack } = useNavigation()
 
   return(
@@ -38,10 +38,13 @@ export function Header({ canGoBack = false }: HeaderProps){
         <Text style={styles.nameGreeting}>Olá</Text> 
         <Text style={styles.name}>{username}</Text>
       </View>
+      
+      { user?.hasAnswered && (
+        <TouchableOpacity style={styles.urgentButton} onPress={() => setIsUrgentModalVisible(true)}>
+          <Feather name="alert-circle" size={32} color={theme.colors.white}/>
+        </TouchableOpacity>
+      ) }
 
-      <TouchableOpacity style={styles.urgentButton} onPress={() => setIsUrgentModalVisible(true)}>
-        <Feather name="alert-circle" size={32} color={theme.colors.white}/>
-      </TouchableOpacity>
     </View>
   )
 }

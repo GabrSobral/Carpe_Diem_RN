@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import fonts from "../../styles/fonts";
 import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
@@ -8,6 +9,7 @@ export const styles = StyleSheet.create({
   },
   inputText: {
     position: 'absolute',
+    fontFamily: fonts.text,
     top: 20,
     left: 16,
     zIndex: 5,

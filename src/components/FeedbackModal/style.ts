@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import fonts from "../../styles/fonts";
 import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
@@ -15,14 +16,18 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     alignItems: 'center'
   },
+  closeModalButton:{
+    marginLeft: 'auto'
+  },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: fonts.heading,
     color: theme.colors.text,
     textAlign: 'center'
   },
   description: {
     marginTop: 6,
+    fontFamily: fonts.text,
     color: theme.colors.text,
     textAlign: 'center'
   },
@@ -36,8 +41,8 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     color: theme.colors.white,
-    fontWeight: 'bold',
     fontSize: 20,
+    fontFamily: fonts.heading
   },
   button: {
     width: '49%',
@@ -63,6 +68,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   },
   feedbackButtonText: {
-    fontSize: 23
+    fontSize: 23,
+    fontFamily: fonts.text
   }
 })

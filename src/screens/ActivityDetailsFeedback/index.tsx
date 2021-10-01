@@ -8,7 +8,7 @@ import { Player } from '../../components/Player'
 import { ActivityDetailsButtons } from '../../components/ActivityDetailsButtons'
 import { ActivitiesProps } from '../../types/activity'
 
-import { styles } from './style'
+import { styles } from '../ActivityDetails/style'
 
 import { FeedbackModal } from '../../components/FeedbackModal'
 
@@ -16,7 +16,7 @@ interface Params {
   activity: ActivitiesProps;
 }
 
-export function ActivityDetails({}){
+export function ActivityDetailsFeedback(){
   const [ isFeedbackModalVisible, setIsFeedbackModalVisible ] = useState(false)
 
   const { params } = useRoute()
@@ -24,13 +24,11 @@ export function ActivityDetails({}){
 
   return(
     <View style={styles.container}>
-      { isFeedbackModalVisible && 
-        <FeedbackModal
-          activity={activity}
-          closeModal={() => setIsFeedbackModalVisible(false) }
-          isVisible={isFeedbackModalVisible}
-        />
-      }
+      <FeedbackModal
+        activity={activity}
+        closeModal={() => setIsFeedbackModalVisible(false) }
+        isVisible={isFeedbackModalVisible}
+      />
 
       <Header canGoBack/>
 
@@ -51,16 +49,6 @@ export function ActivityDetails({}){
             <Text style={styles.body}>{activity.body}</Text>
           </View>
 
-          <View style={styles.feedbackTextContainer}>
-            <Text style={styles.feedbackText}>
-              O que achou da atividade? 
-            </Text>
-
-            <TouchableOpacity style={{ marginLeft: 5 }} onPress={() => setIsFeedbackModalVisible(true)}>
-              <Text style={styles.feedbackButtonText}>Nos dê um feedback!</Text>
-            </TouchableOpacity>
-          </View>
-
           { activity.files.map(item => {
             if(item.format === "mp3")
               return <Player file={item} key={item.id}/>
@@ -68,7 +56,6 @@ export function ActivityDetails({}){
             return <Text key={item.id}></Text>
           }) }
 
-          <ActivityDetailsButtons activity={activity}/>
         </View>
         
       </ScrollView>

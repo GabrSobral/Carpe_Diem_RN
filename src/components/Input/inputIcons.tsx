@@ -1,5 +1,5 @@
 import React from 'react'
-import { MaterialIcons } from '@expo/vector-icons'
+import { MaterialIcons, Feather } from '@expo/vector-icons'
 import { theme } from '../../styles/theme'
 import { styles } from './style'
 
@@ -8,7 +8,7 @@ interface InputIconsProps extends InputIconsTypes{
   isFilled: boolean;
 }
 export interface InputIconsTypes {
-  icon: "email" | "password" | 'lockOpen' | 'person'
+  icon: "email" | "password" | 'lockOpen' | 'person' | "key"
 }
 
 export function InputIcons({ isFilled, isFocused, icon }: InputIconsProps){
@@ -47,6 +47,15 @@ export function InputIcons({ isFilled, isFocused, icon }: InputIconsProps){
               style={styles.inputIcon}
               size={24}
               name="person" 
+              color={(isFocused || isFilled) ? 
+                theme.colors.blue300 :
+                theme.colors.gray200}
+            /> 
+    case 'key':
+    return  <Feather 
+              style={styles.inputIcon}
+              size={24}
+              name="key" 
               color={(isFocused || isFilled) ? 
                 theme.colors.blue300 :
                 theme.colors.gray200}
