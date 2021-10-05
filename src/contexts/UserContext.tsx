@@ -42,13 +42,11 @@ interface UserContextProps {
   feedbacks: ActivitiesProps[];
   changeFeedbackFromState: (activity: ActivitiesProps, newFeedback: boolean | undefined) => void;
   removeFeedbackFromState: (activity_id: string) => void;
-  firstAccess: boolean;
 }
 
 const UserContext = createContext({} as UserContextProps)
 
 export function UserProvider({ children }: UserProviderProps){
-  const [ firstAccess, setFirstAccess ] = useState(true)
   const [ username, setUsername ] = useState('')
   const [ activities, setActivities ] = useState<ActivitiesProps[]>([])
   const [ feedbacks, setFeedbacks ] = useState<ActivitiesProps[]>([])
@@ -57,9 +55,8 @@ export function UserProvider({ children }: UserProviderProps){
 
   useEffect(() => {
     (async () => {
-      if(!await getToken()) { return }
       const userStore = await loadUser()
-      setFirstAccess(false)
+      console.log(userStore)
       if(userStore !== undefined){
         setUser(userStore)
         const firstName = userStore.name.split(' ')[0]
@@ -75,7 +72,7 @@ export function UserProvider({ children }: UserProviderProps){
       await saveActivities(data)
       const storedUser = await loadUser()
 
-      storedUser.activities_finished_today = 0;
+      storedUser && (storedUser.activities_finished_today = 0);
       setUser(storedUser)
       setActivities(data);
 
@@ -230,7 +227,6 @@ export function UserProvider({ children }: UserProviderProps){
         feedbacks,
         changeFeedbackFromState,
         removeFeedbackFromState,
-        firstAccess
       }}>
       {children}
     </UserContext.Provider>

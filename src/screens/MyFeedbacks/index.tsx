@@ -40,12 +40,12 @@ export function MyFeedbacks(){
       <View style={{ padding: 16 }}>
 
         <View style={styles.titleContainer}>
-        <Text style={styles.title}>Meus feedbacks</Text>
-        <Text style={styles.subtitle}>
-          Seus feedbacks influenciam na {'\n'}
-          escolha das atividades diárias. Você {'\n'}
-          pode revisar os feedbacks aqui!
-        </Text>
+          <Text style={styles.title}>Meus feedbacks</Text>
+          <Text style={styles.subtitle}>
+            Seus feedbacks influenciam na {'\n'}
+            escolha das atividades diárias. Você {'\n'}
+            pode revisar os feedbacks aqui!
+          </Text>
         </View>
 
       { (isFetching && (feedbacks.length === 0)) &&  

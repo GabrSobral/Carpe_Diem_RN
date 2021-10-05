@@ -10,8 +10,9 @@ const userCode = "@CarpeDiem:user"
 export async function saveUser(user: User) {
   await AsyncStorage.setItem(userCode, JSON.stringify(user))
 }
-export async function loadUser(): Promise<User> {
+export async function loadUser(): Promise<User | undefined> {
   const data = await AsyncStorage.getItem(userCode)
+  if(data === null){ return undefined }
   return JSON.parse(data || '') as User
 }
 export async function removeUser() {
