@@ -15,13 +15,14 @@ import { MyFeedbacks } from '../screens/MyFeedbacks'
 import { ActivityDetailsFeedback } from '../screens/ActivityDetailsFeedback'
 
 import { useUsers } from '../contexts/UserContext'
+import { Onboarding } from '../screens/Onboarding'
 
 export function Routes(){
-  const { user, firstAccess } = useUsers()
+  const { user } = useUsers()
   const { Navigator, Screen } = createStackNavigator()
 
-  if(!user && firstAccess)
-    return <AppLoading/>
+  // if(!user && firstAccess)
+  //   return <AppLoading/>
 
   return (
     <NavigationContainer>
@@ -32,7 +33,10 @@ export function Routes(){
             <Screen name="SignUp"                  component={SignUp}/>
           </>
           : ((!user.hasAnswered) ? (
-            <Screen name="QuestionnaireInitial"    component={QuestionnaireInitial}/>
+            <>
+              <Screen name="Onboarding"              component={Onboarding}/>
+              <Screen name="QuestionnaireInitial"    component={QuestionnaireInitial}/>
+            </>
             ) : (
             <>
               <Screen name="BottomTabs"              component={BottomTabs}/>
