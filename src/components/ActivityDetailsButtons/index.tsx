@@ -56,7 +56,7 @@ export function ActivityDetailsButtons({ activity }: ActivityDetailsButtonsProps
       </RectButton>
 
       <RectButton 
-        style={[styles.handleButton, styles.confirm]} 
+        style={[styles.handleButton, styles.confirm, isLoading && { opacity: 0.7 }]} 
         onPress={Finish}
         enabled={!isLoading}
       >
