@@ -35,8 +35,12 @@ export function QuestionnaireAfter(){
       const answers = await api.get('/answer/my-list')
 
       data.forEach((item: Question, index: number) => {
-        questionsAnsAnswers.push({
-          question: item, answer: Number(answers.data[index].answer) || 0
+        answers.data.forEach((answer:any) => {
+          if(String(item.id) === String(answer.question)){
+            questionsAnsAnswers.push({
+              question: item, answer: Number(answer.answer) || 0
+            })
+          }
         })
       })   
 
