@@ -9,3 +9,8 @@ export interface User {
   updated_at: Date;
   hasAnswered?: boolean;
 }
+export interface RefreshToken {
+  id: string;
+  user_id: string;
+  expires_in: number;
+}
