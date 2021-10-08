@@ -3,7 +3,7 @@ import { createContext, ReactNode, useContext, useState, useEffect } from "react
 import { api } from "../services/api";
 import { ActivitiesProps } from "../types/activity";
 import { User } from "../types/user";
-import { loadUser, removeActivity, removeUser, saveActivities, saveUser } from "../utils/handleStorage";
+import { loadRefreshToken, loadUser, removeActivity, removeRefreshToken, removeUser, saveActivities, saveRefreshToken, saveUser } from "../utils/handleStorage";
 import { getToken, removeToken, setToken } from "../utils/handleToken";
 
 interface UserProviderProps {
@@ -56,11 +56,23 @@ export function UserProvider({ children }: UserProviderProps){
   useEffect(() => {
     (async () => {
       const userStore = await loadUser()
-      console.log(userStore)
+      
       if(userStore !== undefined){
+        const refreshTokenStore = await loadRefreshToken()
         setUser(userStore)
         const firstName = userStore.name.split(' ')[0]
         setUsername(firstName)
+
+        if(refreshTokenStore){
+          const { data } = await api.post('/refresh-token', 
+            { refresh_token: refreshTokenStore.id})
+          await setToken(data.token)
+
+          if(data?.refreshToken) {
+            await saveRefreshToken(data.refreshToken)
+            await saveUser(userStore)
+          }
+        }
       }
     })()
   },[]);
@@ -68,7 +80,7 @@ export function UserProvider({ children }: UserProviderProps){
   const fetchActivities = useCallback(async () => {
     try{
       const { data } = await api.get('/activity/get-activities')
-
+      console.log("BANANAAA",data)
       await saveActivities(data)
       const storedUser = await loadUser()
 
@@ -79,6 +91,7 @@ export function UserProvider({ children }: UserProviderProps){
     } catch(error) {
       if(error.response.data.error === 
         "You already request the activities, try again tomorrow") {
+          console.log(error.response.data.error)
           const { data } = await api.get('/activity/my-list')
           await saveActivities(data)
           setActivities(data);
@@ -98,9 +111,10 @@ export function UserProvider({ children }: UserProviderProps){
 
     try {
       const { data } = await api.post(query, { name, email, password })
-      
-      setToken(data.token)
+      await saveRefreshToken(data.refreshToken.refreshToken)
+      await setToken(data.token)
       await saveUser(data.user)
+
       const firstName = data.user.name.split(' ')[0]
       setUsername(firstName)
       
@@ -119,6 +133,7 @@ export function UserProvider({ children }: UserProviderProps){
       removeUser()
       removeActivity()
       removeToken()
+      removeRefreshToken()
       setUsername('')
       setUser(undefined)
       setActivities([])
