@@ -4,7 +4,7 @@ import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
   container: {
-    marginTop: 16,
+    marginBottom: 16,
     width: "100%",
     padding: 16,
     borderRadius: 7,

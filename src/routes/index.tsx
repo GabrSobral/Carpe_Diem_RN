@@ -16,6 +16,7 @@ import { ActivityDetailsFeedback } from '../screens/ActivityDetailsFeedback'
 
 import { useUsers } from '../contexts/UserContext'
 import { Onboarding } from '../screens/Onboarding'
+import { ClockProtocol } from '../screens/Protocol/Clock'
 
 export function Routes(){
   const { user } = useUsers()
@@ -46,6 +47,7 @@ export function Routes(){
               <Screen name="MyFeedbacks"             component={MyFeedbacks}/>
               <Screen name="ActivityDetailsFeedback" component={ActivityDetailsFeedback}/>
               <Screen name="QuestionnaireAfter"      component={QuestionnaireAfter}/>
+              <Screen name="ClockProtocol"           component={ClockProtocol}/>
             </>))
          }
       </Navigator>   

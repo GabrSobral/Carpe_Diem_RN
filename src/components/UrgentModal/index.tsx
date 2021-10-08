@@ -5,7 +5,6 @@ import { View, Text, Modal, TouchableOpacity, Animated } from 'react-native'
 
 import alertAnimation from '../../../assets/alert.json'
 import { styles } from './style'
-import { theme } from "../../styles/theme";
 import { api } from "../../services/api";
 
 interface UrgentModalModalProps {
@@ -16,12 +15,14 @@ interface UrgentModalModalProps {
 export function UrgentModal({ isVisible, closeModal }: UrgentModalModalProps){
   const widthValue = useRef(new Animated.Value(0)).current
   const widthAnim = widthValue.interpolate({ inputRange: [0, 1], outputRange: ['0%', '100%'] })
+  const { navigate } = useNavigation()
   let timer: NodeJS.Timeout;
 
   useEffect(() => startAnimation(), [])
 
   async function confirmFunction(){
     await api.post('/users/sms', { to: "5513991599324" })
+    navigate("ClockProtocol" as never)
     closeModal()
   }
   

@@ -1,5 +1,5 @@
 import React, { useState }  from 'react'
-import { View, Text, ScrollView, ActivityIndicator, FlatList } from 'react-native'
+import { View, Text, SafeAreaView, ActivityIndicator, FlatList } from 'react-native'
 
 import { Header } from '../../components/Header'
 import { ActivityItem } from '../../components/ActivityItem'
@@ -25,7 +25,7 @@ export function Activities(){
   },[fetchActivities])
 
   return(
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Header/>
 
         <View style={{ padding: 16 }}>
@@ -44,20 +44,22 @@ export function Activities(){
             size={52} 
             color={theme.colors.blue300}/> }
 
-          <FlatList
-            style={{ minHeight: 100 }}
-            data={activities}
-            keyExtractor={(item: ActivitiesProps) => item.id}
-            renderItem={({item}) => 
-              <ActivityItem 
+
+        <FlatList
+          style={{ minHeight: 200 }}
+          data={activities}
+          keyExtractor={(item: ActivitiesProps) => item.id}
+          renderItem={({item}) => 
+            <ActivityItem 
               onPress={() => navigate('ActivityDetails', { activity: item })}
               key={item.id}
               item={item}
             />}
-            onRefresh={async () => await fetchActivities()}
-            refreshing={false}
-          />
+          onRefresh={async () => await fetchActivities()}
+          refreshing={false}
+          showsVerticalScrollIndicator={false}
+        />
       </View>
-    </View>
+    </SafeAreaView>
   )
 }

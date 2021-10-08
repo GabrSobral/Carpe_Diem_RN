@@ -32,6 +32,7 @@ export function Onboarding(){
     <View style={styles.container}>
       <View style={{ flex: 3 }}>
         <FlatList
+          ref={slidesRef}
           data={slides}
           renderItem={({item}) => <OnboardingItem item={item}/>}
           horizontal
@@ -43,7 +44,6 @@ export function Onboarding(){
             { contentOffset: { x: scrollX } }}], { useNativeDriver: false })}
           onViewableItemsChanged={viewableItemsChanged}
           viewabilityConfig={viewConfig}
-          ref={slidesRef}
         />
       </View>
 

@@ -16,49 +16,23 @@ export function Clock(){
   const [ message, setMessage ] = useState('Começar')
 
   const sizeValue = useRef(new Animated.Value(0)).current;
-  const radiusValue = useRef(new Animated.Value(0)).current;
 
   const sizeAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 300] })
-  const radiusAnimation = radiusValue.interpolate({ inputRange: [0, 1], outputRange: [0, 150] })
+  const radiusAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 150] })
 
-  function sizeMotionGrown(){
+  const sizeAnim = {
+    width: sizeAnimation, 
+    height: sizeAnimation,
+    borderRadius: radiusAnimation
+  }
+
+  function sizeMotion(value: 0 | 1, duration = 7000){
     Animated.timing(sizeValue, {
-      toValue: 1,
-      duration: 7000,
-      useNativeDriver: false
-    }).start();
-    Animated.timing(radiusValue, {
-      toValue: 1,
-      duration: 7000,
+      toValue: value,
+      duration: duration,
       useNativeDriver: false
     }).start();
   }
-  function sizeMotionDown(){
-    Animated.timing(sizeValue, {
-      toValue: 0,
-      duration: 7000,
-      useNativeDriver: false
-    }).start();
-    Animated.timing(radiusValue, {
-      toValue: 0,
-      duration: 7000,
-      useNativeDriver: false
-    }).start();
-  }
-  function stopMotion(){
-    Animated.timing(sizeValue, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: false
-    }).start();
-    Animated.timing(radiusValue, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: false
-    }).start();
-  }
-  
-  let timeOutFunction : NodeJS.Timeout
   
   function handleStartClock(){
     setIsClockStarted(!isClockStarted)
@@ -66,6 +40,8 @@ export function Clock(){
     // setIsFinished(false)
     clearTimeout(timeOutFunction)
   }
+
+  let timeOutFunction : NodeJS.Timeout
   
   useEffect(()=> {
     let insideTimeout = timeOutFunction
@@ -75,7 +51,7 @@ export function Clock(){
       clearTimeout(insideTimeout)
       setRespirationSize(100)
 
-      sizeMotionGrown()
+      sizeMotion(1)
       setMessage("Inspire...")
     }
     if(isFirst === 0){
@@ -84,7 +60,7 @@ export function Clock(){
       setRespirationSize(0.0001)
       clearTimeout(insideTimeout)
 
-      stopMotion()
+      sizeMotion(0, 300)
       setMessage("Pausado...")
     }
     if(isFinished && isClockStarted){
@@ -92,7 +68,7 @@ export function Clock(){
         setIsFinished(false)
         setRespirationSize(0)
         
-        sizeMotionDown()
+        sizeMotion(0)
         setMessage("Expire...")
       }, 7000)
     } else if(!isFinished && isClockStarted){
@@ -100,20 +76,14 @@ export function Clock(){
         setIsFinished(true)
         setRespirationSize(100)
 
-        sizeMotionGrown()
+        sizeMotion(1)
         setMessage("Inspire...")
       }, 7000)
     }
     return () => clearTimeout(insideTimeout)
 
   },[respirationSize, isClockStarted])
-
-  const sizeAnim = {
-    width: sizeAnimation, 
-    height: sizeAnimation,
-    borderRadius: radiusAnimation
-  }
-
+  
   return(
     <View style={styles.container}>
       <Header canGoBack/>
