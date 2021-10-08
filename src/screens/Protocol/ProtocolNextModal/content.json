@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Encontre uma posição confortável e fique tranquilo(a)!",
+    "description": "(uma cama pode ser o melhor lugar)",
+    "button": "single",
+    "textSingleButton": "Prosseguir"
+  },
+  {
+    "id": 2,
+    "title": "Respire fundo e estique os pés e os dedos dos pés por alguns segundos",
+    "button": "single",
+    "textSingleButton": "Entendido"
+  },
+  {
+    "id": 3,
+    "title": "Respire fundo e estique os pés e os dedos dos pés por alguns segundos",
+    "button": "single",
+    "textSingleButton": "Entendido"
+  },
+  {
+    "id": 4,
+    "title": "Se sente melhor? \n Quais serão os próximos passos?",
+    "button": "final"
+  }
+]
