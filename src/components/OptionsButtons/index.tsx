@@ -9,14 +9,16 @@ import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { QuantityOfActivitiesModal } from '../QuantityOfActivitiesModal'
 import { useUsers } from '../../contexts/UserContext'
+import { ContactModal } from '../ContactModal'
 
 export function OptionsButtons(){
   const { user } = useUsers()
   const [ isOpen, setIsOpen ] = useState(false)
   const [ isQuantityModalVisible, setIsQuantityModalVisible ] = useState(false)
+  const [ isContactModalVisible, setIsContactModalVisible ] = useState(false)
 
   const sizeValue = useRef(new Animated.Value(0)).current;
-  const sizeAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 240] })
+  const sizeAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 300] })
 
   function sizeMotionGrown(){
     if(!isOpen){
@@ -40,13 +42,19 @@ export function OptionsButtons(){
   return(
     <View style={styles.container}>
       {
-        isQuantityModalVisible && (
+        isQuantityModalVisible &&
           <QuantityOfActivitiesModal 
             isVisible={isQuantityModalVisible}
             initialValue={user?.quantity_of_activities}
             closeModal={() => setIsQuantityModalVisible(false)}
           />
-        )
+      }
+      {
+        isContactModalVisible &&
+        <ContactModal
+          isVisible={isContactModalVisible}
+          closeModal={() => setIsContactModalVisible(false)}
+        />
       }
       
 
@@ -57,7 +65,8 @@ export function OptionsButtons(){
         onPress={() => {
           setIsOpen(!isOpen)
           sizeMotionGrown()
-        }}>
+        }}
+      >
         <Text style={styles.itemText}>Configurações</Text>
       
         <Octicons 
@@ -74,6 +83,10 @@ export function OptionsButtons(){
 
         <TouchableOpacity style={styles.optionItemButton} onPress={() => navigate("QuestionnaireAfter")}>
           <Text style={styles.optionItemText}>Alterar questionário</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.optionItemButton} onPress={() => setIsContactModalVisible(true)}>
+          <Text style={styles.optionItemText}>Registrar número de emergência</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.optionItemButton} onPress={() => navigate("ChangePassword")}>
