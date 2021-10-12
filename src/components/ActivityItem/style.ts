@@ -4,7 +4,6 @@ import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
   container: {
-    marginBottom: 16,
     width: "100%",
     padding: 16,
     borderRadius: 7,
@@ -41,7 +40,7 @@ export const styles = StyleSheet.create({
     fontFamily: fonts.text
   },
   buttonRemove:{
-    height: 100,
+    height: "100%",
     width: 106,
     borderRadius: 16,
     borderTopRightRadius: 10,
@@ -49,8 +48,8 @@ export const styles = StyleSheet.create({
     position: 'relative',
     justifyContent: 'center',
     backgroundColor: theme.colors.blue600,
-    marginTop:16,
     paddingLeft: 15,
-    transform: [{ translateX: -16}]
+    transform: [{ translateX: -16}],
+    
   }
 })
