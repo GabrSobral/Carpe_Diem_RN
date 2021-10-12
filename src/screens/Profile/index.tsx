@@ -10,7 +10,7 @@ import { ModalComponent } from '../../components/Modal'
 import { styles } from './style'
 import { theme } from '../../styles/theme'
 import { useUsers } from '../../contexts/UserContext'
-import { useNavigation, CommonActions } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 
 export function Profile(){
   const { reset, navigate, dispatch } = useNavigation()

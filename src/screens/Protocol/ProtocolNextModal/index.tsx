@@ -14,12 +14,12 @@ interface UrgentModalModalProps {
   textSingleButton?: "Prosseguir" | "Entendido"
   isVisible: boolean;
   closeModal: () => void;
+  resetFunction?: () => void;
 }
 
 export function ProtocolNextModal(
-  { title, description, button, textSingleButton, isVisible, closeModal }: UrgentModalModalProps){
+  { title, description, button, textSingleButton, isVisible, closeModal, resetFunction }: UrgentModalModalProps){
   const { navigate } = useNavigation()
-
 
   return(
     <Modal
@@ -48,7 +48,7 @@ export function ProtocolNextModal(
                   <TouchableOpacity 
                     activeOpacity={0.7}
                     style={styles.button} 
-                    onPress={() => {closeModal();}}
+                    onPress={resetFunction}
                   >
                     <Text style={styles.buttonText}>Repetir exercício</Text>
                   </TouchableOpacity>
@@ -63,7 +63,10 @@ export function ProtocolNextModal(
                 </View>
 
                 <TouchableOpacity 
-                  onPress={closeModal}
+                  onPress={() => {
+                    closeModal()
+                    navigate('BottomTabs')
+                  }}
                   activeOpacity={0.7}
                   style={styles.returnToHomeButton}
                 >
@@ -72,11 +75,6 @@ export function ProtocolNextModal(
               </View>
             )
           }
-
-
-
-          
-
         </View>
       </View>
     </Modal>

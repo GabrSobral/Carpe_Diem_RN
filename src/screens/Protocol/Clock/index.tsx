@@ -43,15 +43,27 @@ export function ClockProtocol(){
   }
 
   useEffect(() => {
-    if(timesCompleted === 1)
+    console.log(timesCompleted)
+    if(timesCompleted === 1){
       setIsModal2Visible(true)
+      handleStartClock()
+    }
     
-    if(timesCompleted === 2)
+    if(timesCompleted === 1.5) {
       setIsModal3Visible(true)
+      handleStartClock()
+    }
 
-    if(timesCompleted === 3)
+    if(timesCompleted === 3){
       setIsModal4Visible(true)
+      handleStartClock()
+    }
   },[timesCompleted])
+
+  function resetExercise() {
+    setTimesCompleted(0)
+    setIsModal4Visible(false)
+  }
   
   function handleStartClock(){
     setIsClockStarted(!isClockStarted)
@@ -88,6 +100,7 @@ export function ClockProtocol(){
         setRespirationSize(0)
         
         sizeMotion(0)
+        setTimesCompleted(prev => prev + 0.5)
         setMessage("Expire...")
       }, 7000)
     } else if(!isFinished && isClockStarted){
@@ -97,7 +110,7 @@ export function ClockProtocol(){
 
         sizeMotion(1)
         setMessage("Inspire...")
-        setTimesCompleted(prev => prev + 1)
+        setTimesCompleted(prev => prev + 0.5)
       }, 7000)
     }
     return () => clearTimeout(insideTimeout)
@@ -124,7 +137,7 @@ export function ClockProtocol(){
       />
 
       <ProtocolNextModal
-        title='Respire fundo e estique os pés e os dedos dos pés por alguns segundos'
+        title='Expire lentamente e liberte a tensão'
         button="single"
         textSingleButton="Entendido"
         isVisible={isModal3Visible}
@@ -132,9 +145,10 @@ export function ClockProtocol(){
       />
 
       <ProtocolNextModal
-        title='Se sente melhor? \n Quais serão os próximos passos?'
+        title={`Se sente melhor? ${'\n'} Quais serão os próximos passos?`}
         button="finish"
         isVisible={isModal4Visible}
+        resetFunction={resetExercise}
         closeModal={() => setIsModal4Visible(false)}
       />
 
