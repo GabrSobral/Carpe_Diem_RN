@@ -57,20 +57,25 @@ export function UserProvider({ children }: UserProviderProps){
     (async () => {
       const userStore = await loadUser()
       
-      if(userStore !== undefined){
+      console.log(userStore)
+      if(JSON.stringify(userStore) !== "{}" && userStore !== undefined){
         const refreshTokenStore = await loadRefreshToken()
         setUser(userStore)
-        const firstName = userStore.name.split(' ')[0]
-        setUsername(firstName)
-
+        const firstName = userStore?.name.split(' ')[0]
+        setUsername(firstName || '')
+        
         if(refreshTokenStore){
-          const { data } = await api.post('/refresh-token', 
-            { refresh_token: refreshTokenStore.id})
-          await setToken(data.token)
+          try{
+            const { data } = await api.post('/refresh-token', 
+              { refresh_token: refreshTokenStore.id})
+            await setToken(data.token)
 
-          if(data?.refreshToken) {
-            await saveRefreshToken(data.refreshToken)
-            await saveUser(userStore)
+            if(data?.refreshToken) {
+              await saveRefreshToken(data.refreshToken)
+              await saveUser(userStore)
+            }
+          } catch(error) {
+            console.log(error.response.data.error)
           }
         }
       }
@@ -80,7 +85,7 @@ export function UserProvider({ children }: UserProviderProps){
   const fetchActivities = useCallback(async () => {
     try{
       const { data } = await api.get('/activity/get-activities')
-      console.log("BANANAAA",data)
+      console.log("DATA: ",data)
       await saveActivities(data)
       const storedUser = await loadUser()
 
@@ -129,7 +134,7 @@ export function UserProvider({ children }: UserProviderProps){
   }
 
   function Logout(){
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       removeUser()
       removeActivity()
       removeToken()
