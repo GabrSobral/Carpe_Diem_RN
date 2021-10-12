@@ -37,7 +37,7 @@ export function MyFeedbacks(){
 
       <Header canGoBack/>
 
-      <View style={{ padding: 16 }}>
+      <View style={{ paddingHorizontal: 16, flex: 1 }}>
 
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Meus feedbacks</Text>
@@ -47,17 +47,13 @@ export function MyFeedbacks(){
             pode revisar os feedbacks aqui!
           </Text>
         </View>
-
-      { (isFetching && (feedbacks.length === 0)) &&  
-        <ActivityIndicator 
-          style={{  marginTop: 125 }}
-          size={52} 
-          color={theme.colors.blue300}/> }
       
         <FlatList
-          style={{ minHeight: 100 }}
+          style={{ minHeight: 200 }}
           data={feedbacks}
           keyExtractor={(item: ActivitiesProps) => item.id}
+          ItemSeparatorComponent={() => <View style={{ height: 8 }}/>}
+          showsVerticalScrollIndicator={false}
           renderItem={({item}) => 
             <ActivityItemSwipeable 
               onPress={() => {
@@ -67,8 +63,8 @@ export function MyFeedbacks(){
               key={item.id}
               item={item}
             />}
+          refreshing={isFetching}
           onRefresh={async () => await fetchFeedbacks()}
-          refreshing={false}
         />
 
       </View>

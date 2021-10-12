@@ -28,7 +28,7 @@ export function Activities(){
     <SafeAreaView style={styles.container}>
       <Header/>
 
-        <View style={{ padding: 16 }}>
+        <View style={{ paddingHorizontal: 16, flex: 1 }}>
 
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Atividades</Text>
@@ -38,17 +38,11 @@ export function Activities(){
             </Text>
           </View>
 
-        { (isFetching && (activities.length === 0)) &&  
-          <ActivityIndicator 
-            style={{  marginTop: 125 }}
-            size={52} 
-            color={theme.colors.blue300}/> }
-
-
         <FlatList
-          style={{ minHeight: 200 }}
+          style={{ minHeight: 200}}
           data={activities}
           keyExtractor={(item: ActivitiesProps) => item.id}
+          ItemSeparatorComponent={() => <View style={{ paddingBottom: 8 }}/>}
           renderItem={({item}) => 
             <ActivityItem 
               onPress={() => navigate('ActivityDetails', { activity: item })}
@@ -56,7 +50,7 @@ export function Activities(){
               item={item}
             />}
           onRefresh={async () => await fetchActivities()}
-          refreshing={false}
+          refreshing={isFetching}
           showsVerticalScrollIndicator={false}
         />
       </View>

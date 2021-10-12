@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
+    overflow: 'scroll',
   },
   titleContainer: {
     width: '100%',
@@ -13,7 +14,8 @@ export const styles = StyleSheet.create({
     padding: 16,
     zIndex: 5,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginBottom: 16
   },
   title: {
     color: theme.colors.white,
