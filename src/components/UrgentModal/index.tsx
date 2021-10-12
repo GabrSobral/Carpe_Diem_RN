@@ -1,11 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
 import LottieView from 'lottie-react-native'
-import { View, Text, Modal, TouchableOpacity, Animated } from 'react-native'
+import { View, Text, Modal, TouchableOpacity, Animated, Alert } from 'react-native'
 
 import alertAnimation from '../../../assets/alert.json'
 import { styles } from './style'
 import { api } from "../../services/api";
+import { loadUser } from "../../utils/handleStorage";
 
 interface UrgentModalModalProps {
   isVisible: boolean;
@@ -21,7 +22,19 @@ export function UrgentModal({ isVisible, closeModal }: UrgentModalModalProps){
   useEffect(() => startAnimation(), [])
 
   async function confirmFunction(){
-    await api.post('/users/sms', { to: "5513991599324" })
+    clearTimeout(timer)
+    const userData = await loadUser()
+
+    if(userData && userData.emergency_number) {
+      try{
+        await api.post('/users/sms', { to: userData?.emergency_number })
+      } catch(error){
+        console.log(error.response)
+      }
+    } else {
+      Alert.alert("Nenhum número de emergência foi cadastrado, não foi possível enviar a mensagem")
+    }
+    
     navigate("ClockProtocol" as never)
     closeModal()
   }
