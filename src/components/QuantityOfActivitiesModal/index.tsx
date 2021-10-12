@@ -5,7 +5,7 @@ import { View, Text, Modal, TouchableOpacity } from 'react-native'
 import { useUsers } from "../../contexts/UserContext";
 import { api } from "../../services/api";
 
-import activityAnimation from '../../../assets/activity.json'
+import plantAnimation from '../../../assets/plant.json'
 import { styles } from './style'
 import { theme } from "../../styles/theme";
 
@@ -41,10 +41,10 @@ export function QuantityOfActivitiesModal({
       <View style={styles.container}>
         <View style={styles.popup}>
           <LottieView
-            source={activityAnimation}
+            source={plantAnimation}
             autoPlay
             loop={false}
-            style={{ backgroundColor: 'transparent', width: 150, height: 150 }}
+            style={{ backgroundColor: 'transparent', width: 200, height: 200 }}
           />
           <Text style={styles.title}>Olá...</Text>
           <Text style={styles.description}>

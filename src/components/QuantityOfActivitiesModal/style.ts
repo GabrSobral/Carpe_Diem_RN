@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   popup:{
+    position: 'relative',
     width: '90%',
     padding: 16,
     borderRadius: 10,
@@ -74,5 +75,34 @@ export const styles = StyleSheet.create({
   selected:{
     backgroundColor: theme.colors.blue300,
     color: theme.colors.white
+  },
+
+  inputContainer:{
+    width: '100%',
+    minWidth: '100%',
+    marginTop: 12,
+  },
+  contactInput:{
+    width: '100%',
+    minWidth: '100%',
+    borderRadius: 7,
+    borderWidth: 2,
+    borderColor: theme.colors.gray200,
+    padding: 12,
+    textAlign: 'center'
+  },
+  contactbutton:{
+    minWidth: '100%',
+    borderRadius: 7,
+    padding: 16,
+    marginTop: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.blue300
+  },
+  closeButton:{
+    position:'absolute',
+    right: 16,
+    top: 16
   }
 })
