@@ -9,6 +9,7 @@ export interface User {
   updated_at: Date;
   hasAnswered?: boolean;
   emergency_number?: string;
+  photo?: string
 }
 export interface RefreshToken {
   id: string;

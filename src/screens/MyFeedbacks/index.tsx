@@ -1,5 +1,5 @@
 import React, { useState }  from 'react'
-import { View, Text, ActivityIndicator, FlatList } from 'react-native'
+import { View, Text, FlatList } from 'react-native'
 
 import { Header } from '../../components/Header'
 import { ActivityItemSwipeable } from '../../components/ActivityItemSwipeable'
@@ -7,22 +7,22 @@ import { FeedbackModal } from '../../components/FeedbackModal'
 
 import { styles } from './style'
 import { useEffect } from 'react'
-import { theme } from '../../styles/theme'
 import { ActivitiesProps } from '../../types/activity'
-import { useNavigation } from '@react-navigation/native'
 import { useUsers } from '../../contexts/UserContext'
 
 export function MyFeedbacks(){
-  const { feedbacks, fetchFeedbacks } = useUsers()
+  const { feedbacks, fetchFeedbacks, isRequested } = useUsers()
   const [ selectedActivity, setSelectedActivity ] = useState<ActivitiesProps | undefined>(undefined)
   const [ isFetching, setIsFetching ] = useState(false)
   const [ isFeedbackModalVisible, setIsFeedbackModalVisible ] = useState(false)
-  const { navigate } = useNavigation()
 
   useEffect(() => {
-    setIsFetching(true)
-    fetchFeedbacks()
-    setIsFetching(false)
+    (async () => {
+      if(isRequested) { return }
+      setIsFetching(true)
+      await fetchFeedbacks()
+      setIsFetching(false)
+    })()
   },[feedbacks.length, fetchFeedbacks])
 
   return(

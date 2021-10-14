@@ -33,6 +33,7 @@ interface UserContextProps {
   username: String;
   Logout: () => Promise<unknown>;
   user?: User;
+  isRequested: boolean;
   handleFinishActivity: (activity_id: string) => Promise<void>;
   fetchActivities: () => Promise<unknown>;
   activities: ActivitiesProps[];
@@ -74,7 +75,7 @@ export function UserProvider({ children }: UserProviderProps){
               await saveRefreshToken(data.refreshToken)
               await saveUser(userStore)
             }
-          } catch(error) {
+          } catch(error: any) {
             console.log(error.response.data.error)
           }
         }
@@ -85,7 +86,6 @@ export function UserProvider({ children }: UserProviderProps){
   const fetchActivities = useCallback(async () => {
     try{
       const { data } = await api.get('/activity/get-activities')
-      console.log("DATA: ",data)
       await saveActivities(data)
       const storedUser = await loadUser()
 
@@ -93,7 +93,8 @@ export function UserProvider({ children }: UserProviderProps){
       setUser(storedUser)
       setActivities(data);
 
-    } catch(error) {
+    } catch(error: any) {
+      console.log(error.response.data)
       if(error.response.data.error === 
         "You already request the activities, try again tomorrow") {
           console.log(error.response.data.error)
@@ -174,7 +175,7 @@ export function UserProvider({ children }: UserProviderProps){
     await saveActivities(newArray)
 
     const all_activities_finished = (user?.all_activities_finished || 0) + 1;
-    const activities_finished_today = (user?.activities_finished_today || 0) + 1;
+    const activities_finished_today = (user?.activities_finished_today || 0) +1;
 
     await handleUpdate({ all_activities_finished, activities_finished_today })
     await saveUser(newUser)
@@ -238,6 +239,7 @@ export function UserProvider({ children }: UserProviderProps){
         username,
         Logout,
         user,
+        isRequested,
         handleFinishActivity,
         fetchActivities,
         activities,

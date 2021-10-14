@@ -22,11 +22,31 @@ export const styles = StyleSheet.create({
     height: 120,
     borderRadius: 60,
     elevation: 5,
-    marginRight: 8
+    marginRight: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.blue600
+  },
+  editButton:{
+    position: 'absolute',
+    right: 16,
+    top: 16
+  },
+  image: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
   },
   userName: {
     color: theme.colors.white,
     fontSize: 18,
+    minWidth: '100%',
+    flex: 1,
+    backgroundColor: "#0F0"
+  },
+  inputNameContainer:{
+    flex: 1,
+    backgroundColor: "#f00"
   },
   registratedAt: {
     position: 'absolute',
