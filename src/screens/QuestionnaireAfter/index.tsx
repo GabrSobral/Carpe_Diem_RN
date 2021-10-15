@@ -10,7 +10,7 @@ import { api } from '../../services/api'
 import { theme } from '../../styles/theme'
 import { Question } from '../../types/question'
 
-import { styles } from './style'
+import { styles } from '../QuestionnaireInitial/style'
 
 interface QuestionsAnsAnswers {
   question: Question;
@@ -75,7 +75,7 @@ export function QuestionnaireAfter(){
     try {
       await api.post('/answer/new', dataFormatted)
       goBack();
-    } catch(error) {
+    } catch(error: any) {
       setErrorMessage(error.response.data.error)
     } finally {
       setIsLoading(false)
