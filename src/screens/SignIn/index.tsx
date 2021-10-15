@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, StatusBar } from 'react-native';
+import { Text, View, StatusBar, KeyboardAvoidingView } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler'
 
 import { SignHeader } from '../../components/SignHeader'
@@ -7,7 +7,6 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 
 import { styles } from './style'
-import { StackActions, useNavigation } from '@react-navigation/native';
 import { useUsers } from '../../contexts/UserContext';
 
 export function SignIn() {
@@ -38,7 +37,7 @@ export function SignIn() {
 
       <SignHeader title="Entrar" button="Cadastrar"/>
 
-      <View style={styles.formContainer}>
+      <KeyboardAvoidingView style={styles.formContainer} behavior='height'>
         <Input 
           icon="email"
           title="Email"
@@ -59,7 +58,7 @@ export function SignIn() {
           textContentType="password"
         />
 
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
+        { errorMessage !== '' && <Text style={styles.errorMessage}>{errorMessage}</Text>}
 
         <RectButton>
           <Text style={styles.forgotPasswordText}>Esqueci minha senha</Text>
@@ -71,7 +70,7 @@ export function SignIn() {
           onPress={SignIn}
           disabled={(email && password && !isLoading) ? false : true}
         />
-      </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }

@@ -14,17 +14,18 @@ export const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'column',
     alignItems: 'center',
+    backgroundColor: theme.colors.white
   },
   errorMessage: {
     width: '100%',
     textAlign: 'left',
     color: theme.colors.red900,
-    fontSize: 18,
+    fontSize: 12,
     fontFamily: fonts.text,
   },
   forgotPasswordText: {
     color: theme.colors.blue300,
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: fonts.text,
   }
 });

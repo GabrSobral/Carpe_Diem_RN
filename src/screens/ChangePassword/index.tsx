@@ -7,7 +7,6 @@ import { Input } from '../../components/Input';
 import { ModalComponent } from '../../components/Modal';
 
 import { styles } from '../SignIn/style'
-import { useNavigation } from '@react-navigation/native';
 import { api } from '../../services/api';
 
 export function ChangePassword() {
@@ -77,7 +76,7 @@ export function ChangePassword() {
           textContentType="password"
         />
 
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
+        { errorMessage !== '' && <Text style={styles.errorMessage}>{errorMessage}</Text>}
 
         <Button
           title="Salvar"
