@@ -9,14 +9,11 @@ import { Timer } from "../../components/Timer"
 import { useRef } from "react"
 
 export function Clock(){
-  const [ respirationSize, setRespirationSize ] = useState(0)
   const [ isClockStarted, setIsClockStarted ] = useState(false)
   const [ isFinished, setIsFinished ] = useState(false)
-  const [ isFirst, setIsFirst ] = useState(10)
   const [ message, setMessage ] = useState('Começar')
-
+  
   const sizeValue = useRef(new Animated.Value(0)).current;
-
   const sizeAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 300] })
   const radiusAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 150] })
 
@@ -25,8 +22,11 @@ export function Clock(){
     height: sizeAnimation,
     borderRadius: radiusAnimation
   }
+  
+  let timeOutFunction : NodeJS.Timeout
+  const seconds = 7 * 1000 // 7 seconds
 
-  function sizeMotion(value: 0 | 1, duration = 7000){
+  function sizeMotion(value: 0 | 1, duration = seconds){
     Animated.timing(sizeValue, {
       toValue: value,
       duration: duration,
@@ -35,54 +35,37 @@ export function Clock(){
   }
   
   function handleStartClock(){
-    setIsClockStarted(!isClockStarted)
-    isClockStarted ? setIsFirst(0) : setIsFirst(1)
-    // setIsFinished(false)
+    setIsClockStarted(prev => !prev)
+    setIsFinished(true)
+
+    if(isClockStarted) {
+      setMessage("Pausado...")
+      sizeMotion(0, 300)
+    } else {
+      setMessage("Inspire...")
+      sizeMotion(1)
+    }
+
     clearTimeout(timeOutFunction)
   }
-
-  let timeOutFunction : NodeJS.Timeout
   
   useEffect(()=> {
-    let insideTimeout = timeOutFunction
-    if(isFirst === 1){
-      setIsFirst(isFirst + 1)
-      setIsFinished(true)
-      clearTimeout(insideTimeout)
-      setRespirationSize(100)
-
-      sizeMotion(1)
-      setMessage("Inspire...")
-    }
-    if(isFirst === 0){
-      setIsFirst(isFirst + 2)
-      setIsFinished(true)
-      setRespirationSize(0.0001)
-      clearTimeout(insideTimeout)
-
-      sizeMotion(0, 300)
-      setMessage("Pausado...")
-    }
-    if(isFinished && isClockStarted){
-      insideTimeout = setTimeout(() => {
-        setIsFinished(false)
-        setRespirationSize(0)
-        
-        sizeMotion(0)
-        setMessage("Expire...")
-      }, 7000)
-    } else if(!isFinished && isClockStarted){
-      insideTimeout = setTimeout(() => {
-        setIsFinished(true)
-        setRespirationSize(100)
-
+    if(!isClockStarted) { return clearTimeout(timeOutFunction)}
+    if(!isFinished) {
+      timeOutFunction = setTimeout(() => {
         sizeMotion(1)
         setMessage("Inspire...")
-      }, 7000)
+        setIsFinished(true)
+      }, seconds)
+    } else {
+      timeOutFunction = setTimeout(() => {
+        sizeMotion(0)
+        setMessage("Expire...")
+        setIsFinished(false)
+      }, seconds)
     }
-    return () => clearTimeout(insideTimeout)
-
-  },[respirationSize, isClockStarted])
+    return () => clearTimeout(timeOutFunction)
+  },[isClockStarted, isFinished])
   
   return(
     <View style={styles.container}>
@@ -105,20 +88,11 @@ export function Clock(){
           ]} 
           onPress={handleStartClock}
         >
-          { !isClockStarted ? 
-            <Feather 
-              name="play"
-              size={35}
-              color={theme.colors.white}
-            /> 
-              : 
-            <Feather 
-              name="pause"
-              size={35}
-              color={theme.colors.white}
-            /> 
-          }
-         
+          <Feather 
+            name={isClockStarted ? "pause" : "play"}
+            size={35}
+            color={theme.colors.white}
+          /> 
         </RectButton>
       </View>
     </View>

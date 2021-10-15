@@ -11,10 +11,9 @@ import { theme } from "../../../styles/theme"
 import { styles } from '../../Clock/style'
 
 export function ClockProtocol(){
-  const [ respirationSize, setRespirationSize ] = useState(0)
   const [ isClockStarted, setIsClockStarted ] = useState(false)
+  const [ isPaused, setIsPaused ] = useState(false)
   const [ isFinished, setIsFinished ] = useState(false)
-  const [ isFirst, setIsFirst ] = useState(10)
   const [ message, setMessage ] = useState('Começar')
   const [ timesCompleted, setTimesCompleted ] = useState(0)
   
@@ -24,7 +23,6 @@ export function ClockProtocol(){
   const [ isModal4Visible, setIsModal4Visible ] = useState(false)
 
   const sizeValue = useRef(new Animated.Value(0)).current;
-
   const sizeAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 300] })
   const radiusAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 150] })
 
@@ -34,7 +32,10 @@ export function ClockProtocol(){
     borderRadius: radiusAnimation
   }
 
-  function sizeMotion(value: 0 | 1, duration = 7000){
+  let timeOutFunction : NodeJS.Timeout
+  const seconds = 3 * 1000 // 7 seconds
+
+  function sizeMotion(value: 0 | 1, duration = seconds){
     Animated.timing(sizeValue, {
       toValue: value,
       duration: duration,
@@ -43,79 +44,53 @@ export function ClockProtocol(){
   }
 
   useEffect(() => {
-    console.log(timesCompleted)
-    if(timesCompleted === 1){
-      setIsModal2Visible(true)
-      handleStartClock()
-    }
-    
-    if(timesCompleted === 1.5) {
-      setIsModal3Visible(true)
-      handleStartClock()
+    switch(timesCompleted){
+      case  1 : setIsModal2Visible(true); handleStartClock(); break;
+      case 1.5: setIsModal3Visible(true); handleStartClock(); break;
+      case  3 : setIsModal4Visible(true); handleStartClock(); break;
     }
 
-    if(timesCompleted === 3){
-      setIsModal4Visible(true)
-      handleStartClock()
-    }
   },[timesCompleted])
 
   function resetExercise() {
     setTimesCompleted(0)
     setIsModal4Visible(false)
   }
-  
+
   function handleStartClock(){
-    setIsClockStarted(!isClockStarted)
-    isClockStarted ? setIsFirst(0) : setIsFirst(1)
-    // setIsFinished(false)
+    setIsClockStarted(prev => !prev)
+    setIsFinished(true)
+
+    if(isClockStarted) {
+      setMessage("Pausado...")
+      sizeMotion(0, 300)
+    } else {
+      setMessage("Inspire...")
+      sizeMotion(1)
+    }
+
     clearTimeout(timeOutFunction)
   }
 
-  let timeOutFunction : NodeJS.Timeout
-  
   useEffect(()=> {
-    let insideTimeout = timeOutFunction
-    if(isFirst === 1){
-      setIsFirst(isFirst + 1)
-      setIsFinished(true)
-      clearTimeout(insideTimeout)
-      setRespirationSize(100)
+    if(!isClockStarted) { return clearTimeout(timeOutFunction) }
 
-      sizeMotion(1)
-      setMessage("Inspire...")
-    }
-    if(isFirst === 0){
-      setIsFirst(isFirst + 2)
-      setIsFinished(true)
-      setRespirationSize(0.0001)
-      clearTimeout(insideTimeout)
-
-      sizeMotion(0, 300)
-      setMessage("Pausado...")
-    }
-    if(isFinished && isClockStarted){
-      insideTimeout = setTimeout(() => {
-        setIsFinished(false)
-        setRespirationSize(0)
-        
+    if(!isFinished) {
+      timeOutFunction = setTimeout(() => {
+        sizeMotion(1)
+        setMessage("Inspire...")
+        setIsFinished(true)
+      }, seconds)
+    } else {
+      timeOutFunction = setTimeout(() => {
         sizeMotion(0)
         setTimesCompleted(prev => prev + 0.5)
         setMessage("Expire...")
-      }, 7000)
-    } else if(!isFinished && isClockStarted){
-      insideTimeout = setTimeout(() => {
-        setIsFinished(true)
-        setRespirationSize(100)
-
-        sizeMotion(1)
-        setMessage("Inspire...")
-        setTimesCompleted(prev => prev + 0.5)
-      }, 7000)
+        setIsFinished(false)
+      }, seconds)
     }
-    return () => clearTimeout(insideTimeout)
-
-  },[respirationSize, isClockStarted])
+    return () => clearTimeout(timeOutFunction)
+  },[isClockStarted, isFinished])
 
   return(
     <View style={styles.container}>
@@ -125,7 +100,7 @@ export function ClockProtocol(){
         button="single"
         textSingleButton="Prosseguir"
         isVisible={isModal1Visible}
-        closeModal={() => setIsModal1Visible(false)}
+        closeModal={() => {setIsModal1Visible(false); setIsPaused(false)}}
       />
 
       <ProtocolNextModal
@@ -133,7 +108,7 @@ export function ClockProtocol(){
         button="single"
         textSingleButton="Entendido"
         isVisible={isModal2Visible}
-        closeModal={() => setIsModal2Visible(false)}
+        closeModal={() => {setIsModal2Visible(false); setIsPaused(false)}}
       />
 
       <ProtocolNextModal
@@ -141,7 +116,7 @@ export function ClockProtocol(){
         button="single"
         textSingleButton="Entendido"
         isVisible={isModal3Visible}
-        closeModal={() => setIsModal3Visible(false)}
+        closeModal={() => {setIsModal3Visible(false); setIsPaused(false)}}
       />
 
       <ProtocolNextModal
@@ -149,7 +124,7 @@ export function ClockProtocol(){
         button="finish"
         isVisible={isModal4Visible}
         resetFunction={resetExercise}
-        closeModal={() => setIsModal4Visible(false)}
+        closeModal={() => {setIsModal4Visible(false); setIsPaused(false)}}
       />
 
       <ProtocolHeader/>
@@ -167,24 +142,13 @@ export function ClockProtocol(){
         <RectButton 
           onPress={handleStartClock}
           style={[styles.button, 
-            isClockStarted ? 
-              { backgroundColor: theme.colors.red300 } : 
-              { backgroundColor: theme.colors.blue300 }
-          ]} 
+            { backgroundColor: isClockStarted ? theme.colors.red300 : theme.colors.blue300 }]} 
         >
-          { !isClockStarted ? 
-            <Feather 
-              name="play"
-              size={35}
-              color={theme.colors.white}
-            /> 
-              : 
-            <Feather 
-              name="pause"
-              size={35}
-              color={theme.colors.white}
-            /> 
-          }
+          <Feather 
+            name={isClockStarted ? "pause" : "play"}
+            size={35}
+            color={theme.colors.white}
+          /> 
         </RectButton>
       </View>
     </View>
