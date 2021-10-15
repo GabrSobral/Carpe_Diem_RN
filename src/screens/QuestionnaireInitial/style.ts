@@ -8,9 +8,10 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
   },
   title : {
-    fontSize: 34,
+    fontSize: 24,
     color: theme.colors.text,
     fontFamily: fonts.heading,
+    lineHeight: 28
   },
   questionContainer: {
     width: '100%',
@@ -18,13 +19,10 @@ export const styles = StyleSheet.create({
     borderRadius: 7,
     marginTop: 16,
     overflow: 'hidden',
-    elevation: 3
   },
   questionTextContainer: {
     width: '100%',
     height: 50,
-    backgroundColor: theme.colors.gray100,
-    paddingHorizontal: 18,
     justifyContent: 'center'
   },
   questionText: {
@@ -38,7 +36,8 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 18
+    paddingHorizontal: 18,
+    borderRadius: 7,
   },
   errorMessage: {
     width: '100%',

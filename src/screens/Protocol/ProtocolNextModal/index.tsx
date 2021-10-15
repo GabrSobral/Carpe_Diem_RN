@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { useNavigation } from "@react-navigation/native";
 
-import content from './content.json'
-import { View, Text, Modal, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, Modal, TouchableOpacity } from 'react-native'
 
 import { styles } from './style'
-import { theme } from "../../../styles/theme";
+import { theme } from '../../../styles/theme'
+import { Feather, MaterialIcons } from "@expo/vector-icons";
 
 interface UrgentModalModalProps {
   title: string;
@@ -15,10 +15,19 @@ interface UrgentModalModalProps {
   isVisible: boolean;
   closeModal: () => void;
   resetFunction?: () => void;
+  restart?: boolean;
 }
 
-export function ProtocolNextModal(
-  { title, description, button, textSingleButton, isVisible, closeModal, resetFunction }: UrgentModalModalProps){
+export function ProtocolNextModal({ 
+  title, 
+  description, 
+  button, 
+  textSingleButton, 
+  isVisible, 
+  restart,
+  closeModal, 
+  resetFunction 
+}: UrgentModalModalProps){
   const { navigate } = useNavigation()
 
   return(
@@ -29,9 +38,20 @@ export function ProtocolNextModal(
       visible={isVisible}
     >
       <View style={styles.container}>
-        <View style={styles.popup}>
+        <View style={[styles.popup, restart && { paddingTop: 28 }]}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.description}>{description}</Text>
+
+          {
+            restart && 
+            <TouchableOpacity 
+              activeOpacity={0.7}
+              style={styles.restartButton}
+              onPress={resetFunction}
+            >
+             <Feather name="repeat" color={theme.colors.white} size={24}/>
+            </TouchableOpacity>
+          }
 
           {
             button === "single" ? (
@@ -50,7 +70,7 @@ export function ProtocolNextModal(
                     style={styles.button} 
                     onPress={resetFunction}
                   >
-                    <Text style={styles.buttonText}>Repetir exercício</Text>
+                    <Text style={styles.buttonText}>Voltar</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity 

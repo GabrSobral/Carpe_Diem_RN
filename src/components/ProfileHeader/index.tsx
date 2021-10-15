@@ -58,8 +58,6 @@ export function ProfileHeader(){
       quality: 0.5
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setPreview(result.uri)
     }
@@ -99,12 +97,11 @@ export function ProfileHeader(){
             <Entypo name="user" size={70} color={theme.colors.white}/>)
           }
         </View>
-        { isEditEnabled &&
+        { (isEditEnabled && preview) &&
           <TouchableOpacity style={styles.removeImageButton} onPress={() => setPreview(undefined)}>
             <Feather name="x" size={16} color={theme.colors.red300}/>
           </TouchableOpacity>
         }
-
       </View>
 
       <Text style={styles.userName}>

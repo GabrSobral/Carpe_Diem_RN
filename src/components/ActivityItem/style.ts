@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     color: theme.colors.white,
-    fontSize: 24,
+    fontSize: 19,
     textAlign: 'left',
     fontFamily: fonts.heading,
     flexDirection: 'row',
@@ -37,7 +37,8 @@ export const styles = StyleSheet.create({
   },
   subtitle: {
     color: theme.colors.gray100,
-    fontFamily: fonts.text
+    fontFamily: fonts.text,
+    fontSize: 12
   },
   buttonRemove:{
     height: "100%",
@@ -50,6 +51,5 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.blue600,
     paddingLeft: 15,
     transform: [{ translateX: -16}],
-    
   }
 })

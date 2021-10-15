@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontFamily: fonts.heading,
-    fontSize: 28,
+    fontSize: 24,
     marginBottom: 18,
     color: theme.colors.text,
     textAlign: 'center'

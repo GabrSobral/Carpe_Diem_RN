@@ -12,18 +12,19 @@ export const styles = StyleSheet.create({
   popup:{
     position: 'relative',
     width: '90%',
-    padding: 16,
+    padding: 10,
     borderRadius: 10,
     backgroundColor: theme.colors.white,
     alignItems: 'center'
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontFamily: fonts.heading,
     color: theme.colors.text
   },
   description: {
     marginTop: 6,
+    fontSize: 13,
     color: theme.colors.text,
     textAlign: 'center',
     fontFamily: fonts.text
@@ -38,7 +39,7 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     color: theme.colors.white,
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: fonts.heading
   },
   button: {
@@ -69,7 +70,7 @@ export const styles = StyleSheet.create({
   },
   buttonTextQuantity: {
     color: theme.colors.text,
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: fonts.heading
   },
   selected:{

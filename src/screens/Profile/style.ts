@@ -28,11 +28,11 @@ export const styles = StyleSheet.create({
   },
   profileContentItemText: {
     color: theme.colors.text,
-    fontSize: 19
+    fontSize: 18
   },
   profileContentValueText: {
     color: theme.colors.blue300,
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold'
   },
 

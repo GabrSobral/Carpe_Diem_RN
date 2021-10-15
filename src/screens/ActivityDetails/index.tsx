@@ -11,6 +11,7 @@ import { ActivitiesProps } from '../../types/activity'
 import { styles } from './style'
 
 import { FeedbackModal } from '../../components/FeedbackModal'
+import { RemoveHTML } from '../../utils/handleRemoveHTML'
 
 interface Params {
   activity: ActivitiesProps;
@@ -48,7 +49,7 @@ export function ActivityDetails({}){
           </View>
 
           <View style={styles.bodyContainer}>
-            <Text style={styles.body}>{activity.body}</Text>
+            <Text style={styles.body}>{RemoveHTML(activity.body)}</Text>
           </View>
 
           <View style={styles.feedbackTextContainer}>

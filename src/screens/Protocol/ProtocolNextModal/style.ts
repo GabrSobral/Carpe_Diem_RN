@@ -10,8 +10,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   popup:{
+    position: 'relative',
     width: '90%',
-    padding: 16,
+    padding: 10,
     borderRadius: 10,
     backgroundColor: theme.colors.white,
     alignItems: 'center'
@@ -22,7 +23,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   title: {
-    fontSize: 19,
+    fontSize: 16,
     fontWeight: 'bold',
     color: theme.colors.text,
     fontFamily: fonts.heading,
@@ -31,7 +32,7 @@ export const styles = StyleSheet.create({
   description: {
     marginTop: 12,
     color: theme.colors.text,
-    fontSize: 16,
+    fontSize: 13,
     textAlign: 'center',
     fontFamily: fonts.text,
   },
@@ -81,5 +82,14 @@ export const styles = StyleSheet.create({
 
   disabled: {
     opacity: 0.5
+  },
+
+  restartButton:{
+    position: 'absolute',
+    backgroundColor: theme.colors.blue300,
+    borderRadius: 7,
+    padding: 5,
+    right: 10,
+    top: 10
   },
 })

@@ -5,7 +5,7 @@ import { Header } from '../../components/Header'
 import { ActivityItemSwipeable } from '../../components/ActivityItemSwipeable'
 import { FeedbackModal } from '../../components/FeedbackModal'
 
-import { styles } from './style'
+import { styles } from '../Activities/style'
 import { useEffect } from 'react'
 import { ActivitiesProps } from '../../types/activity'
 import { useUsers } from '../../contexts/UserContext'

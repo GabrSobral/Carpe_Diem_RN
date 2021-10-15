@@ -101,7 +101,7 @@ export const styles = StyleSheet.create({
     bottom: 18,
     right: 16,
     color: theme.colors.gray100,
-    fontSize: 12,
+    fontSize: 13,
     fontFamily: fonts.text,
   },
 })

@@ -39,7 +39,7 @@ export function Clock(){
     setIsFinished(true)
 
     if(isClockStarted) {
-      setMessage("Pausado...")
+      setMessage("Pausado")
       sizeMotion(0, 300)
     } else {
       setMessage("Inspire...")

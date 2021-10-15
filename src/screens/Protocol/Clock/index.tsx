@@ -49,7 +49,6 @@ export function ClockProtocol(){
       case 1.5: setIsModal3Visible(true); handleStartClock(); break;
       case  3 : setIsModal4Visible(true); handleStartClock(); break;
     }
-
   },[timesCompleted])
 
   function resetExercise() {
@@ -80,15 +79,17 @@ export function ClockProtocol(){
         sizeMotion(1)
         setMessage("Inspire...")
         setIsFinished(true)
+        setTimesCompleted(prev => prev + 0.5)
       }, seconds)
     } else {
       timeOutFunction = setTimeout(() => {
         sizeMotion(0)
-        setTimesCompleted(prev => prev + 0.5)
         setMessage("Expire...")
         setIsFinished(false)
+        setTimesCompleted(prev => prev + 0.5)
       }, seconds)
     }
+    
     return () => clearTimeout(timeOutFunction)
   },[isClockStarted, isFinished])
 
@@ -122,6 +123,7 @@ export function ClockProtocol(){
       <ProtocolNextModal
         title={`Se sente melhor? ${'\n'} Quais serão os próximos passos?`}
         button="finish"
+        restart
         isVisible={isModal4Visible}
         resetFunction={resetExercise}
         closeModal={() => {setIsModal4Visible(false); setIsPaused(false)}}

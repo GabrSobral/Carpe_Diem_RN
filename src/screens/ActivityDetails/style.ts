@@ -28,13 +28,14 @@ export const styles = StyleSheet.create({
   },
   title: {
     color: theme.colors.white,
-    fontSize: 24,
+    fontSize: 19,
     textAlign: 'left',
     fontFamily: fonts.heading,
   },
   subtitle: {
     color: theme.colors.gray100,
     fontFamily: fonts.text,
+    fontSize: 14
   },
   bodyContainer: {
     width: '100%',
@@ -50,7 +51,8 @@ export const styles = StyleSheet.create({
   feedbackTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    flexWrap: 'wrap'
   },
   feedbackText: {
     color: theme.colors.text,

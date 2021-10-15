@@ -11,13 +11,13 @@ export const styles = StyleSheet.create({
   },
   popup:{
     width: '90%',
-    padding: 16,
+    padding: 10,
     borderRadius: 10,
     backgroundColor: theme.colors.white,
     alignItems: 'center'
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     color: theme.colors.text,
     fontFamily: fonts.heading,
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   description: {
     marginTop: 6,
     color: theme.colors.text,
-    fontSize: 18,
+    fontSize: 16,
     textAlign: 'center',
     fontFamily: fonts.text,
   },

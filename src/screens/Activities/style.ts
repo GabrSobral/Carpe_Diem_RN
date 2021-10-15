@@ -19,11 +19,12 @@ export const styles = StyleSheet.create({
   },
   title: {
     color: theme.colors.white,
-    fontSize: 32,
+    fontSize:24,
     zIndex: 10
   },
   subtitle: {
     color: theme.colors.gray100,
     textAlign: 'center',
+    fontSize: 14
   }
 })
