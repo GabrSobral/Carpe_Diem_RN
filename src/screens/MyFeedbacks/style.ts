@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     zIndex: 5,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16
+    marginVertical: 10
   },
   title: {
     color: theme.colors.white,
