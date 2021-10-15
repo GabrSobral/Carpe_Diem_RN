@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import fonts from "../../styles/fonts";
 import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
@@ -6,55 +7,6 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.white
   }, 
-
-  profileHeaderContainer: {
-    position: 'relative',
-    width: '100%',
-    backgroundColor: theme.colors.blue300,
-    paddingHorizontal: 16,
-    paddingTop: 24,
-    paddingBottom: 32,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  imageContainer: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    elevation: 5,
-    marginRight: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: theme.colors.blue600
-  },
-  editButton:{
-    position: 'absolute',
-    right: 16,
-    top: 16
-  },
-  image: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-  },
-  userName: {
-    color: theme.colors.white,
-    fontSize: 18,
-    minWidth: '100%',
-    flex: 1,
-    backgroundColor: "#0F0"
-  },
-  inputNameContainer:{
-    flex: 1,
-    backgroundColor: "#f00"
-  },
-  registratedAt: {
-    position: 'absolute',
-    bottom: 18,
-    right: 16,
-    color: theme.colors.gray100,
-    fontSize: 12
-  },
 
   profileContentContainer: {
     width: '100%',
