@@ -30,7 +30,6 @@ interface SignResult {
 }
 interface UserContextProps {
   Sign: ({name, password, email, query}: SignProps) => any;
-  username: String;
   Logout: () => Promise<unknown>;
   user?: User;
   isRequested: boolean;
@@ -48,7 +47,6 @@ interface UserContextProps {
 const UserContext = createContext({} as UserContextProps)
 
 export function UserProvider({ children }: UserProviderProps){
-  const [ username, setUsername ] = useState('')
   const [ activities, setActivities ] = useState<ActivitiesProps[]>([])
   const [ feedbacks, setFeedbacks ] = useState<ActivitiesProps[]>([])
   const [ isRequested, setIsRequested ] = useState(false)
@@ -62,8 +60,6 @@ export function UserProvider({ children }: UserProviderProps){
       if(JSON.stringify(userStore) !== "{}" && userStore !== undefined){
         const refreshTokenStore = await loadRefreshToken()
         setUser(userStore)
-        const firstName = userStore?.name.split(' ')[0]
-        setUsername(firstName || '')
         
         if(refreshTokenStore){
           try{
@@ -120,9 +116,6 @@ export function UserProvider({ children }: UserProviderProps){
       await saveRefreshToken(data.refreshToken.refreshToken)
       await setToken(data.token)
       await saveUser(data.user)
-
-      const firstName = data.user.name.split(' ')[0]
-      setUsername(firstName)
       
       result.data = data
       result.message = "ok"
@@ -140,7 +133,6 @@ export function UserProvider({ children }: UserProviderProps){
       removeActivity()
       removeToken()
       removeRefreshToken()
-      setUsername('')
       setUser(undefined)
       setActivities([])
       setFeedbacks([])
@@ -232,11 +224,12 @@ export function UserProvider({ children }: UserProviderProps){
     }))
   }
 
+  
+
   return(
     <UserContext.Provider 
       value={{
         Sign,
-        username,
         Logout,
         user,
         isRequested,
