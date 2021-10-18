@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import fonts from "../../styles/fonts";
 import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
@@ -26,5 +27,14 @@ export const styles = StyleSheet.create({
     color: theme.colors.gray100,
     textAlign: 'center',
     fontSize: 14
+  },
+  noMoreActivitiesContainer:{
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center',
+  },
+  noMoreActivitiesText:{
+    fontFamily: fonts.text,
+    color: theme.colors.text
   }
 })

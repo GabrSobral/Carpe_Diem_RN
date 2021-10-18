@@ -1,14 +1,15 @@
-import React, { useState }  from 'react'
+import React, { useState, useEffect }  from 'react'
 import { View, Text, FlatList } from 'react-native'
+import LottieView from 'lottie-react-native'
 
 import { Header } from '../../components/Header'
 import { ActivityItemSwipeable } from '../../components/ActivityItemSwipeable'
 import { FeedbackModal } from '../../components/FeedbackModal'
 
-import { styles } from '../Activities/style'
-import { useEffect } from 'react'
+import happyAnimation from '../../../assets/happy.json'
 import { ActivitiesProps } from '../../types/activity'
 import { useUsers } from '../../contexts/UserContext'
+import { styles } from '../Activities/style'
 
 export function MyFeedbacks(){
   const { feedbacks, fetchFeedbacks, isRequested } = useUsers()
@@ -63,6 +64,15 @@ export function MyFeedbacks(){
               key={item.id}
               item={item}
             />}
+            ListEmptyComponent={
+              isRequested ?
+              <View style={styles.noMoreActivitiesContainer}>
+                <LottieView
+                  source={happyAnimation}
+                  style={{ width: 200, height: 200, backgroundColor: 'transparent' }}
+                />
+                <Text style={styles.noMoreActivitiesText}>Não há feedbacks mostrar.</Text>
+              </View> : <View/>}
           refreshing={isFetching}
           onRefresh={async () => await fetchFeedbacks()}
         />
