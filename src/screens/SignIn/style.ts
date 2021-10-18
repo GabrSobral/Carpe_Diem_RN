@@ -4,6 +4,7 @@ import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
   container: {
+    position: 'relative',
     flex: 1,
     backgroundColor: theme.colors.white,
     alignItems: 'center',
@@ -27,5 +28,13 @@ export const styles = StyleSheet.create({
     color: theme.colors.blue300,
     fontSize: 16,
     fontFamily: fonts.text,
+  },
+
+  forgotPasswordTitle:{
+    width: '100%',
+    fontSize: 24,
+    fontFamily: fonts.heading,
+    color: theme.colors.text,
+    transform: [{ translateY: 40 }]
   }
 });

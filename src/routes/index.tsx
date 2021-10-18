@@ -17,6 +17,8 @@ import { ActivityDetailsFeedback } from '../screens/ActivityDetailsFeedback'
 import { useUsers } from '../contexts/UserContext'
 import { Onboarding } from '../screens/Onboarding'
 import { ClockProtocol } from '../screens/Protocol/Clock'
+import { ForgotPassword } from '../screens/ForgotPassword'
+import { ResetPassword } from '../screens/ResetPassword'
 
 export function Routes(){
   const { user } = useUsers()
@@ -30,8 +32,10 @@ export function Routes(){
       <Navigator screenOptions={{ headerShown: false }} initialRouteName={"BottomTabs"}>
         { !user ? 
           <>
-            <Screen name="SignIn"                  component={SignIn}/>
-            <Screen name="SignUp"                  component={SignUp}/>
+            <Screen name="SignIn"                    component={SignIn}/>
+            <Screen name="SignUp"                    component={SignUp}/>
+            <Screen name="ForgotPassword"            component={ResetPassword}/>
+            <Screen name="ResetPassword"             component={ResetPassword}/>
           </>
           : ((!user.hasAnswered) ? (
             <>
@@ -47,6 +51,7 @@ export function Routes(){
               <Screen name="MyFeedbacks"             component={MyFeedbacks}/>
               <Screen name="ActivityDetailsFeedback" component={ActivityDetailsFeedback}/>
               <Screen name="QuestionnaireAfter"      component={QuestionnaireAfter}/>
+              
               <Screen name="ClockProtocol"           component={ClockProtocol}/>
             </>))
          }

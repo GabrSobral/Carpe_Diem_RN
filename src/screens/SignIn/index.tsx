@@ -8,8 +8,10 @@ import { Input } from '../../components/Input';
 
 import { styles } from './style'
 import { useUsers } from '../../contexts/UserContext';
+import { useNavigation } from '@react-navigation/core';
 
 export function SignIn() {
+  const { navigate } = useNavigation()
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ isLoading, setIsLoading ] = useState(false)
@@ -29,12 +31,6 @@ export function SignIn() {
 
   return (
     <View style={styles.container}>
-      <StatusBar  
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        translucent
-      />
-
       <SignHeader title="Entrar" button="Cadastrar"/>
 
       <KeyboardAvoidingView style={styles.formContainer} behavior='height'>
@@ -60,7 +56,7 @@ export function SignIn() {
 
         { errorMessage !== '' && <Text style={styles.errorMessage}>{errorMessage}</Text>}
 
-        <RectButton>
+        <RectButton onPress={() => navigate('ForgotPassword' as never)}>
           <Text style={styles.forgotPasswordText}>Esqueci minha senha</Text>
         </RectButton>
 
