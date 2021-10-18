@@ -17,7 +17,7 @@ export function ResetPassword(){
 
   async function ResetPassword(){
     setIsLoading(true);
-    const {data} = await api.post('/reset-password', 
+    const {data} = await api.post('/users/reset-password', 
       { email: "", token: "", newPassword: password })
 
     if(data.response.data.error)
@@ -31,7 +31,7 @@ export function ResetPassword(){
       <SignHeader title="Senha" button="Entrar"/>
       
       <Text style={styles.forgotPasswordTitle}>
-      Insira sua nova senha.
+        Insira sua nova senha.
       </Text>
 
       <KeyboardAvoidingView style={styles.formContainer} behavior='height'>
