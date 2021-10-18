@@ -6,6 +6,8 @@ import LottieView from 'lottie-react-native'
 import congratsAnimation from '../../../assets/congrats.json'
 import trashAnimation from '../../../assets/trash.json'
 import logoutAnimation from '../../../assets/logout.json'
+import mailAnimation from '../../../assets/mail.json'
+import passwordAnimation from '../../../assets/password.json'
 
 import { styles } from './style';
 
@@ -16,7 +18,7 @@ interface ModalComponentProps {
   title: string;
   description: string;
   confirmFunction?: () => void;
-  animation?: "congrats" | 'trash' | 'logout'
+  animation?: "congrats" | 'trash' | 'logout' | "sendMail" | "password"
 }
 
 const animations = {
@@ -37,6 +39,20 @@ const animations = {
   logout:
     <LottieView
       source={logoutAnimation}
+      autoPlay
+      loop={false}
+      style={styles.animation}
+    />,
+  sendMail:
+    <LottieView
+      source={mailAnimation}
+      autoPlay
+      loop={true}
+      style={styles.animation}
+    />,
+  password:
+    <LottieView
+      source={passwordAnimation}
       autoPlay
       loop={false}
       style={styles.animation}
@@ -89,7 +105,7 @@ export function ModalComponent({
                   goBack();
                 }}
               >
-                <Text style={styles.buttonText}>sim</Text>
+                <Text style={styles.buttonText}>Sim</Text>
               </TouchableOpacity>
               </>
               :
