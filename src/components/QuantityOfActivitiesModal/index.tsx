@@ -8,6 +8,7 @@ import { api } from "../../services/api";
 import plantAnimation from '../../../assets/plant.json'
 import { styles } from './style'
 import { theme } from "../../styles/theme";
+import { Feather } from "@expo/vector-icons";
 
 interface QuantityOfActivitiesModalProps {
   isVisible: boolean;
@@ -40,6 +41,13 @@ export function QuantityOfActivitiesModal({
     >
       <View style={styles.container}>
         <View style={styles.popup}>
+          <TouchableOpacity 
+            activeOpacity={0.7}
+            style={styles.closeButton} 
+            onPress={closeModal}
+          >
+            <Feather name="x" color={theme.colors.text} size={24}/>
+          </TouchableOpacity>
           <LottieView
             source={plantAnimation}
             autoPlay
@@ -81,22 +89,14 @@ export function QuantityOfActivitiesModal({
           <View style={styles.dualButtonsContainer}>
             <TouchableOpacity 
               activeOpacity={0.7}
-              style={[styles.button, styles.deny]} 
-              onPress={closeModal}
-            >
-              <Text style={styles.buttonText}>Não</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity 
-              activeOpacity={0.7}
-              style={[styles.button, styles.accept, !selectedValue && styles.disabled]}
+              style={[styles.contactbutton, { marginTop: 0 }, !selectedValue && styles.disabled]}
               disabled={!selectedValue}
               onPress={() => {
                 confirmFunction && confirmFunction()
                 closeModal();
               }}
             >
-              <Text style={styles.buttonText}>sim</Text>
+              <Text style={styles.buttonText}>Salvar</Text>
             </TouchableOpacity>
           </View>
         </View>
