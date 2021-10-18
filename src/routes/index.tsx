@@ -34,7 +34,7 @@ export function Routes(){
           <>
             <Screen name="SignIn"                    component={SignIn}/>
             <Screen name="SignUp"                    component={SignUp}/>
-            <Screen name="ForgotPassword"            component={ResetPassword}/>
+            <Screen name="ForgotPassword"            component={ForgotPassword}/>
             <Screen name="ResetPassword"             component={ResetPassword}/>
           </>
           : ((!user.hasAnswered) ? (

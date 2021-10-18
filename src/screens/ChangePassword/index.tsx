@@ -40,6 +40,7 @@ export function ChangePassword() {
       <ModalComponent
         closeModal={() => setIsModalVisible(false)}
         title="Sucesso!"
+        animation="password"
         description="Sua senha foi alterada com sucesso 😃"
         isVisible={isModalVisible}
       />

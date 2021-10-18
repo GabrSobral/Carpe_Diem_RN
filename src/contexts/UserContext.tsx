@@ -98,7 +98,7 @@ export function UserProvider({ children }: UserProviderProps){
           await saveActivities(data)
           setActivities(data);
         }
-      }  
+    }  
   },[])
 
   const fetchFeedbacks = useCallback(async() => {
