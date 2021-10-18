@@ -63,7 +63,7 @@ export function ContactModal({ isVisible, closeModal }: QuantityOfActivitiesModa
        <KeyboardAvoidingView behavior="padding">
         <View style={styles.popup}>
           <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-            <Feather name="x" size={32} color={theme.colors.text}/>
+            <Feather name="x" size={24} color={theme.colors.text}/>
           </TouchableOpacity>
 
           <View style={{ justifyContent: 'flex-end', alignItems: 'center' }}>

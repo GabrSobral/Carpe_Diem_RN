@@ -58,7 +58,7 @@ export function FeedbackModal({ isVisible, closeModal, activity }: FeedbackModal
       <View style={styles.container}>
         <View style={styles.popup}>
           <TouchableOpacity onPress={closeModal} style={styles.closeModalButton}>
-            <Feather name="x" size={32} color={theme.colors.text}/>
+            <Feather name="x" size={24} color={theme.colors.text}/>
           </TouchableOpacity>
 
           <Text style={styles.title}>Sua opinião é muito importante para nós!</Text>
