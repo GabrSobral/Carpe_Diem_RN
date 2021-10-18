@@ -37,7 +37,7 @@ export function Player({ file }: PlayerProps){
     if(sound === null){ return }
     if(isStarted) {
       (async () => await sound.playAsync())()
-    } else {
+    } else if(sound._loaded){
       (async () => await sound.pauseAsync())()
     }
   },[isStarted])
@@ -74,7 +74,7 @@ export function Player({ file }: PlayerProps){
             minimumValue={0}
             maximumValue={file.duration}
             minimumTrackTintColor="#FFFFFF"
-            maximumTrackTintColor="#000000"
+            maximumTrackTintColor="#ffffff"
           />
         <Text style={styles.duration}>
           {convertDurationToTimeString(Math.round(file.duration))}
