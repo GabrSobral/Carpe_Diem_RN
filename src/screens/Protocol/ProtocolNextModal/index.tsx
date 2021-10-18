@@ -10,12 +10,17 @@ import { Feather, MaterialIcons } from "@expo/vector-icons";
 interface UrgentModalModalProps {
   title: string;
   description?: string;
-  button: "single" | "finish";
+  button: "single" | "two" |"finish";
   textSingleButton?: "Prosseguir" | "Entendido"
   isVisible: boolean;
   closeModal: () => void;
   resetFunction?: () => void;
   restart?: boolean;
+}
+interface Button {
+  text: string;
+  action?: () => void;
+  stylesComp: Object;
 }
 
 export function ProtocolNextModal({ 
@@ -29,6 +34,18 @@ export function ProtocolNextModal({
   resetFunction 
 }: UrgentModalModalProps){
   const { navigate } = useNavigation()
+
+  function Button({ text, action, stylesComp }: Button){
+    return(
+      <TouchableOpacity 
+        activeOpacity={0.5}
+        style={stylesComp} 
+        onPress={action}
+      >
+        <Text style={styles.buttonText}>{text}</Text>
+      </TouchableOpacity>
+    )
+  }
 
   return(
     <Modal
@@ -44,56 +61,67 @@ export function ProtocolNextModal({
 
           {
             restart && 
-            <TouchableOpacity 
-              activeOpacity={0.7}
-              style={styles.restartButton}
-              onPress={resetFunction}
-            >
-             <Feather name="repeat" color={theme.colors.white} size={24}/>
-            </TouchableOpacity>
-          }
-
-          {
-            button === "single" ? (
               <TouchableOpacity 
                 activeOpacity={0.7}
-                style={styles.singleButton}
-                onPress={closeModal}
+                style={styles.restartButton}
+                onPress={resetFunction}
               >
-                <Text style={styles.buttonText}>{textSingleButton}</Text>
+                <Feather name="repeat" color={theme.colors.white} size={24}/>
               </TouchableOpacity>
-            ) : (
+          }
+          
+          { 
+            button === "single" &&      
+              <Button 
+                text={textSingleButton || ''} 
+                action={closeModal}
+                stylesComp={styles.singleButton}
+              /> 
+          }
+          {
+            button === "two" &&      
+            <View style={styles.finalButtonsContainer}>
+              <Button 
+                text="Prosseguir" 
+                action={() => {}}
+                stylesComp={[styles.button, { width: '100%'}]}
+              />
+      
+              <Button 
+                text="Retornar para a tela inicial" 
+                action={() => {
+                  closeModal();
+                  navigate('BottomTabs' as never)
+                }}
+                stylesComp={styles.returnToHomeButton}
+              />
+            </View>
+          }
+          { 
+            button === "finish" &&
               <View style={styles.finalButtonsContainer}>
                 <View style={styles.repeatAndNextContainer}>
-                  <TouchableOpacity 
-                    activeOpacity={0.7}
-                    style={styles.button} 
-                    onPress={resetFunction}
-                  >
-                    <Text style={styles.buttonText}>Voltar</Text>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity 
-                    activeOpacity={0.7}
-                    style={styles.button}
-                    onPress={() => {}}
-                  >
-                    <Text style={styles.buttonText}>Prosseguir</Text>
-                  </TouchableOpacity>
+                  <Button 
+                    text="Voltar" 
+                    action={resetFunction}
+                    stylesComp={styles.button}
+                  />
+                  <Button 
+                    text="Prosseguir" 
+                    action={() => {}}
+                    stylesComp={styles.button}
+                  />
                 </View>
-
-                <TouchableOpacity 
-                  onPress={() => {
-                    closeModal()
-                    navigate('BottomTabs')
+        
+                <Button 
+                  text="Retornar para a tela inicial" 
+                  action={() => {
+                    closeModal();
+                    navigate('BottomTabs' as never)
                   }}
-                  activeOpacity={0.7}
-                  style={styles.returnToHomeButton}
-                >
-                  <Text style={styles.buttonText}>Retornar para a tela inicial</Text>
-                </TouchableOpacity>
+                  stylesComp={styles.returnToHomeButton}
+                />
               </View>
-            )
           }
         </View>
       </View>
