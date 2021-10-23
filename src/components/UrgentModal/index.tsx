@@ -28,7 +28,7 @@ export function UrgentModal({ isVisible, closeModal }: UrgentModalModalProps){
     if(userData && userData.emergency_number) {
       try{
         await api.post('/users/sms', { to: userData?.emergency_number })
-      } catch(error){
+      } catch(error: any){
         console.log(error.response)
       }
     } else {
@@ -92,7 +92,7 @@ export function UrgentModal({ isVisible, closeModal }: UrgentModalModalProps){
                 closeModal();
               }}
             >
-              <Text style={styles.buttonText}>sim</Text>
+              <Text style={styles.buttonText}>Sim</Text>
             </TouchableOpacity>
           </View>
         </View>
