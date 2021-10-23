@@ -64,15 +64,15 @@ export function MyFeedbacks(){
               key={item.id}
               item={item}
             />}
-            ListEmptyComponent={
-              isRequested ?
-              <View style={styles.noMoreActivitiesContainer}>
-                <LottieView
-                  source={happyAnimation}
-                  style={{ width: 200, height: 200, backgroundColor: 'transparent' }}
-                />
-                <Text style={styles.noMoreActivitiesText}>Não há feedbacks mostrar.</Text>
-              </View> : <View/>}
+          ListEmptyComponent={
+            isRequested ?
+            <View style={styles.noMoreActivitiesContainer}>
+              <LottieView
+                source={happyAnimation}
+                style={{ width: 200, height: 200, backgroundColor: 'transparent' }}
+              />
+              <Text style={styles.noMoreActivitiesText}>Não há feedbacks mostrar.</Text>
+            </View> : <View/>}
           refreshing={isFetching}
           onRefresh={async () => await fetchFeedbacks()}
         />

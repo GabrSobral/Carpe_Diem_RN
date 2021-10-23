@@ -12,9 +12,9 @@ import { styles } from '../../Clock/style'
 
 export function ClockProtocol(){
   const [ isClockStarted, setIsClockStarted ] = useState(false)
-  const [ isPaused, setIsPaused ] = useState(false)
-  const [ isFinished, setIsFinished ] = useState(false)
-  const [ message, setMessage ] = useState('Começar')
+  const [ isPaused, setIsPaused ] =             useState(false)
+  const [ isFinished, setIsFinished ] =         useState(false)
+  const [ message, setMessage ] =               useState('Começar')
   const [ timesCompleted, setTimesCompleted ] = useState(0)
   
   const [ isModal1Visible, setIsModal1Visible ] = useState(true)
@@ -32,7 +32,7 @@ export function ClockProtocol(){
     borderRadius: radiusAnimation
   }
 
-  let timeOutFunction : NodeJS.Timeout
+  let intervalFunction : NodeJS.Timeout
   const seconds = 3 * 1000 // 7 seconds
 
   function sizeMotion(value: 0 | 1, duration = seconds){
@@ -42,14 +42,17 @@ export function ClockProtocol(){
       useNativeDriver: false
     }).start();
   }
-
+0
   useEffect(() => {
-    switch(timesCompleted){
-      case  1 : setIsModal2Visible(true); handleStartClock(); break;
-      case 1.5: setIsModal3Visible(true); handleStartClock(); break;
-      case  3 : setIsModal4Visible(true); handleStartClock(); break;
+    switch(timesCompleted) {
+      case  1 : setTimeout(() => setIsModal2Visible(true), seconds); handlePauseTrue(); break;
+      case 3.5: setTimeout(() => setIsModal3Visible(true), seconds); handlePauseTrue(); break;
+      case  5 : setIsModal4Visible(true); handleStartClock(); break;
     }
   },[timesCompleted])
+
+  function handlePauseFalse() { setIsPaused(false) }
+  function handlePauseTrue()  { setIsPaused(true) }
 
   function resetExercise() {
     setTimesCompleted(0)
@@ -57,41 +60,38 @@ export function ClockProtocol(){
   }
 
   function handleStartClock(){
+    clearInterval(intervalFunction)
     setIsClockStarted(prev => !prev)
     setIsFinished(true)
 
     if(isClockStarted) {
       setMessage("Pausado...")
       sizeMotion(0, 300)
-    } else {
-      setMessage("Inspire...")
-      sizeMotion(1)
-    }
+    } else 
+      handleChangeRespirationState('Inspire')
+  }
 
-    clearTimeout(timeOutFunction)
+  function handleChangeRespirationState(action = "Inspire") {
+    console.log(action === "Inspire" ? "Inspire..." : "Expire...")
+    sizeMotion(action === "Inspire" ? 1 : 0)
+    setMessage(action === "Inspire" ? "Inspire..." : "Expire...")
+    setIsFinished(action === "Inspire")
+    setTimesCompleted(prev => prev + 0.5)
   }
 
   useEffect(()=> {
-    if(!isClockStarted) { return clearTimeout(timeOutFunction) }
+    if(!isClockStarted || isPaused) { return }
+    console.log("Passou", isClockStarted, isPaused)
 
-    if(!isFinished) {
-      timeOutFunction = setTimeout(() => {
-        sizeMotion(1)
-        setMessage("Inspire...")
-        setIsFinished(true)
-        setTimesCompleted(prev => prev + 0.5)
-      }, seconds)
-    } else {
-      timeOutFunction = setTimeout(() => {
-        sizeMotion(0)
-        setMessage("Expire...")
-        setIsFinished(false)
-        setTimesCompleted(prev => prev + 0.5)
-      }, seconds)
-    }
-    
-    return () => clearTimeout(timeOutFunction)
-  },[isClockStarted, isFinished])
+    intervalFunction = setInterval(() => {
+      if(!isFinished)
+        handleChangeRespirationState('Inspire')
+      else
+        handleChangeRespirationState('Expire')
+    }, seconds)
+
+    return () => clearInterval(intervalFunction)
+  },[isClockStarted, isFinished, isPaused])
 
   return(
     <View style={styles.container}>
@@ -101,7 +101,7 @@ export function ClockProtocol(){
         button="single"
         textSingleButton="Prosseguir"
         isVisible={isModal1Visible}
-        closeModal={() => {setIsModal1Visible(false); setIsPaused(false)}}
+        closeModal={() => {setIsModal1Visible(false);}}
       />
 
       <ProtocolNextModal
@@ -109,7 +109,7 @@ export function ClockProtocol(){
         button="single"
         textSingleButton="Entendido"
         isVisible={isModal2Visible}
-        closeModal={() => {setIsModal2Visible(false); setIsPaused(false)}}
+        closeModal={() => {setIsModal2Visible(false); handlePauseFalse()}}
       />
 
       <ProtocolNextModal
@@ -117,16 +117,16 @@ export function ClockProtocol(){
         button="single"
         textSingleButton="Entendido"
         isVisible={isModal3Visible}
-        closeModal={() => {setIsModal3Visible(false); setIsPaused(false)}}
+        closeModal={() => {setIsModal3Visible(false); handlePauseFalse()}}
       />
 
       <ProtocolNextModal
         title={`Se sente melhor? ${'\n'} Quais serão os próximos passos?`}
-        button="finish"
+        button="two"
         restart
-        isVisible={isModal4Visible}
         resetFunction={resetExercise}
-        closeModal={() => {setIsModal4Visible(false); setIsPaused(false)}}
+        isVisible={isModal4Visible}
+        closeModal={() => {setIsModal4Visible(false); handlePauseFalse()}}
       />
 
       <ProtocolHeader/>
@@ -138,7 +138,7 @@ export function ClockProtocol(){
           <View style={styles.circularContainer}>
             <Animated.View style={[ styles.circularFill, sizeAnim ]}/>
           </View>
-          <Timer isClockActive={isClockStarted}/>
+          <Timer isClockActive={(isClockStarted && !isPaused)}/>
         </View>
 
         <RectButton 

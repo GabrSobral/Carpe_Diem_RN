@@ -29,6 +29,7 @@ export const styles = StyleSheet.create({
     fontSize: 14
   },
   noMoreActivitiesContainer:{
+    zIndex: 10,
     flex: 1, 
     alignItems: 'center', 
     justifyContent: 'center',

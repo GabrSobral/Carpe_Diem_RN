@@ -41,30 +41,29 @@ export function Clock(){
     if(isClockStarted) {
       setMessage("Pausado")
       sizeMotion(0, 300)
-    } else {
-      setMessage("Inspire...")
-      sizeMotion(1)
-    }
+    } else 
+      handleChangeRespirationState('Inspire')
 
-    clearTimeout(timeOutFunction)
+      clearInterval(timeOutFunction)
+  }
+  
+  function handleChangeRespirationState(action = "Inspire") {
+    sizeMotion(action === "Inspire" ? 1 : 0)
+    setMessage(action === "Inspire" ? "Inspire..." : "Expire...")
+    setIsFinished(action === "Inspire")
   }
   
   useEffect(()=> {
-    if(!isClockStarted) { return clearTimeout(timeOutFunction)}
-    if(!isFinished) {
-      timeOutFunction = setTimeout(() => {
-        sizeMotion(1)
-        setMessage("Inspire...")
-        setIsFinished(true)
-      }, seconds)
-    } else {
-      timeOutFunction = setTimeout(() => {
-        sizeMotion(0)
-        setMessage("Expire...")
-        setIsFinished(false)
-      }, seconds)
-    }
-    return () => clearTimeout(timeOutFunction)
+    if(!isClockStarted) { return clearInterval(timeOutFunction) }
+
+    timeOutFunction = setInterval(() => {
+      if(!isFinished)
+        handleChangeRespirationState('Inspire')
+      else
+        handleChangeRespirationState('Expire')
+    }, seconds)
+
+    return () => clearInterval(timeOutFunction)
   },[isClockStarted, isFinished])
   
   return(
