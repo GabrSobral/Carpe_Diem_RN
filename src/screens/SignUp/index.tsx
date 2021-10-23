@@ -22,15 +22,18 @@ export function SignUp() {
     name.trim()
     email.trim()
     
-    if(password !== confirmPassword){
+    if(password !== confirmPassword)
       return setErrorMessage("Sua confirmação de senha está inválida!")
-    }
+
     setIsLoading(true)
-    
-    const result = await Sign({name, email, password, query: "/users"})
-    if(result.message !== "ok") {
-      setErrorMessage(result.message)
-      setIsLoading(false)
+    try{
+      const result = await Sign({name, email, password, query: "/users"})
+      if(result.message !== "ok") {
+        setErrorMessage(result.message)
+        setIsLoading(false)
+      }
+    } catch(error) {
+      console.log(error)
     }
   }
 

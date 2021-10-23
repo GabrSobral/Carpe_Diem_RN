@@ -56,7 +56,6 @@ export function UserProvider({ children }: UserProviderProps){
     (async () => {
       const userStore = await loadUser()
       
-      console.log(userStore)
       if(JSON.stringify(userStore) !== "{}" && userStore !== undefined){
         const refreshTokenStore = await loadRefreshToken()
         setUser(userStore)
@@ -116,6 +115,7 @@ export function UserProvider({ children }: UserProviderProps){
       await saveRefreshToken(data.refreshToken.refreshToken)
       await setToken(data.token)
       await saveUser(data.user)
+      console.log(data.user)
       
       result.data = data
       result.message = "ok"
