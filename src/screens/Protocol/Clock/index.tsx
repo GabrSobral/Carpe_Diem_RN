@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, useCallback } from "react"
 import { Feather } from '@expo/vector-icons'
 import { View, Text, Animated } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
@@ -26,14 +26,13 @@ export function ClockProtocol(){
   const sizeAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 300] })
   const radiusAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 150] })
 
+  const seconds = 3 * 1000 // 7 seconds 
+
   const sizeAnim = {
     width: sizeAnimation, 
     height: sizeAnimation,
     borderRadius: radiusAnimation
   }
-
-  let intervalFunction : NodeJS.Timeout
-  const seconds = 3 * 1000 // 7 seconds
 
   function sizeMotion(value: 0 | 1, duration = seconds){
     Animated.timing(sizeValue, {
@@ -42,7 +41,7 @@ export function ClockProtocol(){
       useNativeDriver: false
     }).start();
   }
-0
+
   useEffect(() => {
     switch(timesCompleted) {
       case  1 : setTimeout(() => setIsModal2Visible(true), seconds); handlePauseTrue(); break;
@@ -51,16 +50,10 @@ export function ClockProtocol(){
     }
   },[timesCompleted])
 
-  function handlePauseFalse() { setIsPaused(false) }
-  function handlePauseTrue()  { setIsPaused(true) }
-
-  function resetExercise() {
-    setTimesCompleted(0)
-    setIsModal4Visible(false)
-  }
+  function handlePauseFalse() { setIsPaused(false); }
+  function handlePauseTrue()  { setIsPaused(true);  }
 
   function handleStartClock(){
-    clearInterval(intervalFunction)
     setIsClockStarted(prev => !prev)
     setIsFinished(true)
 
@@ -70,28 +63,28 @@ export function ClockProtocol(){
     } else 
       handleChangeRespirationState('Inspire')
   }
-
-  function handleChangeRespirationState(action = "Inspire") {
-    console.log(action === "Inspire" ? "Inspire..." : "Expire...")
-    sizeMotion(action === "Inspire" ? 1 : 0)
-    setMessage(action === "Inspire" ? "Inspire..." : "Expire...")
-    setIsFinished(action === "Inspire")
+  const  handleChangeRespirationState = useCallback((action = "Inspire") => {
+    const breathing = action === "Inspire"
+    
+    sizeMotion(breathing ? 1 : 0)
+    setMessage(`${action}...`)
+    setIsFinished(breathing)
     setTimesCompleted(prev => prev + 0.5)
-  }
+  },[])
 
   useEffect(()=> {
     if(!isClockStarted || isPaused) { return }
-    console.log("Passou", isClockStarted, isPaused)
 
-    intervalFunction = setInterval(() => {
+    let intervalFunction = setInterval(() => {
+      console.log("Entrou")
       if(!isFinished)
-        handleChangeRespirationState('Inspire')
+        return handleChangeRespirationState('Inspire')
       else
-        handleChangeRespirationState('Expire')
+        return handleChangeRespirationState('Expire')
     }, seconds)
 
     return () => clearInterval(intervalFunction)
-  },[isClockStarted, isFinished, isPaused])
+  },[isClockStarted, isFinished, isPaused, handleChangeRespirationState])
 
   return(
     <View style={styles.container}>
@@ -124,7 +117,7 @@ export function ClockProtocol(){
         title={`Se sente melhor? ${'\n'} Quais serão os próximos passos?`}
         button="two"
         restart
-        resetFunction={resetExercise}
+        resetFunction={()=> { setTimesCompleted(0); setIsModal4Visible(false) }}
         isVisible={isModal4Visible}
         closeModal={() => {setIsModal4Visible(false); handlePauseFalse()}}
       />
