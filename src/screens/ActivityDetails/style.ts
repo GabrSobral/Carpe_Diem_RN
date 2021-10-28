@@ -21,7 +21,9 @@ export const styles = StyleSheet.create({
     width: 60,
     borderRadius: 30,
     marginRight: 16,
-    backgroundColor: theme.colors.blue600
+    backgroundColor: theme.colors.blue600,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   contentSelectedContainer: {
     flex: 1,

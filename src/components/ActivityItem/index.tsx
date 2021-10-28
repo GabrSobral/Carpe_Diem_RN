@@ -8,6 +8,7 @@ import { styles } from './style'
 import { useNavigation } from "@react-navigation/native";
 import { theme } from "../../styles/theme";
 import { MaterialIcons } from "@expo/vector-icons";
+import { ActivitiesIcons } from "../ActivitiesIcons";
 
 interface ActivityItemProps extends RectButtonProps{
   item: ActivitiesProps;
@@ -17,7 +18,7 @@ export function ActivityItem({ item, ...rest }: ActivityItemProps){
   return(
     <RectButton style={styles.container} rippleColor={theme.colors.blue600} {...rest} >
       <View style={styles.iconContainer}>
-
+        <ActivitiesIcons category={item.category.name}/>
       </View>
       <View style={styles.contentContainer}>
         <View style={styles.titleContainer}>
