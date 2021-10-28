@@ -3,6 +3,8 @@ import AppLoading from 'expo-app-loading'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
+import { useUsers } from '../contexts/UserContext'
+
 import { SignIn } from '../screens/SignIn'
 import { SignUp } from '../screens/SignUp'
 import { QuestionnaireInitial } from '../screens/QuestionnaireInitial'
@@ -14,11 +16,13 @@ import { ChangePassword } from '../screens/ChangePassword'
 import { MyFeedbacks } from '../screens/MyFeedbacks'
 import { ActivityDetailsFeedback } from '../screens/ActivityDetailsFeedback'
 
-import { useUsers } from '../contexts/UserContext'
 import { Onboarding } from '../screens/Onboarding'
-import { ClockProtocol } from '../screens/Protocol/Clock'
 import { ForgotPassword } from '../screens/ForgotPassword'
 import { ResetPassword } from '../screens/ResetPassword'
+
+import { ClockProtocol } from '../screens/Protocol/Clock'
+import { MusclesRelaxing } from '../screens/Protocol/MusclesRelaxing'
+import { GuidedImagination } from '../screens/Protocol/GuidedImagination'
 
 export function Routes(){
   const { user } = useUsers()
@@ -53,6 +57,8 @@ export function Routes(){
               <Screen name="QuestionnaireAfter"      component={QuestionnaireAfter}/>
               
               <Screen name="ClockProtocol"           component={ClockProtocol}/>
+              <Screen name="MusclesRelaxing"         component={MusclesRelaxing}/>
+              <Screen name="GuidedImagination"       component={GuidedImagination}/>
             </>))
          }
       </Navigator>   
