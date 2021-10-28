@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import LottieView from 'lottie-react-native'
 import { Feather } from '@expo/vector-icons'
-import { View, Text, StatusBar, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, StatusBar, FlatList } from 'react-native'
 
 import background from '../../../../assets/background.json'
 import data from './guide.json'
@@ -12,11 +12,11 @@ import { RectButton } from 'react-native-gesture-handler'
 
 export function GuidedImagination() {
   const [ currentText, setCurrentText ] = useState(1)
-  const [ isPaused, setIsPaused ] = useState(false)
+  const [ isPaused, setIsPaused ] = useState(true)
   const list = useRef(null)
 
   useEffect(() => {
-    if(isPaused || (currentText >= data.length - 2)) { return }
+    if(isPaused || (currentText >= data.length - 1)) { return }
 
     let interval = setInterval(
       () => {
@@ -24,10 +24,10 @@ export function GuidedImagination() {
           list?.current.scrollToIndex({
             animated: true, 
             index: Number(currentText), 
-            viewPosition:0
+            viewPosition:0.5
           });
         setCurrentText(prev => prev +1)
-      }, 1000)
+      }, data[currentText].time * 1000)
 
     return () => clearInterval(interval)
   },[data, currentText, isPaused])
@@ -70,10 +70,10 @@ export function GuidedImagination() {
       <RectButton 
         onPress={() => setIsPaused(prev => !prev)}
         style={[styles.button, 
-          { backgroundColor: isPaused ? theme.colors.red300 : theme.colors.blue400 }]} 
+          { backgroundColor: !isPaused ? theme.colors.red300 : theme.colors.blue400 }]} 
       >
         <Feather 
-          name={isPaused ? "pause" : "play"}
+          name={!isPaused ? "pause" : "play"}
           size={35}
           color={theme.colors.white}
         /> 

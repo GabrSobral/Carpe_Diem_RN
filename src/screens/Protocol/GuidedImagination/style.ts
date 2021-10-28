@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.blue300
   },
   textContainer: {
-    height: 74,
+    height: 130,
     borderRadius: 7,
     backgroundColor:  '#95959570',
     paddingHorizontal: 24,
