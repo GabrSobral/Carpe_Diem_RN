@@ -16,6 +16,7 @@ interface UrgentModalModalProps {
   closeModal: () => void;
   resetFunction?: () => void;
   restart?: boolean;
+  nextRoute?: string;
 }
 interface Button {
   text: string;
@@ -31,7 +32,8 @@ export function ProtocolNextModal({
   isVisible, 
   restart,
   closeModal, 
-  resetFunction 
+  resetFunction,
+  nextRoute
 }: UrgentModalModalProps){
   const { navigate } = useNavigation()
 
@@ -83,7 +85,10 @@ export function ProtocolNextModal({
             <View style={styles.finalButtonsContainer}>
               <Button 
                 text="Prosseguir" 
-                action={() => {}}
+                action={() => {
+                  closeModal();
+                  navigate(nextRoute || 'BottomTabs') as never}
+                }
                 stylesComp={[styles.button, { width: '100%'}]}
               />
       

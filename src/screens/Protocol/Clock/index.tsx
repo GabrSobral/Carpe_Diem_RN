@@ -45,8 +45,8 @@ export function ClockProtocol(){
   useEffect(() => {
     switch(timesCompleted) {
       case  1 : setTimeout(() => setIsModal2Visible(true), seconds); handlePauseTrue(); break;
-      case 3.5: setTimeout(() => setIsModal3Visible(true), seconds); handlePauseTrue(); break;
-      case  5 : setIsModal4Visible(true); handleStartClock(); break;
+      case 1.5: setTimeout(() => setIsModal3Visible(true), seconds); handlePauseTrue(); break;
+      case  3 : setIsModal4Visible(true); handleStartClock(); break;
     }
   },[timesCompleted])
 
@@ -76,7 +76,6 @@ export function ClockProtocol(){
     if(!isClockStarted || isPaused) { return }
 
     let intervalFunction = setInterval(() => {
-      console.log("Entrou")
       if(!isFinished)
         return handleChangeRespirationState('Inspire')
       else
@@ -84,7 +83,7 @@ export function ClockProtocol(){
     }, seconds)
 
     return () => clearInterval(intervalFunction)
-  },[isClockStarted, isFinished, isPaused, handleChangeRespirationState])
+  },[isClockStarted, isFinished, isPaused])
 
   return(
     <View style={styles.container}>
@@ -120,6 +119,7 @@ export function ClockProtocol(){
         resetFunction={()=> { setTimesCompleted(0); setIsModal4Visible(false) }}
         isVisible={isModal4Visible}
         closeModal={() => {setIsModal4Visible(false); handlePauseFalse()}}
+        nextRoute="MusclesRelaxing"
       />
 
       <ProtocolHeader/>
