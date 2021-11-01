@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
 
 import { SignHeader } from '../../components/SignHeader'
 import { Button } from '../../components/Button';
@@ -16,6 +17,8 @@ export function ChangePassword() {
   const [ errorMessage, setErrorMessage ] = useState("")
   const [ isLoading, setIsLoading ] = useState(false)
   const [ isModalVisible, setIsModalVisible ] = useState(false)
+
+  const { goBack } = useNavigation()
 
   async function Change(){
     if(newPassword !== confirmPassword){
@@ -43,6 +46,7 @@ export function ChangePassword() {
         animation="password"
         description="Sua senha foi alterada com sucesso 😃"
         isVisible={isModalVisible}
+        confirmFunction={() => { setIsModalVisible(false); goBack() }}
       />
       <SignHeader title="Senha" button="Voltar"/>
 

@@ -11,7 +11,6 @@ import { ProfileHeader } from '../../components/ProfileHeader'
 import { styles } from './style'
 import { theme } from '../../styles/theme'
 import { useUsers } from '../../contexts/UserContext'
-import { api } from '../../services/api';
 
 export function Profile(){
   const [ isLogoutModalVisible, setIsLogoutModalVisible ] = useState(false)
@@ -39,7 +38,6 @@ export function Profile(){
         <View style={styles.profileContentContainer}>
           <View style={styles.profileContentItem}>
             <Text style={styles.profileContentItemText}>Atividades Realizadas:</Text>
-
             <Text style={styles.profileContentValueText}>{user?.all_activities_finished}</Text>
           </View>
 
