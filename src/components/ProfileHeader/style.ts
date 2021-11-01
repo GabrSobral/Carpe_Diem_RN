@@ -68,24 +68,22 @@ export const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   userName: {
+    flex: 1,
     color: theme.colors.white,
     fontSize: 18,
     fontFamily: fonts.text,
-    minWidth: '100%',
   },
   inputNameContainer:{
     flex: 1,
     width: '100%',
-    paddingHorizontal: 5
   },
   inputName:{
-    flex: 1,
     paddingHorizontal: 16,
     color: theme.colors.white,
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.white,
     fontSize: 16,
-    fontFamily: fonts.text
+    fontFamily: fonts.text,
   },
   saveNameButton:{
     width: '100%',

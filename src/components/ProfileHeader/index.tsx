@@ -104,9 +104,12 @@ export function ProfileHeader(){
         }
       </View>
 
-      <Text style={styles.userName}>
+      
         {!isEditEnabled ? 
-          user?.name 
+          <Text style={styles.userName} numberOfLines={3}>
+            {user?.name }
+          </Text>
+
           : 
           <View style={styles.inputNameContainer}>
             <TextInput
@@ -128,7 +131,6 @@ export function ProfileHeader(){
             </RectButton>
           </View>
         }
-      </Text>
 
       <Text style={styles.registratedAt}>Registrado em: {createdAtFormatted}</Text>
     </View>
