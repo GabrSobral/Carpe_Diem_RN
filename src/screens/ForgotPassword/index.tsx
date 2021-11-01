@@ -15,7 +15,7 @@ export function ForgotPassword(){
   const [ errorMessage, setErrorMessage ] = useState("")
   const [ isLoading, setIsLoading ] = useState(false)
   const [ email, setEmail ] = useState('')
-  const { goBack } = useNavigation()
+  const { navigate } = useNavigation() as any
 
   async function SendMail(){
     setIsLoading(true);
@@ -34,10 +34,11 @@ export function ForgotPassword(){
         isVisible={isModalVisible}
         title="Enviado..."
         animation="sendMail"
-        description={`Nós enviamos um email com uma chave para trocar a sua senha, verifique na sua [caixa principal.${'\n'}(lembre-se de verificar na sua caixa de spam também).`}
+        description={`Nós enviamos um email com um código para trocar a sua senha, verifique na sua caixa principal.${'\n'}(lembre-se de verificar na sua caixa de spam também).`}
+        finishButtonText="Inserir código"
         confirmFunction={() => {
           setIsModalVisible(false)
-          goBack()
+          navigate('InsertCode', { email })
         }}
       />
       <SignHeader title="Senha" button="Entrar"/>

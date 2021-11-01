@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/core';
 import { Text, View, KeyboardAvoidingView } from 'react-native';
 
 import { SignHeader } from '../../components/SignHeader'
@@ -7,28 +8,65 @@ import { Input } from '../../components/Input';
 
 import { styles } from '../SignIn/style'
 import { api } from '../../services/api';
+import { ModalComponent } from '../../components/Modal';
+
+interface Params {
+  email: string;
+  code: string;
+}
 
 export function ResetPassword(){
   const [ password, setPassword ] = useState('')
   const [ confirmPassword, setConfirmPassword ] = useState('')
 
+  const [ isModalVisible, setIsModalVisible ] = useState(false)
+  const [ isModalTokenVisible, setIsModalTokenVisible ] = useState(false)
   const [ isLoading, setIsLoading ] = useState(false)
   const [ errorMessage, setErrorMessage ] = useState("")
 
-  async function ResetPassword(){
+  const { params } = useRoute()
+  const { navigate } = useNavigation()
+  const { email, code } = params as Params
+
+  async function resetPassword(){
+    if(confirmPassword !== password)
+      return setErrorMessage("As duas senhas não estão iguais!")
+
     setIsLoading(true);
-    const {data} = await api.post('/users/reset-password', 
-      { email: "", token: "", newPassword: password })
+    try{
+      await api.post('/users/reset-password', { email, token: code, newPassword: password })
+      setIsModalVisible(true)
 
-    if(data.response.data.error)
-     setErrorMessage(data.response.data.error)
+    } catch(error: any) {
+      if(error.response.data.error === "Password token invalid")
+        return setIsModalTokenVisible(true)
 
-    setIsLoading(false)
+      setErrorMessage(error.response.data.error)
+    } finally {
+      setIsLoading(false)
+    }
   }
   
   return(
     <View style={[styles.container, { justifyContent: 'space-evenly' }]}>
-      <SignHeader title="Senha" button="Entrar"/>
+      <ModalComponent
+        closeModal={() => setIsModalVisible(false)}
+        title="Sucesso!"
+        animation="password"
+        description="Sua senha foi alterada com sucesso 😃"
+        isVisible={isModalVisible}
+        confirmFunction={() => { setIsModalVisible(false); navigate('SignIn')}}
+        finishButtonText="Voltar à tela de login"
+      />
+      <ModalComponent
+        closeModal={() => setIsModalVisible(false)}
+        title="Opa!"
+        description="Seu código de verificação está inválido, tente novamente!"
+        isVisible={isModalTokenVisible}
+        confirmFunction={() => { setIsModalVisible(false); navigate('InsertCode', { email })}}
+        finishButtonText="Inserir novamente"
+      />
+      <SignHeader title="Senha"/>
       
       <Text style={styles.forgotPasswordTitle}>
         Insira sua nova senha.
@@ -36,22 +74,22 @@ export function ResetPassword(){
 
       <KeyboardAvoidingView style={styles.formContainer} behavior='height'>
         <Input 
+          secureTextEntry={true}
           icon="password"
           title="Nova senha"
           isFilled={!!password}
           onChangeText={setPassword}
           value={password}
-          keyboardType="email-address"
-          textContentType="emailAddress"
+          textContentType="password"
         />
         <Input 
+          secureTextEntry={true}
           icon="lockOpen"
           title="Confirme nova senha"
           isFilled={!!confirmPassword}
           onChangeText={setConfirmPassword}
           value={confirmPassword}
-          keyboardType="email-address"
-          textContentType="emailAddress"
+          textContentType="password"
         />
 
         { errorMessage !== '' && <Text style={styles.errorMessage}>{errorMessage}</Text>}
@@ -59,7 +97,7 @@ export function ResetPassword(){
         <Button
           title="Confirmar"
           isLoading={isLoading}
-          onPress={ResetPassword}
+          onPress={resetPassword}
           disabled={(password && confirmPassword && !isLoading) ? false : true}
         />
       </KeyboardAvoidingView>
