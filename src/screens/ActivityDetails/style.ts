@@ -21,20 +21,23 @@ export const styles = StyleSheet.create({
     width: 60,
     borderRadius: 30,
     marginRight: 16,
-    backgroundColor: theme.colors.blue600
+    backgroundColor: theme.colors.blue600,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   contentSelectedContainer: {
     flex: 1,
   },
   title: {
     color: theme.colors.white,
-    fontSize: 24,
+    fontSize: 19,
     textAlign: 'left',
     fontFamily: fonts.heading,
   },
   subtitle: {
     color: theme.colors.gray100,
     fontFamily: fonts.text,
+    fontSize: 14
   },
   bodyContainer: {
     width: '100%',
@@ -50,7 +53,8 @@ export const styles = StyleSheet.create({
   feedbackTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    flexWrap: 'wrap'
   },
   feedbackText: {
     color: theme.colors.text,

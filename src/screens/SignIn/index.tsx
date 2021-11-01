@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, StatusBar } from 'react-native';
+import { Text, View, StatusBar, KeyboardAvoidingView } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler'
 
 import { SignHeader } from '../../components/SignHeader'
@@ -7,10 +7,11 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 
 import { styles } from './style'
-import { StackActions, useNavigation } from '@react-navigation/native';
 import { useUsers } from '../../contexts/UserContext';
+import { useNavigation } from '@react-navigation/core';
 
 export function SignIn() {
+  const { navigate } = useNavigation()
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ isLoading, setIsLoading ] = useState(false)
@@ -30,15 +31,9 @@ export function SignIn() {
 
   return (
     <View style={styles.container}>
-      <StatusBar  
-        barStyle="dark-content"
-        backgroundColor="transparent"
-        translucent
-      />
-
       <SignHeader title="Entrar" button="Cadastrar"/>
 
-      <View style={styles.formContainer}>
+      <KeyboardAvoidingView style={styles.formContainer} behavior='height'>
         <Input 
           icon="email"
           title="Email"
@@ -59,9 +54,9 @@ export function SignIn() {
           textContentType="password"
         />
 
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
+        { errorMessage !== '' && <Text style={styles.errorMessage}>{errorMessage}</Text>}
 
-        <RectButton>
+        <RectButton onPress={() => navigate('ForgotPassword' as never)}>
           <Text style={styles.forgotPasswordText}>Esqueci minha senha</Text>
         </RectButton>
 
@@ -71,7 +66,7 @@ export function SignIn() {
           onPress={SignIn}
           disabled={(email && password && !isLoading) ? false : true}
         />
-      </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }

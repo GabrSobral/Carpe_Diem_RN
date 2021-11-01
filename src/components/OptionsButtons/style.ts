@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
   },
   itemText: {
     color: theme.colors.text,
-    fontSize: 19,
+    fontSize: 18,
     fontFamily: fonts.text
   },
   optionsContainer: {

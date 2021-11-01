@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
 import LottieView from 'lottie-react-native'
-import { View, Text, Modal, TouchableOpacity, Animated } from 'react-native'
+import { View, Text, Modal, TouchableOpacity, Animated, Alert } from 'react-native'
 
 import alertAnimation from '../../../assets/alert.json'
 import { styles } from './style'
-import { theme } from "../../styles/theme";
 import { api } from "../../services/api";
+import { loadUser } from "../../utils/handleStorage";
 
 interface UrgentModalModalProps {
   isVisible: boolean;
@@ -16,12 +16,26 @@ interface UrgentModalModalProps {
 export function UrgentModal({ isVisible, closeModal }: UrgentModalModalProps){
   const widthValue = useRef(new Animated.Value(0)).current
   const widthAnim = widthValue.interpolate({ inputRange: [0, 1], outputRange: ['0%', '100%'] })
+  const { navigate } = useNavigation()
   let timer: NodeJS.Timeout;
 
   useEffect(() => startAnimation(), [])
 
   async function confirmFunction(){
-    await api.post('/users/sms', { to: "5513991599324" })
+    clearTimeout(timer)
+    const userData = await loadUser()
+
+    if(userData && userData.emergency_number) {
+      try{
+        await api.post('/users/sms', { to: userData?.emergency_number })
+      } catch(error: any){
+        console.log(error.response)
+      }
+    } else {
+      Alert.alert("Nenhum número de emergência foi cadastrado, não foi possível enviar a mensagem")
+    }
+    
+    navigate("ClockProtocol" as never)
     closeModal()
   }
   
@@ -78,7 +92,7 @@ export function UrgentModal({ isVisible, closeModal }: UrgentModalModalProps){
                 closeModal();
               }}
             >
-              <Text style={styles.buttonText}>sim</Text>
+              <Text style={styles.buttonText}>Sim</Text>
             </TouchableOpacity>
           </View>
         </View>

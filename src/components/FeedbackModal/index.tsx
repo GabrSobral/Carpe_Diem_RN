@@ -58,7 +58,7 @@ export function FeedbackModal({ isVisible, closeModal, activity }: FeedbackModal
       <View style={styles.container}>
         <View style={styles.popup}>
           <TouchableOpacity onPress={closeModal} style={styles.closeModalButton}>
-            <Feather name="x" size={32} color={theme.colors.text}/>
+            <Feather name="x" size={24} color={theme.colors.text}/>
           </TouchableOpacity>
 
           <Text style={styles.title}>Sua opinião é muito importante para nós!</Text>
@@ -70,7 +70,11 @@ export function FeedbackModal({ isVisible, closeModal, activity }: FeedbackModal
               style={styles.feedbackButton} 
               onPress={() => handleClick(true)}
             >
-              <MaterialIcons name={feedback === true ? "thumb-up-alt" : "thumb-up-off-alt"}size={50} color={theme.colors.green100}/>
+              <MaterialIcons 
+                name={feedback === true ? "thumb-up-alt" : "thumb-up-off-alt"}
+                size={50} 
+                color={theme.colors.green100}
+              />
               <Text style={[styles.feedbackButtonText, { color: theme.colors.green300 }]}>Gostei!</Text>
             </TouchableOpacity>
 
@@ -80,7 +84,11 @@ export function FeedbackModal({ isVisible, closeModal, activity }: FeedbackModal
               onPress={() => handleClick(false)}
             >
               
-              <MaterialIcons name={feedback === false ? "thumb-down-alt" : "thumb-down-off-alt"} size={50} color={theme.colors.red100}/>
+              <MaterialIcons 
+                name={feedback === false ? "thumb-down-alt" : "thumb-down-off-alt"} 
+                size={50} 
+                color={theme.colors.red100}
+              />
               <Text style={[styles.feedbackButtonText, { color: theme.colors.red300 }]}>Não gostei!</Text>
             </TouchableOpacity>
           </View>

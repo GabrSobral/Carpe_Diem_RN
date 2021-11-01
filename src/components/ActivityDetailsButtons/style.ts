@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.green500
   },
   handleText: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
     color: theme.colors.white
   }

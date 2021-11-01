@@ -3,7 +3,7 @@ import { createContext, ReactNode, useContext, useState, useEffect } from "react
 import { api } from "../services/api";
 import { ActivitiesProps } from "../types/activity";
 import { User } from "../types/user";
-import { loadUser, removeActivity, removeUser, saveActivities, saveUser } from "../utils/handleStorage";
+import { loadRefreshToken, loadUser, removeActivity, removeRefreshToken, removeUser, saveActivities, saveRefreshToken, saveUser } from "../utils/handleStorage";
 import { getToken, removeToken, setToken } from "../utils/handleToken";
 
 interface UserProviderProps {
@@ -30,9 +30,9 @@ interface SignResult {
 }
 interface UserContextProps {
   Sign: ({name, password, email, query}: SignProps) => any;
-  username: String;
   Logout: () => Promise<unknown>;
   user?: User;
+  isRequested: boolean;
   handleFinishActivity: (activity_id: string) => Promise<void>;
   fetchActivities: () => Promise<unknown>;
   activities: ActivitiesProps[];
@@ -42,14 +42,11 @@ interface UserContextProps {
   feedbacks: ActivitiesProps[];
   changeFeedbackFromState: (activity: ActivitiesProps, newFeedback: boolean | undefined) => void;
   removeFeedbackFromState: (activity_id: string) => void;
-  firstAccess: boolean;
 }
 
 const UserContext = createContext({} as UserContextProps)
 
 export function UserProvider({ children }: UserProviderProps){
-  const [ firstAccess, setFirstAccess ] = useState(true)
-  const [ username, setUsername ] = useState('')
   const [ activities, setActivities ] = useState<ActivitiesProps[]>([])
   const [ feedbacks, setFeedbacks ] = useState<ActivitiesProps[]>([])
   const [ isRequested, setIsRequested ] = useState(false)
@@ -57,13 +54,26 @@ export function UserProvider({ children }: UserProviderProps){
 
   useEffect(() => {
     (async () => {
-      if(!await getToken()) { return }
       const userStore = await loadUser()
-      setFirstAccess(false)
-      if(userStore !== undefined){
+      
+      if(JSON.stringify(userStore) !== "{}" && userStore !== undefined){
+        const refreshTokenStore = await loadRefreshToken()
         setUser(userStore)
-        const firstName = userStore.name.split(' ')[0]
-        setUsername(firstName)
+        
+        if(refreshTokenStore){
+          try{
+            const { data } = await api.post('/refresh-token', 
+              { refresh_token: refreshTokenStore.id})
+            await setToken(data.token)
+
+            if(data?.refreshToken) {
+              await saveRefreshToken(data.refreshToken)
+              await saveUser(userStore)
+            }
+          } catch(error: any) {
+            console.log(error.response.data.error)
+          }
+        }
       }
     })()
   },[]);
@@ -71,22 +81,23 @@ export function UserProvider({ children }: UserProviderProps){
   const fetchActivities = useCallback(async () => {
     try{
       const { data } = await api.get('/activity/get-activities')
-
       await saveActivities(data)
       const storedUser = await loadUser()
 
-      storedUser.activities_finished_today = 0;
+      storedUser && (storedUser.activities_finished_today = 0);
       setUser(storedUser)
       setActivities(data);
 
-    } catch(error) {
+    } catch(error: any) {
+      console.log(error.response.data)
       if(error.response.data.error === 
         "You already request the activities, try again tomorrow") {
+          console.log(error.response.data.error)
           const { data } = await api.get('/activity/my-list')
           await saveActivities(data)
           setActivities(data);
         }
-      }  
+    }  
   },[])
 
   const fetchFeedbacks = useCallback(async() => {
@@ -101,11 +112,9 @@ export function UserProvider({ children }: UserProviderProps){
 
     try {
       const { data } = await api.post(query, { name, email, password })
-      
-      setToken(data.token)
+      await saveRefreshToken(data.refreshToken.refreshToken)
+      await setToken(data.token)
       await saveUser(data.user)
-      const firstName = data.user.name.split(' ')[0]
-      setUsername(firstName)
       
       result.data = data
       result.message = "ok"
@@ -118,11 +127,11 @@ export function UserProvider({ children }: UserProviderProps){
   }
 
   function Logout(){
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       removeUser()
       removeActivity()
       removeToken()
-      setUsername('')
+      removeRefreshToken()
       setUser(undefined)
       setActivities([])
       setFeedbacks([])
@@ -157,7 +166,7 @@ export function UserProvider({ children }: UserProviderProps){
     await saveActivities(newArray)
 
     const all_activities_finished = (user?.all_activities_finished || 0) + 1;
-    const activities_finished_today = (user?.activities_finished_today || 0) + 1;
+    const activities_finished_today = (user?.activities_finished_today || 0) +1;
 
     await handleUpdate({ all_activities_finished, activities_finished_today })
     await saveUser(newUser)
@@ -218,9 +227,9 @@ export function UserProvider({ children }: UserProviderProps){
     <UserContext.Provider 
       value={{
         Sign,
-        username,
         Logout,
         user,
+        isRequested,
         handleFinishActivity,
         fetchActivities,
         activities,
@@ -230,7 +239,6 @@ export function UserProvider({ children }: UserProviderProps){
         feedbacks,
         changeFeedbackFromState,
         removeFeedbackFromState,
-        firstAccess
       }}>
       {children}
     </UserContext.Provider>

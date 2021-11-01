@@ -5,7 +5,7 @@ import { theme } from "../../styles/theme";
 export const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: 70,
+    height: 60,
     borderRadius: 7,
     backgroundColor: theme.colors.blue300,
     alignItems:'center',
@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     color: theme.colors.white,
-    fontSize: 22,
+    fontSize: 18,
     fontFamily: fonts.heading
   }
 })

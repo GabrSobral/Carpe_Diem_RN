@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.white,
+    overflow: 'scroll',
   },
   titleContainer: {
     width: '100%',
@@ -14,17 +15,27 @@ export const styles = StyleSheet.create({
     padding: 16,
     zIndex: 5,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginVertical: 10
   },
   title: {
     color: theme.colors.white,
-    fontSize: 32,
-    fontFamily: fonts.heading,
+    fontSize:24,
     zIndex: 10
   },
   subtitle: {
     color: theme.colors.gray100,
     textAlign: 'center',
+    fontSize: 14
+  },
+  noMoreActivitiesContainer:{
+    zIndex: 10,
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center',
+  },
+  noMoreActivitiesText:{
     fontFamily: fonts.text,
+    color: theme.colors.text
   }
 })

@@ -10,7 +10,7 @@ import { api } from '../../services/api'
 import { theme } from '../../styles/theme'
 import { Question } from '../../types/question'
 
-import { styles } from './style'
+import { styles } from '../QuestionnaireInitial/style'
 
 interface QuestionsAnsAnswers {
   question: Question;
@@ -34,12 +34,22 @@ export function QuestionnaireAfter(){
         
       const answers = await api.get('/answer/my-list')
 
-      data.forEach((item: Question, index: number) => {
-        questionsAnsAnswers.push({
-          question: item, answer: Number(answers.data[index].answer) || 0
+      data.forEach((item: Question) => {
+        let exists = false
+        answers.data.forEach((answer:any) => {
+          if(String(item.id) === String(answer.question)){
+            exists = true
+            questionsAnsAnswers.push({
+              question: item, answer: Number(answer.answer) || 0
+            })
+          }
         })
+        if(!exists){
+          questionsAnsAnswers.push({
+            question: item, answer: null
+          })
+        }
       })   
-
       setQuestions(questionsAnsAnswers)
     })();
   }, [])
@@ -65,7 +75,7 @@ export function QuestionnaireAfter(){
     try {
       await api.post('/answer/new', dataFormatted)
       goBack();
-    } catch(error) {
+    } catch(error: any) {
       setErrorMessage(error.response.data.error)
     } finally {
       setIsLoading(false)

@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   },
   popup:{
     width: '90%',
-    padding: 16,
+    padding: 14,
     borderRadius: 10,
     backgroundColor: theme.colors.white,
     alignItems: 'center'
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     marginLeft: 'auto'
   },
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: fonts.heading,
     color: theme.colors.text,
     textAlign: 'center'
@@ -29,7 +29,8 @@ export const styles = StyleSheet.create({
     marginTop: 6,
     fontFamily: fonts.text,
     color: theme.colors.text,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize: 15
   },
 
   dualButtonsContainer: {
@@ -68,7 +69,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center'
   },
   feedbackButtonText: {
-    fontSize: 23,
+    fontSize: 18,
     fontFamily: fonts.text
   }
 })

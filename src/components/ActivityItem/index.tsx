@@ -8,25 +8,22 @@ import { styles } from './style'
 import { useNavigation } from "@react-navigation/native";
 import { theme } from "../../styles/theme";
 import { MaterialIcons } from "@expo/vector-icons";
+import { ActivitiesIcons } from "../ActivitiesIcons";
 
 interface ActivityItemProps extends RectButtonProps{
   item: ActivitiesProps;
 }
 
 export function ActivityItem({ item, ...rest }: ActivityItemProps){
-  const { navigate } = useNavigation() as any
-
-  console.log(item)
-
   return(
     <RectButton style={styles.container} rippleColor={theme.colors.blue600} {...rest} >
       <View style={styles.iconContainer}>
-
+        <ActivitiesIcons category={item.category.name}/>
       </View>
       <View style={styles.contentContainer}>
         <View style={styles.titleContainer}>
-          <Text numberOfLines={1} style={styles.title}>{item.title}</Text>
-          <View>
+          <Text numberOfLines={1} style={styles.title} >{item.title}</Text>
+          <View style={{ marginLeft: 5 }}>
             { (item && item.feedback.feedback === true) &&
               <MaterialIcons name="thumb-up" color={theme.colors.green100} size={16}/>
             }
@@ -36,9 +33,7 @@ export function ActivityItem({ item, ...rest }: ActivityItemProps){
           </View>
         </View>
         <Text style={styles.subtitle}>{item.description}</Text>
-      </View>
-
-      
+      </View>  
     </RectButton>
   )
 }

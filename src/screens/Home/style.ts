@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.white
   },
   title: {
-    fontSize: 32,
+    fontSize: 24,
     fontFamily: fonts.text,
     marginBottom: 16,
     color: theme.colors.text

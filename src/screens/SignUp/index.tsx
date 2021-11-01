@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Text, View, StatusBar } from 'react-native';
+import { Text, View, KeyboardAvoidingView } from 'react-native';
 
 import { SignHeader } from '../../components/SignHeader'
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 
-import { styles } from './style'
-import { useNavigation, StackActions } from '@react-navigation/native';
+import { styles } from '../SignIn/style'
 import { useUsers } from '../../contexts/UserContext';
 
 export function SignUp() {
@@ -17,22 +16,24 @@ export function SignUp() {
   const [ isLoading, setIsLoading ] = useState(false)
   const [ errorMessage, setErrorMessage ] = useState('')
   
-  const { dispatch } = useNavigation() as any
   const { Sign } = useUsers()
 
   async function SignUp(){
     name.trim()
     email.trim()
     
-    if(password !== confirmPassword){
+    if(password !== confirmPassword)
       return setErrorMessage("Sua confirmação de senha está inválida!")
-    }
+
     setIsLoading(true)
-    
-    const result = await Sign({name, email, password, query: "/users"})
-    if(result.message !== "ok") {
-      setErrorMessage(result.message)
-      setIsLoading(false)
+    try{
+      const result = await Sign({name, email, password, query: "/users"})
+      if(result.message !== "ok") {
+        setErrorMessage(result.message)
+        setIsLoading(false)
+      }
+    } catch(error) {
+      console.log(error)
     }
   }
 
@@ -40,7 +41,7 @@ export function SignUp() {
     <View style={styles.container}>
       <SignHeader title="Cadastrar" button="Entrar"/>
 
-      <View style={styles.formContainer}>
+      <KeyboardAvoidingView style={styles.formContainer} behavior='height'>
         <Input 
           icon="person"
           title="Nome"
@@ -82,7 +83,7 @@ export function SignUp() {
           textContentType="password"
         />
 
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
+        { errorMessage !== '' && <Text style={styles.errorMessage}>{errorMessage}</Text>}
 
         <Button
           title="Confirmar"
@@ -90,7 +91,7 @@ export function SignUp() {
           onPress={SignUp}
           disabled={(name && email && password && confirmPassword && !isLoading) ? false : true}
         />
-      </View>
+      </KeyboardAvoidingView>
     </View>
   );
 }

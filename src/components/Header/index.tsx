@@ -14,7 +14,7 @@ interface HeaderProps {
 
 export function Header({ canGoBack = false }: HeaderProps){
   const [ isUrgentModalVisible, setIsUrgentModalVisible ] = useState(false)
-  const { username, user } = useUsers()
+  const { user } = useUsers()
   const { goBack } = useNavigation()
 
   return(
@@ -36,7 +36,7 @@ export function Header({ canGoBack = false }: HeaderProps){
         ) }
 
         <Text style={styles.nameGreeting}>Olá</Text> 
-        <Text style={styles.name}>{username}</Text>
+        <Text style={styles.name}>{user?.name.split(' ')[0]}</Text>
       </View>
       
       { user?.hasAnswered && (

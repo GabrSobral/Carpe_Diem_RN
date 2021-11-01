@@ -8,4 +8,11 @@ export interface User {
   created_at: Date;
   updated_at: Date;
   hasAnswered?: boolean;
+  emergency_number?: string;
+  photo?: string
+}
+export interface RefreshToken {
+  id: string;
+  user_id: string;
+  expires_in: number;
 }

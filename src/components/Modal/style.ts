@@ -11,13 +11,13 @@ export const styles = StyleSheet.create({
   },
   popup:{
     width: '90%',
-    padding: 16,
+    padding: 10,
     borderRadius: 10,
     backgroundColor: theme.colors.white,
     alignItems: 'center'
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     color: theme.colors.text,
     textAlign: 'center',
     fontFamily: fonts.heading
@@ -26,7 +26,8 @@ export const styles = StyleSheet.create({
     marginTop: 6,
     color: theme.colors.text,
     textAlign: 'center',
-    fontFamily: fonts.text
+    fontFamily: fonts.text,
+    fontSize: 13
   },
 
   dualButtonsContainer: {
@@ -39,7 +40,7 @@ export const styles = StyleSheet.create({
   buttonText: {
     color: theme.colors.white,
     fontFamily: fonts.heading,
-    fontSize: 20
+    fontSize: 18
   },
   button: {
     borderRadius: 7,

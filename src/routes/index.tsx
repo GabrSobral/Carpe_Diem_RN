@@ -3,6 +3,8 @@ import AppLoading from 'expo-app-loading'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 
+import { useUsers } from '../contexts/UserContext'
+
 import { SignIn } from '../screens/SignIn'
 import { SignUp } from '../screens/SignUp'
 import { QuestionnaireInitial } from '../screens/QuestionnaireInitial'
@@ -14,25 +16,38 @@ import { ChangePassword } from '../screens/ChangePassword'
 import { MyFeedbacks } from '../screens/MyFeedbacks'
 import { ActivityDetailsFeedback } from '../screens/ActivityDetailsFeedback'
 
-import { useUsers } from '../contexts/UserContext'
+import { Onboarding } from '../screens/Onboarding'
+import { ForgotPassword } from '../screens/ForgotPassword'
+import { ResetPassword } from '../screens/ResetPassword'
+
+import { ClockProtocol } from '../screens/Protocol/Clock'
+import { MusclesRelaxing } from '../screens/Protocol/MusclesRelaxing'
+import { GuidedImagination } from '../screens/Protocol/GuidedImagination'
+import { InsertCode } from '../screens/InsertCode'
 
 export function Routes(){
-  const { user, firstAccess } = useUsers()
+  const { user } = useUsers()
   const { Navigator, Screen } = createStackNavigator()
 
-  if(!user && firstAccess)
-    return <AppLoading/>
+  // if(!user && firstAccess)
+  //   return <AppLoading/>
 
   return (
     <NavigationContainer>
       <Navigator screenOptions={{ headerShown: false }} initialRouteName={"BottomTabs"}>
         { !user ? 
           <>
-            <Screen name="SignIn"                  component={SignIn}/>
-            <Screen name="SignUp"                  component={SignUp}/>
+            <Screen name="SignIn"                    component={SignIn}/>
+            <Screen name="SignUp"                    component={SignUp}/>
+            <Screen name="ForgotPassword"            component={ForgotPassword}/>
+            <Screen name="InsertCode"                component={InsertCode}/>
+            <Screen name="ResetPassword"             component={ResetPassword}/>
           </>
           : ((!user.hasAnswered) ? (
-            <Screen name="QuestionnaireInitial"    component={QuestionnaireInitial}/>
+            <>
+              <Screen name="Onboarding"              component={Onboarding}/>
+              <Screen name="QuestionnaireInitial"    component={QuestionnaireInitial}/>
+            </>
             ) : (
             <>
               <Screen name="BottomTabs"              component={BottomTabs}/>
@@ -42,6 +57,10 @@ export function Routes(){
               <Screen name="MyFeedbacks"             component={MyFeedbacks}/>
               <Screen name="ActivityDetailsFeedback" component={ActivityDetailsFeedback}/>
               <Screen name="QuestionnaireAfter"      component={QuestionnaireAfter}/>
+              
+              <Screen name="ClockProtocol"           component={ClockProtocol}/>
+              <Screen name="MusclesRelaxing"         component={MusclesRelaxing}/>
+              <Screen name="GuidedImagination"       component={GuidedImagination}/>
             </>))
          }
       </Navigator>   

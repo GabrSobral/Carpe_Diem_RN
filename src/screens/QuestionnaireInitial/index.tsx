@@ -61,7 +61,7 @@ export function QuestionnaireInitial(){
     try {
       await api.post('/answer/new', dataFormatted)
       await handleUpdate({ hasAnswered: true })
-    } catch(error) {
+    } catch(error: any) {
       setErrorMessage(error.response.data.error)
     } finally {
       setIsLoading(false)

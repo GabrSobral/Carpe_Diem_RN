@@ -4,7 +4,6 @@ import { theme } from "../../styles/theme";
 
 export const styles = StyleSheet.create({
   container: {
-    marginTop: 16,
     width: "100%",
     padding: 16,
     borderRadius: 7,
@@ -17,7 +16,9 @@ export const styles = StyleSheet.create({
     width: 60,
     borderRadius: 30,
     marginRight: 16,
-    backgroundColor: theme.colors.blue600
+    backgroundColor: theme.colors.blue600,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   contentContainer: {
     flex: 1,
@@ -25,18 +26,32 @@ export const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   title: {
     color: theme.colors.white,
-    fontSize: 24,
+    fontSize: 19,
     textAlign: 'left',
     fontFamily: fonts.heading,
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    flex: 1
   },
   subtitle: {
     color: theme.colors.gray100,
-    fontFamily: fonts.text
+    fontFamily: fonts.text,
+    fontSize: 12
+  },
+  buttonRemove:{
+    height: "100%",
+    width: 106,
+    borderRadius: 16,
+    borderTopRightRadius: 10,
+    alignItems: 'center',
+    position: 'relative',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.blue600,
+    paddingLeft: 15,
+    transform: [{ translateX: -16}],
   }
 })

@@ -11,6 +11,8 @@ import { ActivitiesProps } from '../../types/activity'
 import { styles } from './style'
 
 import { FeedbackModal } from '../../components/FeedbackModal'
+import { RemoveHTML } from '../../utils/handleRemoveHTML'
+import { ActivitiesIcons } from '../../components/ActivitiesIcons'
 
 interface Params {
   activity: ActivitiesProps;
@@ -39,7 +41,7 @@ export function ActivityDetails({}){
 
           <View style={styles.titleContainer}>
             <View style={styles.iconContainer}>
-
+              <ActivitiesIcons category={activity.category.name}/>
             </View>
             <View style={styles.contentSelectedContainer}>
               <Text style={styles.title}>{activity.title}</Text>
@@ -48,7 +50,7 @@ export function ActivityDetails({}){
           </View>
 
           <View style={styles.bodyContainer}>
-            <Text style={styles.body}>{activity.body}</Text>
+            <Text style={styles.body}>{RemoveHTML(activity.body)}</Text>
           </View>
 
           <View style={styles.feedbackTextContainer}>

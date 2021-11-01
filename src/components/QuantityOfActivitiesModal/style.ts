@@ -10,19 +10,21 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   popup:{
+    position: 'relative',
     width: '90%',
-    padding: 16,
+    padding: 10,
     borderRadius: 10,
     backgroundColor: theme.colors.white,
     alignItems: 'center'
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontFamily: fonts.heading,
     color: theme.colors.text
   },
   description: {
     marginTop: 6,
+    fontSize: 13,
     color: theme.colors.text,
     textAlign: 'center',
     fontFamily: fonts.text
@@ -37,7 +39,7 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     color: theme.colors.white,
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: fonts.heading
   },
   button: {
@@ -68,11 +70,40 @@ export const styles = StyleSheet.create({
   },
   buttonTextQuantity: {
     color: theme.colors.text,
-    fontSize: 20,
+    fontSize: 18,
     fontFamily: fonts.heading
   },
   selected:{
     backgroundColor: theme.colors.blue300,
     color: theme.colors.white
+  },
+
+  inputContainer:{
+    width: '100%',
+    minWidth: '100%',
+    marginTop: 12,
+  },
+  contactInput:{
+    width: '100%',
+    minWidth: '100%',
+    borderRadius: 7,
+    borderWidth: 2,
+    borderColor: theme.colors.gray200,
+    padding: 12,
+    textAlign: 'center'
+  },
+  contactbutton:{
+    minWidth: '100%',
+    borderRadius: 7,
+    padding: 16,
+    marginTop: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.blue300
+  },
+  closeButton:{
+    position:'absolute',
+    right: 16,
+    top: 16
   }
 })

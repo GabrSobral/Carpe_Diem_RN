@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
 
 import { SignHeader } from '../../components/SignHeader'
 import { Button } from '../../components/Button';
@@ -7,7 +8,6 @@ import { Input } from '../../components/Input';
 import { ModalComponent } from '../../components/Modal';
 
 import { styles } from '../SignIn/style'
-import { useNavigation } from '@react-navigation/native';
 import { api } from '../../services/api';
 
 export function ChangePassword() {
@@ -17,6 +17,8 @@ export function ChangePassword() {
   const [ errorMessage, setErrorMessage ] = useState("")
   const [ isLoading, setIsLoading ] = useState(false)
   const [ isModalVisible, setIsModalVisible ] = useState(false)
+
+  const { goBack } = useNavigation()
 
   async function Change(){
     if(newPassword !== confirmPassword){
@@ -41,8 +43,10 @@ export function ChangePassword() {
       <ModalComponent
         closeModal={() => setIsModalVisible(false)}
         title="Sucesso!"
+        animation="password"
         description="Sua senha foi alterada com sucesso 😃"
         isVisible={isModalVisible}
+        confirmFunction={() => { setIsModalVisible(false); goBack() }}
       />
       <SignHeader title="Senha" button="Voltar"/>
 
@@ -77,7 +81,7 @@ export function ChangePassword() {
           textContentType="password"
         />
 
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
+        { errorMessage !== '' && <Text style={styles.errorMessage}>{errorMessage}</Text>}
 
         <Button
           title="Salvar"
