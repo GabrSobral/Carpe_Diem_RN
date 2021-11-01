@@ -23,6 +23,7 @@ import { ResetPassword } from '../screens/ResetPassword'
 import { ClockProtocol } from '../screens/Protocol/Clock'
 import { MusclesRelaxing } from '../screens/Protocol/MusclesRelaxing'
 import { GuidedImagination } from '../screens/Protocol/GuidedImagination'
+import { InsertCode } from '../screens/InsertCode'
 
 export function Routes(){
   const { user } = useUsers()
@@ -39,6 +40,7 @@ export function Routes(){
             <Screen name="SignIn"                    component={SignIn}/>
             <Screen name="SignUp"                    component={SignUp}/>
             <Screen name="ForgotPassword"            component={ForgotPassword}/>
+            <Screen name="InsertCode"                component={InsertCode}/>
             <Screen name="ResetPassword"             component={ResetPassword}/>
           </>
           : ((!user.hasAnswered) ? (
