@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import { RectButton } from "react-native-gesture-handler";
 import { Text, View, ActivityIndicator } from 'react-native'
+import { useNavigation } from '@react-navigation/core';
 
 import { ModalComponent } from '../Modal'
-import { styles } from './style'
-import { ActivitiesProps } from '../../types/activity';
 import { useUsers } from '../../contexts/UserContext';
+import { ActivitiesProps } from '../../types/activity';
 import { theme } from '../../styles/theme';
+import { styles } from './style'
 
 interface ActivityDetailsButtonsProps {
   activity: ActivitiesProps;
@@ -16,6 +17,8 @@ export function ActivityDetailsButtons({ activity }: ActivityDetailsButtonsProps
   const [ isFinishModalVisible, setIsFinishModalVisible ] = useState(false)
   const [ isDenyModalVisible, setIsDenyModalVisible ] = useState(false)
   const [ isLoading, setIsLoading ] = useState(false)
+
+  const { goBack } = useNavigation()
 
   const { handleFinishActivity, handleDeleteActivity } = useUsers()
 
@@ -36,6 +39,11 @@ export function ActivityDetailsButtons({ activity }: ActivityDetailsButtonsProps
         isVisible={isFinishModalVisible} 
         closeModal={() => setIsFinishModalVisible(false)}
         animation="congrats"
+        finishButtonText="Voltar"
+        confirmFunction={() => {
+          setIsFinishModalVisible(false)
+          goBack()
+        }}
       />
 
       <ModalComponent 

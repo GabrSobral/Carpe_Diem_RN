@@ -17,8 +17,9 @@ interface ModalComponentProps {
   closeModal: () => void;
   title: string;
   description: string;
-  confirmFunction?: () => void;
-  animation?: "congrats" | 'trash' | 'logout' | "sendMail" | "password"
+  confirmFunction: () => void;
+  animation?: "congrats" | 'trash' | 'logout' | "sendMail" | "password",
+  finishButtonText?: string
 }
 
 const animations = {
@@ -66,9 +67,9 @@ export function ModalComponent({
   title,
   description,
   confirmFunction,
-  animation
+  animation,
+  finishButtonText
 }: ModalComponentProps){
-  const { goBack } = useNavigation()
 
   return(
     <Modal
@@ -79,9 +80,8 @@ export function ModalComponent({
     >
       <View style={styles.container}>
         <View style={styles.popup}>
-          <View>
-            {animation && animations[animation]}
-          </View>
+          {animation && animations[animation]}
+
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.description}>{description}</Text>
 
@@ -99,11 +99,7 @@ export function ModalComponent({
               <TouchableOpacity 
                 activeOpacity={0.7}
                 style={[styles.button, styles.accept]}
-                onPress={() => {
-                  confirmFunction && confirmFunction()
-                  closeModal();
-                  goBack();
-                }}
+                onPress={confirmFunction}
               >
                 <Text style={styles.buttonText}>Sim</Text>
               </TouchableOpacity>
@@ -112,12 +108,9 @@ export function ModalComponent({
               <TouchableOpacity 
                 activeOpacity={0.7}
                 style={[styles.button, styles.finishButton]} 
-                onPress={() => { 
-                  closeModal();
-                  goBack();
-                }}
+                onPress={confirmFunction}
               >
-               <Text style={styles.buttonText}>Fechar</Text>
+               <Text style={styles.buttonText}>{finishButtonText}</Text>
              </TouchableOpacity>
             }
           </View>
