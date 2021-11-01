@@ -115,7 +115,6 @@ export function UserProvider({ children }: UserProviderProps){
       await saveRefreshToken(data.refreshToken.refreshToken)
       await setToken(data.token)
       await saveUser(data.user)
-      console.log(data.user)
       
       result.data = data
       result.message = "ok"
