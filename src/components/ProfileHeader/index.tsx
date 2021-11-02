@@ -9,7 +9,7 @@ import {
   Image, 
   ActivityIndicator 
 } from 'react-native'
-import { Feather, MaterialIcons, Entypo } from '@expo/vector-icons'
+import { Feather, Entypo } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker';
 
 import { useUsers } from '../../contexts/UserContext'
@@ -88,14 +88,14 @@ export function ProfileHeader(){
           <TouchableOpacity style={styles.imageButton} onPress={pickImage}>
             <View style={styles.opacityBackgroundImage}>
               <Feather name="camera" size={24} color={theme.colors.white}/>
-            </View>
+            </View> 
             <Image source={{ uri: preview }} style={styles.image} />
           </TouchableOpacity>
           : (user?.photo ?
             <Image source={{ uri: user?.photo }} style={styles.image} />
             :
             <Entypo name="user" size={70} color={theme.colors.white}/>)
-          }
+        }
         </View>
         { (isEditEnabled && preview) &&
           <TouchableOpacity style={styles.removeImageButton} onPress={() => setPreview(undefined)}>
