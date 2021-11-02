@@ -44,7 +44,8 @@
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS"
       ],
-      "package": "com.carpe_diem"
+      "package": "com.sobral.carpe_diem",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
