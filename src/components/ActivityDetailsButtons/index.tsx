@@ -51,14 +51,19 @@ export function ActivityDetailsButtons({ activity }: ActivityDetailsButtonsProps
         description="Você tem certeza de que deseja descartar essa tarefa?"
         isVisible={isDenyModalVisible}
         dualButtons 
-        confirmFunction={() => handleDeleteActivity(activity.id)}
+        confirmFunction={async () => {
+          await handleDeleteActivity(activity.id)
+          setIsDenyModalVisible(false)
+          goBack()
+        }}
         closeModal={() => setIsDenyModalVisible(false)}
         animation="trash"
       />
 
       <RectButton 
-        style={[styles.handleButton, styles.reject]}
+        style={[styles.handleButton, styles.reject, isLoading && { opacity: 0.7 }]}
         onPress={() => setIsDenyModalVisible(true)}
+        enabled={!isLoading}
       >
         <Text style={styles.handleText}>Descartar</Text>
       </RectButton>
