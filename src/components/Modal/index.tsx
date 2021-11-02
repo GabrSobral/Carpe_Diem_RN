@@ -1,13 +1,7 @@
-import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { View, Text, Modal, TouchableOpacity } from 'react-native'
-import LottieView from 'lottie-react-native'
-
-import congratsAnimation from '../../../assets/congrats.json'
-import trashAnimation from '../../../assets/trash.json'
-import logoutAnimation from '../../../assets/logout.json'
-import mailAnimation from '../../../assets/mail.json'
-import passwordAnimation from '../../../assets/password.json'
+import React, { useState } from "react";
+import { View, Text, Modal, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { theme } from "../../styles/theme";
+import { ModalAnimations } from './animations'
 
 import { styles } from './style';
 
@@ -22,44 +16,6 @@ interface ModalComponentProps {
   finishButtonText?: string
 }
 
-const animations = {
-  congrats: 
-    <LottieView
-      source={congratsAnimation}
-      autoPlay
-      loop={false}
-      style={styles.animation}
-    />,
-  trash:
-    <LottieView
-      source={trashAnimation}
-      autoPlay
-      loop={false}
-      style={styles.animation}
-    />,
-  logout:
-    <LottieView
-      source={logoutAnimation}
-      autoPlay
-      loop={false}
-      style={styles.animation}
-    />,
-  sendMail:
-    <LottieView
-      source={mailAnimation}
-      autoPlay
-      loop={true}
-      style={styles.animation}
-    />,
-  password:
-    <LottieView
-      source={passwordAnimation}
-      autoPlay
-      loop={false}
-      style={styles.animation}
-    />
-}
-
 export function ModalComponent({ 
   isVisible, 
   closeModal, 
@@ -70,6 +26,7 @@ export function ModalComponent({
   animation,
   finishButtonText
 }: ModalComponentProps){
+  const [ isLoading, setIsLoading ] = useState(false)
 
   return(
     <Modal
@@ -80,7 +37,8 @@ export function ModalComponent({
     >
       <View style={styles.container}>
         <View style={styles.popup}>
-          {animation && animations[animation]}
+          
+          {animation && <ModalAnimations animation={animation}/>}
 
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.description}>{description}</Text>
@@ -90,7 +48,8 @@ export function ModalComponent({
               <>
               <TouchableOpacity 
                 activeOpacity={0.7}
-                style={[styles.button, styles.deny]} 
+                disabled={isLoading}
+                style={[styles.button, styles.deny, isLoading && styles.disabled]} 
                 onPress={closeModal}
               >
                 <Text style={styles.buttonText}>Não</Text>
@@ -98,10 +57,18 @@ export function ModalComponent({
 
               <TouchableOpacity 
                 activeOpacity={0.7}
-                style={[styles.button, styles.accept]}
-                onPress={confirmFunction}
+                style={[styles.button, styles.accept, isLoading && styles.disabled]}
+                disabled={isLoading}
+                onPress={() => {
+                  setIsLoading(true)
+                  confirmFunction()
+                }}
               >
-                <Text style={styles.buttonText}>Sim</Text>
+                { isLoading ? 
+                  <ActivityIndicator size={22} color={theme.colors.white}/>
+                  :
+                  <Text style={styles.buttonText}>Sim</Text>
+                }
               </TouchableOpacity>
               </>
               :
