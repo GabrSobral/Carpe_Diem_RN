@@ -22,6 +22,7 @@ export function OnboardingItem({ item }: OnboardingItemProps){
         source={item.image} 
         style={[styles.image, { width }]}
         autoPlay
+        loop={false}
         autoSize
       />
     

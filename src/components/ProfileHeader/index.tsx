@@ -54,7 +54,7 @@ export function ProfileHeader(){
     let result: any = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [3, 3],
       quality: 0.5
     });
 
@@ -74,18 +74,17 @@ export function ProfileHeader(){
         type: "image/jpg",
         uri : preview.uri,
       } as any);
+
       try {
         const userData = await api.patch('/users', data);
-        await handleUpdate({ name: newName });
-        await handleUpdate({ photo_url: userData.data.photo_url });
+        await handleUpdate({ name: newName, photo_url: userData.data.photo_url });
       } catch(error: any) {
         alert(error)
         console.log(error)
       }
     } else {
       await api.delete('/users/photo');
-      await handleUpdate({ name: newName });
-      await handleUpdate({ photo_url: undefined });
+      await handleUpdate({ name: newName, photo_url: undefined  });
     }
 
     setIsLoading(false);
@@ -96,7 +95,7 @@ export function ProfileHeader(){
     <View style={styles.profileHeaderContainer}>
       <TouchableOpacity 
         style={[
-          styles.editButton, 
+          styles.editButton,
           isEditEnabled && { elevation: 10, backgroundColor: theme.colors.blue400 }
         ]} 
         onPress={() => setIsEditEnabled(prev => !prev)}>

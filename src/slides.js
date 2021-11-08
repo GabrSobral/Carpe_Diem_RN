@@ -1,9 +1,9 @@
 export default [
   {
     id: '1',
-    title: "Titulo de teste",
-    description: "Descrição de teste para fazer volume no meu layout do onboarding",
-    image: require('../assets/activity.json')
+    title: "Confiança é tudo...",
+    description: "Você pode cadastrar um número de WhatsApp para ser chamado caso você tenha uma crise de ansiedade",
+    image: require('../assets/animation_4.json')
   },
   {
     id: '2',
