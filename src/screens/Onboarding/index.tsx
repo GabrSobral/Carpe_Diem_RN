@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { View, FlatList, Animated } from 'react-native'
+import { View, FlatList, Animated, TouchableOpacity, Text } from 'react-native'
 import { OnboardingItem } from '../../components/OnboardingItem'
 import { Paginator } from '../../components/Paginator'
 import { NextButton } from '../../components/NextButton'
@@ -30,7 +30,10 @@ export function Onboarding(){
   
   return(
     <View style={styles.container}>
-      <View style={{ flex: 3 }}>
+      <TouchableOpacity style={styles.skipButton} onPress={() => navigate('QuestionnaireInitial')}>
+        <Text style={styles.skipButtonText}>Pular</Text>
+      </TouchableOpacity>
+      <View style={{ flex: 3, zIndex: 5 }}>
         <FlatList
           ref={slidesRef}
           data={slides}
