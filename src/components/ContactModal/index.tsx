@@ -10,6 +10,7 @@ import fonts from "../../styles/fonts";
 import { InputContact } from "./InputContact";
 import { loadUser } from "../../utils/handleStorage";
 import { theme } from "../../styles/theme";
+import { api } from "../../services/api";
 
 interface QuantityOfActivitiesModalProps {
   isVisible: boolean;
@@ -18,8 +19,7 @@ interface QuantityOfActivitiesModalProps {
 
 export function ContactModal({ isVisible, closeModal }: QuantityOfActivitiesModalProps){
   const [ mask, setMask ] = useState<string>('')
-  const [ isFilled, setIsFilled ] = useState<boolean>(false)
-  
+
   const { handleUpdate } = useUsers()
 
   useEffect(() => {
@@ -47,7 +47,13 @@ export function ContactModal({ isVisible, closeModal }: QuantityOfActivitiesModa
   }
 
   async function confirmFunction(){
+    const data = new FormData()
+
     const numberWithoutSpecialCharacters = `55${mask.replace(/[^\w]/gi, '')}`
+
+    data.append('emergency_number', numberWithoutSpecialCharacters)
+
+    await api.patch('/users', data)
     await handleUpdate({ emergency_number: numberWithoutSpecialCharacters})
   }
 
