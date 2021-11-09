@@ -11,9 +11,9 @@ import { theme } from "../../../styles/theme"
 import { styles } from '../../Clock/style'
 
 export function ClockProtocol(){
+  const isPaused   = useRef(false)
+  const isFinished = useRef(false)
   const [ isClockStarted, setIsClockStarted ] = useState(false)
-  const [ isPaused, setIsPaused ] =             useState(false)
-  const [ isFinished, setIsFinished ] =         useState(false)
   const [ message, setMessage ] =               useState('Começar')
   const [ timesCompleted, setTimesCompleted ] = useState(0)
   
@@ -50,12 +50,21 @@ export function ClockProtocol(){
     }
   },[timesCompleted])
 
-  function handlePauseFalse() { setIsPaused(false); }
-  function handlePauseTrue()  { setIsPaused(true);  }
+  function handlePauseFalse() { isPaused.current = false; }
+  function handlePauseTrue()  { isPaused.current = true;  }
+
+  const handleChangeRespirationState = useCallback((action = "Inspire") => {
+    const breathing = action === "Inspire"
+    
+    sizeMotion(breathing ? 1 : 0)
+    setMessage(`${action}...`)
+    isFinished.current = breathing
+    setTimesCompleted(prev => prev + 0.5)
+  },[isFinished.current])
 
   function handleStartClock(){
     setIsClockStarted(prev => !prev)
-    setIsFinished(true)
+    isFinished.current = true
 
     if(isClockStarted) {
       setMessage("Pausado...")
@@ -63,27 +72,21 @@ export function ClockProtocol(){
     } else 
       handleChangeRespirationState('Inspire')
   }
-  const  handleChangeRespirationState = useCallback((action = "Inspire") => {
-    const breathing = action === "Inspire"
-    
-    sizeMotion(breathing ? 1 : 0)
-    setMessage(`${action}...`)
-    setIsFinished(breathing)
-    setTimesCompleted(prev => prev + 0.5)
-  },[])
-
+  
   useEffect(()=> {
-    if(!isClockStarted || isPaused) { return }
+    if(!isClockStarted || isPaused.current) { return }
 
-    let intervalFunction = setInterval(() => {
-      if(!isFinished)
-        return handleChangeRespirationState('Inspire')
+    console.log("Entrou no UseEffect")
+    const intervalFunction = setInterval(() => {
+      console.log("Entrou no interval")
+      if(!isFinished.current)
+        handleChangeRespirationState('Inspire')
       else
-        return handleChangeRespirationState('Expire')
+        handleChangeRespirationState('Expire')
     }, seconds)
 
     return () => clearInterval(intervalFunction)
-  },[isClockStarted, isFinished, isPaused])
+  },[isClockStarted, isPaused.current, isFinished.current])
 
   return(
     <View style={styles.container}>
@@ -131,7 +134,7 @@ export function ClockProtocol(){
           <View style={styles.circularContainer}>
             <Animated.View style={[ styles.circularFill, sizeAnim ]}/>
           </View>
-          <Timer isClockActive={(isClockStarted && !isPaused)}/>
+          <Timer isClockActive={(isClockStarted && !isPaused.current)}/>
         </View>
 
         <RectButton 
