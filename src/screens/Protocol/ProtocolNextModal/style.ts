@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.blue300
   },
   returnToHomeButton:{
-    backgroundColor: theme.colors.red300,
+    backgroundColor: theme.colors.green300,
     width: '100%',
     padding: 16,
     borderRadius: 7,

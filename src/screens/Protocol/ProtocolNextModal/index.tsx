@@ -10,7 +10,9 @@ import { Feather, MaterialIcons } from "@expo/vector-icons";
 interface UrgentModalModalProps {
   title: string;
   description?: string;
-  button: "single" | "two" |"finish";
+  button: "single" | "two";
+  secondButtonText?: string;
+  secondButtonFunction?: () => void;
   textSingleButton?: "Prosseguir" | "Entendido"
   isVisible: boolean;
   closeModal: () => void;
@@ -33,7 +35,9 @@ export function ProtocolNextModal({
   restart,
   closeModal, 
   resetFunction,
-  nextRoute
+  nextRoute,
+  secondButtonFunction,
+  secondButtonText = 'Prosseguir'
 }: UrgentModalModalProps){
   const { navigate } = useNavigation()
 
@@ -84,16 +88,13 @@ export function ProtocolNextModal({
             button === "two" &&      
             <View style={styles.finalButtonsContainer}>
               <Button 
-                text="Prosseguir" 
-                action={() => {
-                  closeModal();
-                  navigate(nextRoute || 'BottomTabs') as never}
-                }
+                text={secondButtonText} 
+                action={secondButtonFunction}
                 stylesComp={[styles.button, { width: '100%'}]}
               />
       
               <Button 
-                text="Retornar para a tela inicial" 
+                text="Finalizar, pois estou melhor!" 
                 action={() => {
                   closeModal();
                   navigate('BottomTabs' as never)
@@ -101,32 +102,6 @@ export function ProtocolNextModal({
                 stylesComp={styles.returnToHomeButton}
               />
             </View>
-          }
-          { 
-            button === "finish" &&
-              <View style={styles.finalButtonsContainer}>
-                <View style={styles.repeatAndNextContainer}>
-                  <Button 
-                    text="Voltar" 
-                    action={resetFunction}
-                    stylesComp={styles.button}
-                  />
-                  <Button 
-                    text="Prosseguir" 
-                    action={() => {}}
-                    stylesComp={styles.button}
-                  />
-                </View>
-        
-                <Button 
-                  text="Retornar para a tela inicial" 
-                  action={() => {
-                    closeModal();
-                    navigate('BottomTabs' as never)
-                  }}
-                  stylesComp={styles.returnToHomeButton}
-                />
-              </View>
           }
         </View>
       </View>
