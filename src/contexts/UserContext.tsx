@@ -1,10 +1,9 @@
-import React,{ useCallback } from "react";
-import { createContext, ReactNode, useContext, useState, useEffect } from "react";
+import React,{ useCallback, createContext, ReactNode, useContext, useState, useEffect } from "react";
 import { api } from "../services/api";
 import { ActivitiesProps } from "../types/activity";
 import { User } from "../types/user";
 import { loadRefreshToken, loadUser, removeActivity, removeRefreshToken, removeUser, saveActivities, saveRefreshToken, saveUser } from "../utils/handleStorage";
-import { getToken, removeToken, setToken } from "../utils/handleToken";
+import { removeToken, setToken } from "../utils/handleToken";
 
 interface UserProviderProps {
   children: ReactNode;
@@ -31,7 +30,7 @@ interface SignResult {
 interface UserContextProps {
   Sign: ({name, password, email, query}: SignProps) => any;
   Logout: () => Promise<unknown>;
-  user?: User;
+  user?: User | null;
   isRequested: boolean;
   handleFinishActivity: (activity_id: string) => Promise<void>;
   fetchActivities: () => Promise<unknown>;
@@ -50,7 +49,7 @@ export function UserProvider({ children }: UserProviderProps){
   const [ activities, setActivities ] = useState<ActivitiesProps[]>([])
   const [ feedbacks, setFeedbacks ] = useState<ActivitiesProps[]>([])
   const [ isRequested, setIsRequested ] = useState(false)
-  const [ user, setUser ] = useState<User>()
+  const [ user, setUser ] = useState<User | null | undefined>(null)
 
   useEffect(() => {
     (async () => {
@@ -74,9 +73,10 @@ export function UserProvider({ children }: UserProviderProps){
             console.log(error.response.data.error)
           }
         }
-      }
+      } else
+        setUser(undefined)
     })()
-  },[]);
+  },[loadUser, saveRefreshToken, saveUser, loadRefreshToken]);
   
   const fetchActivities = useCallback(async () => {
     try{
@@ -98,16 +98,16 @@ export function UserProvider({ children }: UserProviderProps){
           setActivities(data);
         }
     }  
-  },[])
+  },[saveActivities, loadUser])
 
   const fetchFeedbacks = useCallback(async() => {
     if(isRequested) { return }
     const { data } = await api.get('/feedback/my-list')
     setFeedbacks(data)
     setIsRequested(true)
-  },[])
+  },[isRequested])
 
-  async function Sign({name, email, password, query = '/login'}: SignProps) {
+  const Sign = useCallback(async ({name, email, password, query = '/login'}: SignProps) => {
     const result = {} as SignResult
 
     try {
@@ -124,9 +124,9 @@ export function UserProvider({ children }: UserProviderProps){
     } finally {
       return result
     }
-  }
+  },[saveUser, setToken, saveRefreshToken])
 
-  function Logout(){
+  const Logout = useCallback(() => {
     return new Promise((resolve) => {
       removeUser()
       removeActivity()
@@ -138,7 +138,7 @@ export function UserProvider({ children }: UserProviderProps){
 
       return resolve('ok')
     })
-  }
+  },[])
 
   const handleUpdate = useCallback(async({...args}): Promise<User> => {
     let newUser: User;
@@ -153,9 +153,9 @@ export function UserProvider({ children }: UserProviderProps){
       (async () => await saveUser(newUser))();
       return resolve(newUser)
     })
-  },[])
+  },[saveUser])
 
-  async function handleFinishActivity(activity_id: string){
+  const handleFinishActivity = useCallback(async (activity_id: string) => {
     const newArray: ActivitiesProps[] = []
     let newUser = {} as User
 
@@ -170,9 +170,9 @@ export function UserProvider({ children }: UserProviderProps){
 
     await handleUpdate({ all_activities_finished, activities_finished_today })
     await saveUser(newUser)
-  }
+  },[activities, user?.activities_finished_today, user?.all_activities_finished])
 
-  async function handleDeleteActivity(activity_id: string){
+  const handleDeleteActivity = useCallback(async (activity_id: string) => {
     const newArray: ActivitiesProps[] = []
 
     await api.delete(`/activity/my-delete/${activity_id}`)
@@ -180,9 +180,9 @@ export function UserProvider({ children }: UserProviderProps){
 
     setActivities(newArray)
     await saveActivities(newArray)
-  }
+  },[activities])
 
-  function changeFeedbackFromState(activity: ActivitiesProps, newFeedback: boolean | undefined){
+  const changeFeedbackFromState = useCallback((activity: ActivitiesProps, newFeedback: boolean | undefined) => {
     setFeedbacks(prev => {
       let exists = false;
       prev.forEach(item => {
@@ -204,8 +204,9 @@ export function UserProvider({ children }: UserProviderProps){
       }
       return item
     }))
-  }
-  function removeFeedbackFromState(activity_id: string){
+  },[])
+
+  const removeFeedbackFromState = useCallback((activity_id: string) => {
     setFeedbacks(prev => {
       prev.forEach((item, index) => {
         if(item.id === activity_id){
@@ -221,7 +222,7 @@ export function UserProvider({ children }: UserProviderProps){
       }
       return item
     }))
-  }
+  },[])
 
   return(
     <UserContext.Provider 
