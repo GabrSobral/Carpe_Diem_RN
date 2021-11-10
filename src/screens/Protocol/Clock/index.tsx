@@ -9,8 +9,10 @@ import { ProtocolNextModal } from "../ProtocolNextModal"
 
 import { theme } from "../../../styles/theme"
 import { styles } from '../../Clock/style'
+import { useNavigation } from "@react-navigation/core"
 
 export function ClockProtocol(){
+  const { navigate } = useNavigation()
   const isPaused   = useRef(false)
   const isFinished = useRef(false)
   const [ isClockStarted, setIsClockStarted ] = useState(false)
@@ -26,7 +28,8 @@ export function ClockProtocol(){
   const sizeAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 300] })
   const radiusAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 150] })
 
-  const seconds = 3 * 1000 // 7 seconds 
+  const seconds = 2 * 1000 // 7 seconds 
+  let intervalFunction: NodeJS.Timer
 
   const sizeAnim = {
     width: sizeAnimation, 
@@ -44,13 +47,20 @@ export function ClockProtocol(){
 
   useEffect(() => {
     switch(timesCompleted) {
-      case  1 : setTimeout(() => setIsModal2Visible(true), seconds); handlePauseTrue(); break;
-      case 1.5: setTimeout(() => setIsModal3Visible(true), seconds); handlePauseTrue(); break;
-      case  3 : setIsModal4Visible(true); handleStartClock(); break;
+      case  1  : setTimeout(() => setIsModal2Visible(true), seconds); handlePauseTrue(); break;
+      case 1.5 : setTimeout(() => setIsModal3Visible(true), seconds); handlePauseTrue(); break;
+      case 3.5 : setIsModal4Visible(true); handleStartClock(); break;
     }
   },[timesCompleted])
 
-  function handlePauseFalse() { isPaused.current = false; }
+  function handlePauseFalse() { 
+    if(!isFinished.current)
+      handleChangeRespirationState('Inspire')
+    else
+      handleChangeRespirationState('Expire')
+
+    isPaused.current = false;
+  }
   function handlePauseTrue()  { isPaused.current = true;  }
 
   const handleChangeRespirationState = useCallback((action = "Inspire") => {
@@ -75,10 +85,7 @@ export function ClockProtocol(){
   
   useEffect(()=> {
     if(!isClockStarted || isPaused.current) { return }
-
-    console.log("Entrou no UseEffect")
-    const intervalFunction = setInterval(() => {
-      console.log("Entrou no interval")
+    intervalFunction = setInterval(() => {
       if(!isFinished.current)
         handleChangeRespirationState('Inspire')
       else
@@ -118,11 +125,12 @@ export function ClockProtocol(){
       <ProtocolNextModal
         title={`Se sente melhor? ${'\n'} Quais serão os próximos passos?`}
         button="two"
+        secondButtonFunction={() => { setIsModal4Visible(false); navigate('GuidedImagination') }}
         restart
         resetFunction={()=> { setTimesCompleted(0); setIsModal4Visible(false) }}
         isVisible={isModal4Visible}
         closeModal={() => {setIsModal4Visible(false); handlePauseFalse()}}
-        nextRoute="MusclesRelaxing"
+        nextRoute="GuidedImagination"
       />
 
       <ProtocolHeader/>
@@ -138,9 +146,12 @@ export function ClockProtocol(){
         </View>
 
         <RectButton 
+          enabled={!isClockStarted}
           onPress={handleStartClock}
           style={[styles.button, 
-            { backgroundColor: isClockStarted ? theme.colors.red300 : theme.colors.blue300 }]} 
+            { backgroundColor: isClockStarted ? theme.colors.red300 : theme.colors.blue300,
+              opacity: isClockStarted ? 0.5 : 1
+            }]} 
         >
           <Feather 
             name={isClockStarted ? "pause" : "play"}

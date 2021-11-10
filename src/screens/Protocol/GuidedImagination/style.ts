@@ -17,11 +17,10 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.blue300
   },
   textContainer: {
-    height: 130,
+    height: 190,
     borderRadius: 7,
     backgroundColor:  '#95959570',
-    paddingHorizontal: 24,
-    width: '90%',
+    width: '100%',
     justifyContent: 'center'
   },
   text:{
