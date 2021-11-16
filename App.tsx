@@ -8,6 +8,8 @@ import { StatusBar } from 'react-native';
 import { Routes } from './src/routes';
 import { UserProvider } from './src/contexts/UserContext'
 import AppLoading from 'expo-app-loading';
+import { ActivityProvider } from './src/contexts/ActivityContext';
+import { FeedbackProvider } from './src/contexts/FeedbackContext';
 
 export default function App() {
   const [ fontsLoaded ] = useFonts({
@@ -26,7 +28,11 @@ export default function App() {
         translucent
       />
       <UserProvider>
-        <Routes/>
+        <ActivityProvider>
+          <FeedbackProvider>
+            <Routes/>
+          </FeedbackProvider>
+        </ActivityProvider>
       </UserProvider>
     </>
   );

@@ -6,7 +6,7 @@ import { api } from "../../services/api";
 import { styles } from './style';
 import { theme } from "../../styles/theme";
 import { ActivitiesProps } from "../../types/activity";
-import { useUsers } from "../../contexts/UserContext";
+import { useFeedback } from "../../contexts/FeedbackContext";
 
 interface FeedbackModalProps {
   isVisible: boolean;
@@ -18,7 +18,7 @@ export function FeedbackModal({ isVisible, closeModal, activity }: FeedbackModal
   const [ feedback, setFeedback ] = useState<boolean | undefined>(activity?.feedback.feedback)
   const [ isLoading, setIsLoading ] = useState<boolean>(false)
   const [ previousFeedback, setPreviousFeedback ] = useState<boolean | undefined>(activity?.feedback.feedback)
-  const { changeFeedbackFromState, removeFeedbackFromState } = useUsers()
+  const { changeFeedbackFromState, removeFeedbackFromState } = useFeedback()
 
   function handleClick(feedback: boolean){
     if(feedback === previousFeedback) { 

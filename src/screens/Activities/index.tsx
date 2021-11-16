@@ -6,13 +6,13 @@ import LottieView from 'lottie-react-native'
 import { Header } from '../../components/Header'
 import { ActivityItem } from '../../components/ActivityItem'
 
-import { useUsers } from '../../contexts/UserContext'
 import { ActivitiesProps } from '../../types/activity'
 import happyAnimation from '../../../assets/happy.json'
 import { styles } from './style'
+import { useActivity } from '../../contexts/ActivityContext'
 
 export function Activities(){
-  const { fetchActivities, activities } = useUsers()
+  const { fetchActivities, activities } = useActivity()
   const [ isFetching, setIsFetching ] = useState(false)
   const { navigate } = useNavigation()
 

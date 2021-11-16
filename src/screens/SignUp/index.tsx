@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, KeyboardAvoidingView } from 'react-native';
+import { Text, View, KeyboardAvoidingView, Keyboard } from 'react-native';
 
 import { SignHeader } from '../../components/SignHeader'
 import { Button } from '../../components/Button';
@@ -21,10 +21,11 @@ export function SignUp() {
   async function SignUp(){
     name.trim()
     email.trim()
-    
+
     if(password !== confirmPassword)
       return setErrorMessage("Sua confirmação de senha está inválida!")
-
+    
+    Keyboard.dismiss();
     setIsLoading(true)
     try{
       const result = await Sign({name, email, password, query: "/users"})

@@ -8,6 +8,7 @@ import { useUsers } from '../../contexts/UserContext';
 import { ActivitiesProps } from '../../types/activity';
 import { theme } from '../../styles/theme';
 import { styles } from './style'
+import { useActivity } from '../../contexts/ActivityContext';
 
 interface ActivityDetailsButtonsProps {
   activity: ActivitiesProps;
@@ -20,15 +21,13 @@ export function ActivityDetailsButtons({ activity }: ActivityDetailsButtonsProps
 
   const { goBack } = useNavigation()
 
-  const { handleFinishActivity, handleDeleteActivity } = useUsers()
+  const { handleFinishActivity, handleDeleteActivity } = useActivity()
 
   async function Finish(){
     setIsLoading(true)
-    handleFinishActivity(activity.id)
-      .then(() => {
-        setIsLoading(false)
-        setIsFinishModalVisible(true)
-      })
+    await handleFinishActivity(activity.id)
+    setIsLoading(false)
+    setIsFinishModalVisible(true)
   }
 
   return (

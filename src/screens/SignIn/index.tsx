@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, StatusBar, KeyboardAvoidingView } from 'react-native';
+import { Text, View, StatusBar, KeyboardAvoidingView, Keyboard } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler'
 
 import { SignHeader } from '../../components/SignHeader'
@@ -20,6 +20,7 @@ export function SignIn() {
   const { Sign } = useUsers()
 
   async function SignIn(){
+    Keyboard.dismiss();
     setIsLoading(true);
 
     const result = await Sign({ email, password });

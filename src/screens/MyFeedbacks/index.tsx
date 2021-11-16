@@ -8,18 +8,17 @@ import { FeedbackModal } from '../../components/FeedbackModal'
 
 import happyAnimation from '../../../assets/happy.json'
 import { ActivitiesProps } from '../../types/activity'
-import { useUsers } from '../../contexts/UserContext'
 import { styles } from '../Activities/style'
+import { useFeedback } from '../../contexts/FeedbackContext'
 
 export function MyFeedbacks(){
-  const { feedbacks, fetchFeedbacks, isRequested } = useUsers()
+  const { feedbacks, fetchFeedbacks, isRequested } = useFeedback()
   const [ selectedActivity, setSelectedActivity ] = useState<ActivitiesProps | undefined>(undefined)
   const [ isFetching, setIsFetching ] = useState(false)
   const [ isFeedbackModalVisible, setIsFeedbackModalVisible ] = useState(false)
 
   useEffect(() => {
     (async () => {
-      if(isRequested) { return }
       setIsFetching(true)
       await fetchFeedbacks()
       setIsFetching(false)
