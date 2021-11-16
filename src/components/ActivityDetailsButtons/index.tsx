@@ -24,11 +24,9 @@ export function ActivityDetailsButtons({ activity }: ActivityDetailsButtonsProps
 
   async function Finish(){
     setIsLoading(true)
-    handleFinishActivity(activity.id)
-      .then(() => {
-        setIsLoading(false)
-        setIsFinishModalVisible(true)
-      })
+    await handleFinishActivity(activity.id)
+    setIsLoading(false)
+    setIsFinishModalVisible(true)
   }
 
   return (

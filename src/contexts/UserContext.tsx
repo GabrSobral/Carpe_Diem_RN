@@ -76,10 +76,6 @@ export function UserProvider({ children }: UserProviderProps){
   },[loadUser, saveRefreshToken, saveUser, loadRefreshToken])
 
   useEffect(() => {
-    console.log(user)
-  },[user])
-
-  useEffect(() => {
     (async () => {
       await loadUserWithRefreshToken()
     })()
@@ -148,18 +144,16 @@ export function UserProvider({ children }: UserProviderProps){
   },[])
 
   const handleUpdate = useCallback(async({...args}): Promise<User> => {
-    let newUser: User;
-
-    return new Promise(resolve => {
-      setUser(prevUser => {
-        prevUser = { ...prevUser, ...args } as User;
-        newUser = prevUser;
-        return newUser;
-      });
-      
-      (async () => await saveUser(newUser))();
-      return resolve(newUser)
-    })
+    let updatedUser = {} as User;
+    
+    setUser(prevUser => {
+      prevUser = { ...prevUser, ...args } as User;
+      updatedUser = prevUser;
+      return prevUser;
+    });
+    
+    await saveUser(updatedUser);
+    return updatedUser
   },[saveUser])
 
   const handleFinishActivity = useCallback(async (activity_id: string) => {

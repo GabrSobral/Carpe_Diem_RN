@@ -39,7 +39,7 @@ export function ProtocolNextModal({
   secondButtonFunction,
   secondButtonText = 'Prosseguir'
 }: UrgentModalModalProps){
-  const { navigate, dispatch } = useNavigation()
+  const { dispatch } = useNavigation()
 
   function Button({ text, action, stylesComp }: Button){
     return(
