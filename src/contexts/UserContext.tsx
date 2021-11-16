@@ -30,7 +30,7 @@ interface SignResult {
 interface UserContextProps {
   Sign: ({name, password, email, query}: SignProps) => any;
   Logout: () => Promise<unknown>;
-  user?: User | null;
+  user?: User;
   isRequested: boolean;
   handleFinishActivity: (activity_id: string) => Promise<void>;
   fetchActivities: () => Promise<unknown>;
@@ -49,34 +49,41 @@ export function UserProvider({ children }: UserProviderProps){
   const [ activities, setActivities ] = useState<ActivitiesProps[]>([])
   const [ feedbacks, setFeedbacks ] = useState<ActivitiesProps[]>([])
   const [ isRequested, setIsRequested ] = useState(false)
-  const [ user, setUser ] = useState<User | null | undefined>(null)
+  const [ user, setUser ] = useState<User | undefined>(undefined)
+
+  const loadUserWithRefreshToken = useCallback(async () => {
+    const userStore = await loadUser()
+      
+    if(JSON.stringify(userStore) !== "{}" && userStore !== undefined){
+      const refreshTokenStore = await loadRefreshToken()
+      setUser(userStore)
+      if(refreshTokenStore) {
+        try{
+          const { data } = await api.post('/refresh-token', { refresh_token: refreshTokenStore.id})
+          await setToken(data.token)
+
+          if(data?.refreshToken) {
+            await saveRefreshToken(data.refreshToken)
+            await saveUser(userStore)
+          }
+        } catch(error: any) {
+          console.log(error.response.data.error)
+        }
+      }
+    } else
+      setUser(undefined)
+
+  },[loadUser, saveRefreshToken, saveUser, loadRefreshToken])
+
+  useEffect(() => {
+    console.log(user)
+  },[user])
 
   useEffect(() => {
     (async () => {
-      const userStore = await loadUser()
-      
-      if(JSON.stringify(userStore) !== "{}" && userStore !== undefined){
-        const refreshTokenStore = await loadRefreshToken()
-        setUser(userStore)
-        
-        if(refreshTokenStore){
-          try{
-            const { data } = await api.post('/refresh-token', 
-              { refresh_token: refreshTokenStore.id})
-            await setToken(data.token)
-
-            if(data?.refreshToken) {
-              await saveRefreshToken(data.refreshToken)
-              await saveUser(userStore)
-            }
-          } catch(error: any) {
-            console.log(error.response.data.error)
-          }
-        }
-      } else
-        setUser(undefined)
+      await loadUserWithRefreshToken()
     })()
-  },[loadUser, saveRefreshToken, saveUser, loadRefreshToken]);
+  },[loadUserWithRefreshToken]);
   
   const fetchActivities = useCallback(async () => {
     try{

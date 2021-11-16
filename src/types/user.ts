@@ -9,7 +9,7 @@ export interface User {
   updated_at: Date;
   hasAnswered?: boolean;
   emergency_number?: string;
-  photo_url?: string
+  photo_url?: string;
 }
 export interface RefreshToken {
   id: string;

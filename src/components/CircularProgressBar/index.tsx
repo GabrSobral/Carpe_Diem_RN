@@ -15,7 +15,7 @@ export function CircularProgressBar(){
     const percentegeCalculated = Math.round(
       ((user?.activities_finished_today || 0) * 100) / (user?.quantity_of_activities || 0))
     setPercentage(percentegeCalculated)
-  },[ user ])
+  },[ user?.activities_finished_today, user?.quantity_of_activities ])
 
   return(
     <View style={styles.progressBarContainer}>

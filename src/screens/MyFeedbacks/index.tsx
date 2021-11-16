@@ -53,7 +53,6 @@ export function MyFeedbacks(){
           style={{ minHeight: 200 }}
           data={feedbacks}
           keyExtractor={(item: ActivitiesProps) => item.id}
-          ItemSeparatorComponent={() => <View style={{ height: 8 }}/>}
           showsVerticalScrollIndicator={false}
           renderItem={({item}) => 
             <ActivityItemSwipeable 

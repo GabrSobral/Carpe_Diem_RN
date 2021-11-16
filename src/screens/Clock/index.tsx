@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { Feather } from '@expo/vector-icons'
 import { View, Text, Animated } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
@@ -10,7 +10,7 @@ import { useRef } from "react"
 
 export function Clock(){
   const [ isClockStarted, setIsClockStarted ] = useState(false)
-  const [ isFinished, setIsFinished ] = useState(false)
+  const isFinished = useRef(false)
   const [ message, setMessage ] = useState('Começar')
   
   const sizeValue = useRef(new Animated.Value(0)).current;
@@ -36,35 +36,34 @@ export function Clock(){
   
   function handleStartClock(){
     setIsClockStarted(prev => !prev)
-    setIsFinished(true)
+    isFinished.current = true
 
     if(isClockStarted) {
-      setMessage("Pausado")
+      setMessage("Pausado...")
       sizeMotion(0, 300)
     } else 
       handleChangeRespirationState('Inspire')
-
-      clearInterval(timeOutFunction)
   }
   
-  function handleChangeRespirationState(action = "Inspire") {
-    sizeMotion(action === "Inspire" ? 1 : 0)
-    setMessage(action === "Inspire" ? "Inspire..." : "Expire...")
-    setIsFinished(action === "Inspire")
-  }
+  const handleChangeRespirationState = useCallback((action = "Inspire") => {
+    const breathing = action === "Inspire"
+    
+    sizeMotion(breathing ? 1 : 0)
+    setMessage(`${action} lentamente...`)
+    isFinished.current = breathing
+  },[isFinished.current])
   
   useEffect(()=> {
-    if(!isClockStarted) { return clearInterval(timeOutFunction) }
-
+    if(!isClockStarted) { return }
     timeOutFunction = setInterval(() => {
-      if(!isFinished)
+      if(!isFinished.current)
         handleChangeRespirationState('Inspire')
       else
         handleChangeRespirationState('Expire')
     }, seconds)
 
     return () => clearInterval(timeOutFunction)
-  },[isClockStarted, isFinished])
+  },[isClockStarted, isFinished.current])
   
   return(
     <View style={styles.container}>

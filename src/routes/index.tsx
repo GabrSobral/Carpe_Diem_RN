@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import AppLoading from 'expo-app-loading'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -23,6 +23,7 @@ import { ResetPassword } from '../screens/ResetPassword'
 import { ClockProtocol } from '../screens/Protocol/Clock'
 import { GuidedImagination } from '../screens/Protocol/GuidedImagination'
 import { InsertCode } from '../screens/InsertCode'
+import { Congrats } from '../screens/Congrats'
 
 export function Routes(){
   const { user } = useUsers()
@@ -59,6 +60,7 @@ export function Routes(){
               
               <Screen name="ClockProtocol"           component={ClockProtocol}/>
               <Screen name="GuidedImagination"       component={GuidedImagination}/>
+              <Screen name="Congrats"                component={Congrats}/>
             </>))
          }
       </Navigator>   

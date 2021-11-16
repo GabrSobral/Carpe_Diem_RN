@@ -1,6 +1,9 @@
 {
   "expo": {
     "name": "Carpe Diem",
+    "plugins": [
+      "expo-av"
+    ],
     "slug": "Carpe_Diem",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -53,9 +56,6 @@
     "androidNavigationBar": {
       "barStyle": "dark-content",
       "backgroundColor": "#FFFFFF"
-    },
-    "plugins": [
-      "expo-av"
-    ]
+    }
   }
 }

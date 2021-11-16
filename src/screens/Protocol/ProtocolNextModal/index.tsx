@@ -1,11 +1,11 @@
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, StackActions } from "@react-navigation/native";
 
 import { View, Text, Modal, TouchableOpacity } from 'react-native'
 
 import { styles } from './style'
 import { theme } from '../../../styles/theme'
-import { Feather, MaterialIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 interface UrgentModalModalProps {
   title: string;
@@ -39,7 +39,7 @@ export function ProtocolNextModal({
   secondButtonFunction,
   secondButtonText = 'Prosseguir'
 }: UrgentModalModalProps){
-  const { navigate } = useNavigation()
+  const { navigate, dispatch } = useNavigation()
 
   function Button({ text, action, stylesComp }: Button){
     return(
@@ -97,7 +97,7 @@ export function ProtocolNextModal({
                 text="Finalizar, pois estou melhor!" 
                 action={() => {
                   closeModal();
-                  navigate('BottomTabs' as never)
+                  dispatch(StackActions.replace("Congrats"))
                 }}
                 stylesComp={styles.returnToHomeButton}
               />

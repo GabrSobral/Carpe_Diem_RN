@@ -37,7 +37,7 @@ function HeaderComponent({ canGoBack = false }: HeaderProps){
           </TouchableOpacity>
         ) }
 
-        <Text style={styles.nameGreeting}>Olá</Text> 
+        <Text style={styles.nameGreeting}>Olá,</Text> 
         <Text style={styles.name}>{user?.name && user?.name.split(' ')[0]}</Text>
       </View>
       

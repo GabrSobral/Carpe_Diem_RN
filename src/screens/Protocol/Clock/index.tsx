@@ -9,10 +9,10 @@ import { ProtocolNextModal } from "../ProtocolNextModal"
 
 import { theme } from "../../../styles/theme"
 import { styles } from '../../Clock/style'
-import { useNavigation } from "@react-navigation/core"
+import { useNavigation, StackActions } from "@react-navigation/native"
 
 export function ClockProtocol(){
-  const { navigate } = useNavigation()
+  const { dispatch } = useNavigation()
   const isPaused   = useRef(false)
   const isFinished = useRef(false)
   const [ isClockStarted, setIsClockStarted ] = useState(false)
@@ -28,7 +28,7 @@ export function ClockProtocol(){
   const sizeAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 300] })
   const radiusAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 150] })
 
-  const seconds = 2 * 1000 // 7 seconds 
+  const seconds = 7 * 1000 // 7 seconds 
   let intervalFunction: NodeJS.Timer
 
   const sizeAnim = {
@@ -67,7 +67,7 @@ export function ClockProtocol(){
     const breathing = action === "Inspire"
     
     sizeMotion(breathing ? 1 : 0)
-    setMessage(`${action}...`)
+    setMessage(`${action} lentamente...`)
     isFinished.current = breathing
     setTimesCompleted(prev => prev + 0.5)
   },[isFinished.current])
@@ -125,7 +125,10 @@ export function ClockProtocol(){
       <ProtocolNextModal
         title={`Se sente melhor? ${'\n'} Quais serão os próximos passos?`}
         button="two"
-        secondButtonFunction={() => { setIsModal4Visible(false); navigate('GuidedImagination') }}
+        secondButtonFunction={() => { 
+          setIsModal4Visible(false); 
+          dispatch(StackActions.replace('GuidedImagination'));
+        }}
         restart
         resetFunction={()=> { setTimesCompleted(0); setIsModal4Visible(false) }}
         isVisible={isModal4Visible}
