@@ -53,7 +53,6 @@ export function MyFeedbacks(){
           style={{ minHeight: 200 }}
           data={feedbacks}
           keyExtractor={(item: ActivitiesProps) => item.id}
-          ItemSeparatorComponent={() => <View style={{ height: 8 }}/>}
           showsVerticalScrollIndicator={false}
           renderItem={({item}) => 
             <ActivityItemSwipeable 
@@ -71,7 +70,7 @@ export function MyFeedbacks(){
                 source={happyAnimation}
                 style={{ width: 200, height: 200, backgroundColor: 'transparent' }}
               />
-              <Text style={styles.noMoreActivitiesText}>Não há feedbacks mostrar.</Text>
+              <Text style={styles.noMoreActivitiesText}>Não há feedbacks para mostrar.</Text>
             </View> : <View/>}
           refreshing={isFetching}
           onRefresh={async () => await fetchFeedbacks()}

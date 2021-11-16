@@ -42,7 +42,6 @@ export function Activities(){
           style={{ minHeight: 200,}}
           data={activities}
           keyExtractor={(item: ActivitiesProps) => item.id}
-          ItemSeparatorComponent={() => <View style={{ paddingBottom: 8 }}/>}
           ListEmptyComponent={
             !isFetching ?
             <View style={styles.noMoreActivitiesContainer}>

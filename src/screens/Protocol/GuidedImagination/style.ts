@@ -17,12 +17,17 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.blue300
   },
   textContainer: {
-    height: 130,
+    height: 260,
     borderRadius: 7,
+    paddingVertical: 12,
     backgroundColor:  '#95959570',
-    paddingHorizontal: 24,
-    width: '90%',
+    width: '100%',
     justifyContent: 'center'
+  },
+  video: {
+    flex: 1, 
+    borderRadius: 7, 
+    opacity: 0.6 
   },
   text:{
     color: theme.colors.text,

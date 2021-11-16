@@ -23,7 +23,7 @@ export function ActivityItemSwipeable({ item, ...rest }: ActivityItemProps){
       overshootRight={false}
       renderRightActions={() => (
         <Animated.View>
-          <View>
+          <View style={{ paddingBottom: 8 }}>
             <RectButton 
               style={styles.buttonRemove} 
               onPress={() => {navigate("ActivityDetailsFeedback", { activity: item })}}>

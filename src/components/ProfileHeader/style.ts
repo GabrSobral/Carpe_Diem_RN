@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     right: 16,
     top: 16,
     borderRadius: 7,
-    padding: 5
+    padding: 5,
   },
   image: {
     width: 120,
@@ -41,7 +41,7 @@ export const styles = StyleSheet.create({
     width: 120, 
     height: 120, 
     alignItems: 'center', 
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   removeImageButton:{
     position: 'absolute',
@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
     width: 120, 
     height: 120, 
     borderRadius: 60,
-    zIndex: 5,
+    zIndex: 10,
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center'

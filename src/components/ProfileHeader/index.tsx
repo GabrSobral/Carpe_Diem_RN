@@ -9,7 +9,7 @@ import {
   Image, 
   ActivityIndicator 
 } from 'react-native'
-import { Feather, MaterialIcons, Entypo } from '@expo/vector-icons'
+import { Feather, Entypo } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker';
 
 import { useUsers } from '../../contexts/UserContext'
@@ -26,7 +26,7 @@ export function ProfileHeader(){
   const [ isEditEnabled, setIsEditEnabled ] = useState(false)
   const [ createdAtFormatted, setCreatedATFormatted ] = useState('')
   const [ newName, setNewName ] = useState(user?.name)
-  const [ preview, setPreview ] = useState(user?.photo)
+  const [ preview, setPreview ] = useState<any>({ uri: user?.photo_url})
   const [ isLoading, setIsLoading ] = useState(false)
 
   useEffect(() => {
@@ -54,28 +54,48 @@ export function ProfileHeader(){
     let result: any = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [3, 3],
       quality: 0.5
     });
 
-    if (!result.cancelled) {
-      setPreview(result.uri)
+    if(!result.cancelled) {
+      setPreview(result)
     }
   };
-  async function handleSaveChanges(){
-    setIsLoading(true)
-    await api.patch('/users', { name: newName })
-    await handleUpdate({ name: newName })
-    await handleUpdate({ photo: preview });
-    setIsLoading(false)
-    setIsEditEnabled(false)
+  async function handleSaveChanges() {
+    const data = new FormData();
+
+    setIsLoading(true);
+
+    if(preview.uri) {
+      data.append('name', newName || '');
+      data.append('photo',  {
+        name: `image.jpg`,
+        type: "image/jpg",
+        uri : preview.uri,
+      } as any);
+
+      try {
+        const userData = await api.patch('/users', data);
+        await handleUpdate({ name: newName, photo_url: userData.data.photo_url });
+      } catch(error: any) {
+        alert(error)
+        console.log(error)
+      }
+    } else {
+      await api.delete('/users/photo');
+      await handleUpdate({ name: newName, photo_url: undefined  });
+    }
+
+    setIsLoading(false);
+    setIsEditEnabled(false);
   }
 
   return(
     <View style={styles.profileHeaderContainer}>
       <TouchableOpacity 
         style={[
-          styles.editButton, 
+          styles.editButton,
           isEditEnabled && { elevation: 10, backgroundColor: theme.colors.blue400 }
         ]} 
         onPress={() => setIsEditEnabled(prev => !prev)}>
@@ -85,20 +105,20 @@ export function ProfileHeader(){
       <View style={styles.imageContainer}>
         <View style={{ position: 'relative', overflow: 'hidden', borderRadius: 60}}>
         { isEditEnabled ? 
-          <TouchableOpacity style={styles.imageButton} onPress={pickImage}>
+          <TouchableOpacity style={styles.imageButton} onPress={pickImage} disabled={isLoading}>
             <View style={styles.opacityBackgroundImage}>
               <Feather name="camera" size={24} color={theme.colors.white}/>
-            </View>
-            <Image source={{ uri: preview }} style={styles.image} />
+            </View> 
+            <Image source={{ uri: preview.uri }} style={styles.image} />
           </TouchableOpacity>
-          : (user?.photo ?
-            <Image source={{ uri: user?.photo }} style={styles.image} />
+          : (user?.photo_url ?
+            <Image source={{ uri: user?.photo_url }} style={styles.image} />
             :
             <Entypo name="user" size={70} color={theme.colors.white}/>)
-          }
+        }
         </View>
-        { (isEditEnabled && preview) &&
-          <TouchableOpacity style={styles.removeImageButton} onPress={() => setPreview(undefined)}>
+        { (isEditEnabled && preview.uri && !isLoading) &&
+          <TouchableOpacity style={styles.removeImageButton} onPress={() => setPreview({ uri: undefined })}>
             <Feather name="x" size={16} color={theme.colors.red300}/>
           </TouchableOpacity>
         }

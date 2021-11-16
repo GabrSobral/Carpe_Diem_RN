@@ -18,17 +18,18 @@ export function Profile(){
 
   return(
     <View style={styles.container}>
-      { isLogoutModalVisible &&
-        <ModalComponent 
-          title="Volte sempre..."
-          description="Você tem certeza de que deseja sair do nosso app?"
-          isVisible={isLogoutModalVisible}
-          dualButtons
-          animation="logout"
-          confirmFunction={Logout}
-          closeModal={() => setIsLogoutModalVisible(false)}
-        />
-      }
+      <ModalComponent 
+        title="Volte sempre..."
+        description="Você tem certeza de que deseja sair do nosso app?"
+        isVisible={isLogoutModalVisible}
+        dualButtons
+        animation="logout"
+        confirmFunction={() => {
+          setIsLogoutModalVisible(false)
+          Logout()
+        }}
+        closeModal={() => setIsLogoutModalVisible(false)}
+      />
 
       <Header/>
 

@@ -9,7 +9,8 @@ export const styles = StyleSheet.create({
     borderRadius: 7,
     backgroundColor: theme.colors.blue300,
     flexDirection: 'row',
-    elevation: 3
+    elevation: 3,
+    marginBottom: 8,
   },
   iconContainer: {
     height: 60,

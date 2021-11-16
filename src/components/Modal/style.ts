@@ -56,6 +56,9 @@ export const styles = StyleSheet.create({
     width: '49%',
     backgroundColor: theme.colors.green500,
   },
+  disabled: {
+    opacity: 0.5
+  },
 
   finishButton: {
     width: '100%',

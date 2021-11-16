@@ -12,19 +12,21 @@ interface HeaderProps {
   canGoBack?: boolean;
 }
 
-export function Header({ canGoBack = false }: HeaderProps){
+function HeaderComponent({ canGoBack = false }: HeaderProps){
   const [ isUrgentModalVisible, setIsUrgentModalVisible ] = useState(false)
   const { user } = useUsers()
   const { goBack } = useNavigation()
 
   return(
     <View style={styles.container}>
-      { isUrgentModalVisible &&
-        <UrgentModal
-          isVisible={isUrgentModalVisible}
-          closeModal={() => setIsUrgentModalVisible(false)}
-        /> 
+      {
+        isUrgentModalVisible &&
+          <UrgentModal
+            isVisible={isUrgentModalVisible}
+            closeModal={() => setIsUrgentModalVisible(false)}
+          /> 
       }
+      
       
       <View style={styles.nameContainer}>
         { canGoBack && (
@@ -35,8 +37,8 @@ export function Header({ canGoBack = false }: HeaderProps){
           </TouchableOpacity>
         ) }
 
-        <Text style={styles.nameGreeting}>Olá</Text> 
-        <Text style={styles.name}>{user?.name.split(' ')[0]}</Text>
+        <Text style={styles.nameGreeting}>Olá,</Text> 
+        <Text style={styles.name}>{user?.name && user?.name.split(' ')[0]}</Text>
       </View>
       
       { user?.hasAnswered && (
@@ -48,3 +50,5 @@ export function Header({ canGoBack = false }: HeaderProps){
     </View>
   )
 }
+
+export const Header = React.memo(HeaderComponent)

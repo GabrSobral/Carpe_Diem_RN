@@ -23,6 +23,7 @@ export function OnboardingItem({ item }: OnboardingItemProps){
         style={[styles.image, { width }]}
         autoPlay
         autoSize
+        loop={false}
       />
     
       <View style={{ flex: 0.3 }}>
