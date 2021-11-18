@@ -11,14 +11,16 @@ interface ActivityContextProps {
   activities: ActivitiesProps[];
   fetchActivities: () => Promise<void>;
   handleFinishActivity: (activity_id: string) => Promise<void>;
-  handleDeleteActivity: (activity_id: string) => Promise<void>;
   setActivityState: (feedback: boolean|undefined, activity_id: string) => void;
+  fetchAllActivities: () => Promise<void>;
+  allActivities: ActivitiesProps[];
 }
 
 const ActivityContext = createContext({} as ActivityContextProps)
 
 export function ActivityProvider({children}: ActivityProviderProps){
   const [ activities, setActivities ] = useState<ActivitiesProps[]>([])
+  const [ allActivities, setAllActivities ] = useState<ActivitiesProps[]>([])
   const { handleUpdate, user } = useUsers()
 
   const fetchActivities = useCallback(async () => {
@@ -59,16 +61,6 @@ export function ActivityProvider({children}: ActivityProviderProps){
     await handleUpdate({ all_activities_finished, activities_finished_today })
   },[activities, user?.activities_finished_today, user?.all_activities_finished])
 
-  const handleDeleteActivity = useCallback(async (activity_id: string) => {
-    const newArray: ActivitiesProps[] = []
-
-    await api.delete(`/activity/my-delete/${activity_id}`)
-    activities.forEach(item => item.id !== activity_id && newArray.push(item))
-
-    setActivities(newArray)
-    await saveActivities(newArray)
-  },[activities])
-
   const setActivityState = useCallback((feedback: boolean|undefined, activity_id: string) => {
     setActivities(prev => prev.map(item => {
       if(item.id === activity_id){
@@ -78,14 +70,24 @@ export function ActivityProvider({children}: ActivityProviderProps){
     }))
   },[])
 
+  const fetchAllActivities = useCallback(async() => {
+    try{
+      const { data } = await api.get('/activity/list')
+      setAllActivities(data);
+    } catch(error: any) {
+      console.log(error.response.data)
+    }  
+  },[])
+
   return(
     <ActivityContext.Provider 
       value={{
         activities,
         fetchActivities,
         handleFinishActivity,
-        handleDeleteActivity,
-        setActivityState
+        setActivityState,
+        fetchAllActivities,
+        allActivities
       }}
     >
       {children}

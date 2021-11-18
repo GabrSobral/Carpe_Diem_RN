@@ -12,17 +12,17 @@ import { styles } from './style'
 import { useActivity } from '../../contexts/ActivityContext'
 
 export function Activities(){
-  const { fetchActivities, activities } = useActivity()
+  const { fetchAllActivities, allActivities } = useActivity()
   const [ isFetching, setIsFetching ] = useState(false)
   const { navigate } = useNavigation()
 
   useEffect(() => {
     (async () => {
       setIsFetching(true)
-      await fetchActivities()
+      // await fetchAllActivities()
       setIsFetching(false)
     })()
-  },[fetchActivities])
+  },[fetchAllActivities])
 
   return(
     <SafeAreaView style={styles.container}>
@@ -40,7 +40,7 @@ export function Activities(){
 
         <FlatList
           style={{ minHeight: 200,}}
-          data={activities}
+          data={allActivities}
           keyExtractor={(item: ActivitiesProps) => item.id}
           ListEmptyComponent={
             !isFetching ?
@@ -53,11 +53,11 @@ export function Activities(){
             </View> : <View/>}
           renderItem={({item}) => 
             <ActivityItem 
-              onPress={() => navigate('ActivityDetails', { activity: item })}
+              onPress={() => navigate('ActivityDetailsFeedback', { activity: item })}
               key={item.id}
               item={item}
             />}
-          onRefresh={async () => await fetchActivities()}
+          // onRefresh={async () => await fetchAllActivities()}
           refreshing={isFetching}
           showsVerticalScrollIndicator={false}
         />

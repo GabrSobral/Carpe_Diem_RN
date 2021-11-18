@@ -44,27 +44,19 @@ export const styles = StyleSheet.create({
     borderRadius: 7,
     backgroundColor: theme.colors.gray50,
     padding: 16,
-    marginVertical: 16,
+    marginTop: 16,
   },
   body: {
     color: theme.colors.text,
     fontFamily: fonts.text,
   },
   feedbackTextContainer: {
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    flexWrap: 'wrap'
+    marginVertical: 12
   },
   feedbackText: {
     color: theme.colors.text,
     fontFamily: fonts.text,
-  },
-  feedbackButtonText:{
-    fontSize: 16,
-    padding: 5,
-    color: theme.colors.blue300,
-    fontWeight: 'bold',
-    fontFamily: fonts.heading,
   }
 })

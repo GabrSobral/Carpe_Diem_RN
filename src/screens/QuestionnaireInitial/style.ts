@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   inputsContainer: {
     width: '100%',
     height: 70,
-    backgroundColor: theme.colors.green300,
+    backgroundColor: theme.colors.blue300,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

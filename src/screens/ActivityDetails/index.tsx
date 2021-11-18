@@ -10,7 +10,7 @@ import { ActivitiesProps } from '../../types/activity'
 
 import { styles } from './style'
 
-import { FeedbackModal } from '../../components/FeedbackModal'
+import { FeedbackButtons } from '../../components/FeedbackButtons'
 import { RemoveHTML } from '../../utils/handleRemoveHTML'
 import { ActivitiesIcons } from '../../components/ActivitiesIcons'
 
@@ -19,21 +19,11 @@ interface Params {
 }
 
 export function ActivityDetails({}){
-  const [ isFeedbackModalVisible, setIsFeedbackModalVisible ] = useState(false)
-
   const { params } = useRoute()
   const { activity } = params as Params
 
   return(
     <View style={styles.container}>
-      { isFeedbackModalVisible && 
-        <FeedbackModal
-          activity={activity}
-          closeModal={() => setIsFeedbackModalVisible(false) }
-          isVisible={isFeedbackModalVisible}
-        />
-      }
-
       <Header canGoBack/>
 
       <ScrollView>
@@ -53,16 +43,6 @@ export function ActivityDetails({}){
             <Text style={styles.body}>{RemoveHTML(activity.body)}</Text>
           </View>
 
-          <View style={styles.feedbackTextContainer}>
-            <Text style={styles.feedbackText}>
-              O que achou da atividade? 
-            </Text>
-
-            <TouchableOpacity style={{ marginLeft: 5 }} onPress={() => setIsFeedbackModalVisible(true)}>
-              <Text style={styles.feedbackButtonText}>Nos dê um feedback!</Text>
-            </TouchableOpacity>
-          </View>
-
           { activity.files.map(item => {
             if(item.format === "mp3")
               return <Player file={item} key={item.id}/>
@@ -70,9 +50,16 @@ export function ActivityDetails({}){
             return <Text key={item.id}></Text>
           }) }
 
+          <View style={styles.feedbackTextContainer}>
+            <Text style={styles.feedbackText}>
+              O que achou da atividade? 
+            </Text>
+
+            <FeedbackButtons activity={activity}/>
+          </View>
+
           <ActivityDetailsButtons activity={activity}/>
         </View>
-        
       </ScrollView>
     </View>
   )

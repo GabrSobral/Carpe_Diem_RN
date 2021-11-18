@@ -130,6 +130,7 @@ export function QuestionnaireAfter(){
           <Text style={styles.errorMessage}>{errorMessage}</Text>
 
           <Button
+            isGreen
             title="Confirmar"
             isLoading={isLoading}
             disabled={!isFilled}

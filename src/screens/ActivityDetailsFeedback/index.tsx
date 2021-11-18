@@ -10,7 +10,7 @@ import { ActivitiesProps } from '../../types/activity'
 
 import { styles } from '../ActivityDetails/style'
 
-import { FeedbackModal } from '../../components/FeedbackModal'
+import { FeedbackButtons } from '../../components/FeedbackButtons'
 import { RemoveHTML } from '../../utils/handleRemoveHTML'
 import { ActivitiesIcons } from '../../components/ActivitiesIcons'
 
@@ -25,13 +25,7 @@ export function ActivityDetailsFeedback(){
   const { activity } = params as Params
 
   return(
-    <View style={styles.container}>
-      <FeedbackModal
-        activity={activity}
-        closeModal={() => setIsFeedbackModalVisible(false) }
-        isVisible={isFeedbackModalVisible}
-      />
-
+    <View style={styles.container}> 
       <Header canGoBack/>
 
       <ScrollView>
@@ -57,7 +51,8 @@ export function ActivityDetailsFeedback(){
 
             return <Text key={item.id}></Text>
           }) }
-
+          
+          <FeedbackButtons activity={activity}/>
         </View>
         
       </ScrollView>

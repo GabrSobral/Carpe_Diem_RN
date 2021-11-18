@@ -1,12 +1,11 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import { View, Text, Animated } from 'react-native'
-import { Octicons } from '@expo/vector-icons'
+import { Feather, Octicons } from '@expo/vector-icons'
 import { RectButton, TouchableOpacity } from 'react-native-gesture-handler'
 
 import { styles } from './style'
 import { theme } from '../../styles/theme'
 import { useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
 import { QuantityOfActivitiesModal } from '../QuantityOfActivitiesModal'
 import { useUsers } from '../../contexts/UserContext'
 import { ContactModal } from '../ContactModal'
@@ -16,10 +15,9 @@ export function OptionsButtons(){
   const [ isOpen, setIsOpen ] = useState(false)
   const [ isQuantityModalVisible, setIsQuantityModalVisible ] = useState(false)
   const [ isContactModalVisible, setIsContactModalVisible ] = useState(false)
-  const { navigate } = useNavigation() as any
 
   const sizeValue = useRef(new Animated.Value(0)).current;
-  const sizeAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 300] })
+  const sizeAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 120] })
 
   function sizeMotion(value: number){
     Animated.timing(sizeValue, {
@@ -47,7 +45,6 @@ export function OptionsButtons(){
         isVisible={isContactModalVisible}
         closeModal={() => setIsContactModalVisible(false)}
       />
-      
 
       <RectButton 
         rippleColor={theme.colors.gray200}
@@ -60,28 +57,16 @@ export function OptionsButtons(){
       >
         <Text style={styles.itemText}>Configurações</Text>
       
-        <Octicons 
-          name="gear" 
-          size={32} 
+        <Feather 
+          name="settings" 
+          size={24} 
           color={theme.colors.gray500}
         />
       </RectButton>
 
       <Animated.View style={[styles.optionsContainer, { height: sizeAnimation }]}>
-        <TouchableOpacity style={styles.optionItemButton} onPress={() => navigate("MyFeedbacks")}>
-          <Text style={styles.optionItemText}>Meus feedbacks</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.optionItemButton} onPress={() => navigate("QuestionnaireAfter")}>
-          <Text style={styles.optionItemText}>Alterar questionário</Text>
-        </TouchableOpacity>
-
         <TouchableOpacity style={styles.optionItemButton} onPress={() => setIsContactModalVisible(true)}>
           <Text style={styles.optionItemText}>Registrar número de emergência</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.optionItemButton} onPress={() => navigate("ChangePassword")}>
-          <Text style={styles.optionItemText}>Alterar senha</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.optionItemButton} onPress={() => setIsQuantityModalVisible(true)}>

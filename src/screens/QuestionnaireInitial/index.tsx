@@ -102,12 +102,12 @@ export function QuestionnaireInitial(){
               </View>
 
               <View style={styles.inputsContainer}>
-                <RadioButton value={0} onPress={() => handleSet(item, 0)} selected={item.answer === 0 ? true: false}/>
-                <RadioButton value={1} onPress={() => handleSet(item, 1)} selected={item.answer === 1 ? true: false}/>
-                <RadioButton value={2} onPress={() => handleSet(item, 2)} selected={item.answer === 2 ? true: false}/>
-                <RadioButton value={3} onPress={() => handleSet(item, 3)} selected={item.answer === 3 ? true: false}/>
-                <RadioButton value={4} onPress={() => handleSet(item, 4)} selected={item.answer === 4 ? true: false}/>
-                <RadioButton value={5} onPress={() => handleSet(item, 5)} selected={item.answer === 5 ? true: false}/>
+                <RadioButton value={0} onPress={()=>handleSet(item, 0)} selected={item.answer === 0 ?true:false}/>
+                <RadioButton value={1} onPress={()=>handleSet(item, 1)} selected={item.answer === 1 ?true:false}/>
+                <RadioButton value={2} onPress={()=>handleSet(item, 2)} selected={item.answer === 2 ?true:false}/>
+                <RadioButton value={3} onPress={()=>handleSet(item, 3)} selected={item.answer === 3 ?true:false}/>
+                <RadioButton value={4} onPress={()=>handleSet(item, 4)} selected={item.answer === 4 ?true:false}/>
+                <RadioButton value={5} onPress={()=>handleSet(item, 5)} selected={item.answer === 5 ?true:false}/>
               </View>
             </View>
           )) }
@@ -115,6 +115,7 @@ export function QuestionnaireInitial(){
           <Text style={styles.errorMessage}>{errorMessage}</Text>
 
           <Button
+            isGreen
             title="Confirmar"
             isLoading={isLoading}
             disabled={!isFilled}
