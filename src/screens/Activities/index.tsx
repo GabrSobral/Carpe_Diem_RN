@@ -1,5 +1,5 @@
-import React, { useState, useEffect }  from 'react'
-import { View, Text, SafeAreaView, FlatList } from 'react-native'
+import React, { useState, useEffect, useCallback }  from 'react'
+import { View, Text, SafeAreaView, FlatList, TextInput } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import LottieView from 'lottie-react-native'
 
@@ -19,29 +19,50 @@ export function Activities(){
   useEffect(() => {
     (async () => {
       setIsFetching(true)
-      // await fetchAllActivities()
+      await fetchAllActivities()
       setIsFetching(false)
     })()
-  },[fetchAllActivities])
+  },[])
+
+  const renderItem = useCallback(({item}) => 
+    <ActivityItem 
+      onPress={() => navigate('ActivityDetailsFeedback', { activity: item })}
+      key={item.id}
+      item={item}
+    />,[])
+
+  const keyExtractor = useCallback((item: ActivitiesProps) => item.id, [])
+
+  const ListHeaderComponent = useCallback(() => ( 
+    <View style={styles.titleContainer}>
+      <Text style={styles.title}>Atividades</Text>
+      <Text style={styles.subtitle}>
+        Aqui você pode encontrar atividades {'\n'}
+        que serão geradas diariamente
+      </Text>
+    </View>
+  ),[])
+
+  const SearchAcitivties = useCallback(() => (
+    <View style={styles.searchInputContainer}>
+      <TextInput
+        style={styles.searchInput}
+      />
+    </View>
+  ),[])
 
   return(
     <SafeAreaView style={styles.container}>
       <Header/>
-
       <View style={{ paddingHorizontal: 16, flex: 1 }}>
-
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Atividades</Text>
-          <Text style={styles.subtitle}>
-            Aqui você pode encontrar atividades {'\n'}
-            que serão geradas diariamente
-          </Text>
-        </View>
-
         <FlatList
           style={{ minHeight: 200,}}
+          maxToRenderPerBatch={5}
+          windowSize={5}
+          stickyHeaderIndices={[1]}
           data={allActivities}
-          keyExtractor={(item: ActivitiesProps) => item.id}
+          keyExtractor={keyExtractor}
+          ListHeaderComponent={ListHeaderComponent}
           ListEmptyComponent={
             !isFetching ?
             <View style={styles.noMoreActivitiesContainer}>
@@ -51,13 +72,8 @@ export function Activities(){
               />
               <Text style={styles.noMoreActivitiesText}>Não há mais atividades para realizar hoje.</Text>
             </View> : <View/>}
-          renderItem={({item}) => 
-            <ActivityItem 
-              onPress={() => navigate('ActivityDetailsFeedback', { activity: item })}
-              key={item.id}
-              item={item}
-            />}
-          // onRefresh={async () => await fetchAllActivities()}
+          renderItem={renderItem}
+          onRefresh={async () => await fetchAllActivities()}
           refreshing={isFetching}
           showsVerticalScrollIndicator={false}
         />

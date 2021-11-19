@@ -52,7 +52,13 @@ export function ActivityDetailsFeedback(){
             return <Text key={item.id}></Text>
           }) }
           
-          <FeedbackButtons activity={activity}/>
+          <View style={styles.feedbackTextContainer}>
+            <Text style={styles.feedbackText}>
+              O que achou da atividade? 
+            </Text>
+
+            <FeedbackButtons activity={activity}/>
+          </View>
         </View>
         
       </ScrollView>
