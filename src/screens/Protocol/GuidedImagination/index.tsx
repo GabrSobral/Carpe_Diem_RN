@@ -47,7 +47,7 @@ export function GuidedImagination() {
         button="two"
         restart
         resetFunction={reset}
-        secondButtonText="Voltar"
+        secondButtonText="Voltar ao último passo"
         secondButtonFunction={() => {
           setIsModal2Visible(false); 
           dispatch(StackActions.replace("ClockProtocol"))}}

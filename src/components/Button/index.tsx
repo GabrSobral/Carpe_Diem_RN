@@ -9,14 +9,20 @@ interface ButtonProps extends RectButtonProps {
   title: string;
   isLoading: boolean;
   disabled: boolean;
+  isGreen?: boolean;
 }
 
-export function Button({ title, isLoading, disabled, ...rest }: ButtonProps){
+export function Button({ title, isLoading, disabled, isGreen, ...rest }: ButtonProps){
   return (
     <RectButton
+      activeOpacity={0.6}
       rippleColor={theme.colors.blue600}
-      style={[styles.container, disabled && styles.disabled]}
-      enabled={!disabled}
+      style={[
+        styles.container, 
+        (isLoading || disabled) && styles.disabled,
+        isGreen && { backgroundColor: theme.colors.green300 }
+      ]}
+      enabled={!(isLoading || disabled)}
       {...rest}
     >
       { isLoading ? (

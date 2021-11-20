@@ -4,13 +4,12 @@ import { theme } from "../../styles/theme";
 export const styles = StyleSheet.create({
   handleButtonsContainer: {
     flexDirection: 'row',
-    width: '90%',
+    width: '100%',
     borderRadius: 7,
     overflow: 'hidden',
-    marginTop: 16
   },
   handleButton: {
-    flex: 0.5,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 16,

@@ -45,6 +45,7 @@ export function ChangePassword() {
         title="Sucesso!"
         animation="password"
         description="Sua senha foi alterada com sucesso 😃"
+        finishButtonText="Voltar"
         isVisible={isModalVisible}
         confirmFunction={() => { setIsModalVisible(false); goBack() }}
       />

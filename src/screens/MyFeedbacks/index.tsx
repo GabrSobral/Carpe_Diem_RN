@@ -3,23 +3,21 @@ import { View, Text, FlatList } from 'react-native'
 import LottieView from 'lottie-react-native'
 
 import { Header } from '../../components/Header'
-import { ActivityItemSwipeable } from '../../components/ActivityItemSwipeable'
-import { FeedbackModal } from '../../components/FeedbackModal'
 
 import happyAnimation from '../../../assets/happy.json'
 import { ActivitiesProps } from '../../types/activity'
-import { useUsers } from '../../contexts/UserContext'
 import { styles } from '../Activities/style'
+import { useFeedback } from '../../contexts/FeedbackContext'
+import { ActivityItem } from '../../components/ActivityItem'
+import { useNavigation } from '@react-navigation/core'
 
 export function MyFeedbacks(){
-  const { feedbacks, fetchFeedbacks, isRequested } = useUsers()
-  const [ selectedActivity, setSelectedActivity ] = useState<ActivitiesProps | undefined>(undefined)
+  const { feedbacks, fetchFeedbacks, isRequested } = useFeedback()
   const [ isFetching, setIsFetching ] = useState(false)
-  const [ isFeedbackModalVisible, setIsFeedbackModalVisible ] = useState(false)
+  const { navigate } = useNavigation()
 
   useEffect(() => {
     (async () => {
-      if(isRequested) { return }
       setIsFetching(true)
       await fetchFeedbacks()
       setIsFetching(false)
@@ -28,24 +26,16 @@ export function MyFeedbacks(){
 
   return(
     <View style={styles.container}>
-      { isFeedbackModalVisible &&
-        <FeedbackModal
-          activity={selectedActivity}
-          closeModal={() => setIsFeedbackModalVisible(false)}
-          isVisible={isFeedbackModalVisible}
-        />
-      }
-
       <Header canGoBack/>
 
       <View style={{ paddingHorizontal: 16, flex: 1 }}>
 
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Meus feedbacks</Text>
+          <Text style={styles.title}>Meus favoritos</Text>
           <Text style={styles.subtitle}>
-            Seus feedbacks influenciam na {'\n'}
+            Seus favoritos influenciam na {'\n'}
             escolha das atividades diárias. Você {'\n'}
-            pode revisar os feedbacks aqui!
+            pode revisá-los aqui!
           </Text>
         </View>
       
@@ -55,11 +45,8 @@ export function MyFeedbacks(){
           keyExtractor={(item: ActivitiesProps) => item.id}
           showsVerticalScrollIndicator={false}
           renderItem={({item}) => 
-            <ActivityItemSwipeable 
-              onPress={() => {
-                setIsFeedbackModalVisible(true)
-                setSelectedActivity(item)
-              }}
+            <ActivityItem 
+              onPress={() => { navigate('ActivityDetailsFeedback', { activity: item }) }}
               key={item.id}
               item={item}
             />}

@@ -57,7 +57,7 @@ export function QuantityOfActivitiesModal({
           <Text style={styles.title}>Olá...</Text>
           <Text style={styles.description}>
             Selecione a quantidade de atividades diárias que você deseja 
-            receber, a mudança será aplicada apenas amanhã.
+            receber, a mudança será aplicada apenas na próxima listagem.
           </Text>
 
           <View style={styles.quantityContainer}>

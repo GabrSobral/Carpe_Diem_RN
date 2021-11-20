@@ -16,6 +16,12 @@ export const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     transform: [{ translateY: -12 }]
   },
+  profileContentItemContainer:{
+    marginTop: 12,
+    backgroundColor: theme.colors.gray100,
+    borderRadius: 7,
+    overflow: 'hidden'
+  },
   profileContentItem: {
     width: '100%',
     height: 65,
@@ -25,10 +31,19 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    marginTop: 6
+  },
+  profileContentButton: {
+    width: '100%',
+    height: 65,
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   profileContentItemText: {
     color: theme.colors.text,
-    fontSize: 18
+    fontSize: 16
   },
   profileContentValueText: {
     color: theme.colors.blue300,

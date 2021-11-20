@@ -73,7 +73,8 @@ export const styles = StyleSheet.create({
   slider: {
     height: '100%',
     width: 80,
-    backgroundColor: theme.colors.blue300
+    backgroundColor: theme.colors.blue300,
+    borderRadius: 7,
   },
   buttonTextQuantity: {
     color: theme.colors.text,

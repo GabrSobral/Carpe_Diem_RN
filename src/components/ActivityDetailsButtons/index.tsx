@@ -8,6 +8,7 @@ import { useUsers } from '../../contexts/UserContext';
 import { ActivitiesProps } from '../../types/activity';
 import { theme } from '../../styles/theme';
 import { styles } from './style'
+import { useActivity } from '../../contexts/ActivityContext';
 
 interface ActivityDetailsButtonsProps {
   activity: ActivitiesProps;
@@ -15,20 +16,17 @@ interface ActivityDetailsButtonsProps {
 
 export function ActivityDetailsButtons({ activity }: ActivityDetailsButtonsProps){
   const [ isFinishModalVisible, setIsFinishModalVisible ] = useState(false)
-  const [ isDenyModalVisible, setIsDenyModalVisible ] = useState(false)
   const [ isLoading, setIsLoading ] = useState(false)
 
   const { goBack } = useNavigation()
 
-  const { handleFinishActivity, handleDeleteActivity } = useUsers()
+  const { handleFinishActivity } = useActivity()
 
   async function Finish(){
     setIsLoading(true)
-    handleFinishActivity(activity.id)
-      .then(() => {
-        setIsLoading(false)
-        setIsFinishModalVisible(true)
-      })
+    await handleFinishActivity(activity.id)
+    setIsLoading(false)
+    setIsFinishModalVisible(true)
   }
 
   return (
@@ -45,28 +43,6 @@ export function ActivityDetailsButtons({ activity }: ActivityDetailsButtonsProps
           goBack()
         }}
       />
-
-      <ModalComponent 
-        title="Oh não...😟"
-        description="Você tem certeza de que deseja descartar essa tarefa?"
-        isVisible={isDenyModalVisible}
-        dualButtons 
-        confirmFunction={async () => {
-          await handleDeleteActivity(activity.id)
-          setIsDenyModalVisible(false)
-          goBack()
-        }}
-        closeModal={() => setIsDenyModalVisible(false)}
-        animation="trash"
-      />
-
-      <RectButton 
-        style={[styles.handleButton, styles.reject, isLoading && { opacity: 0.7 }]}
-        onPress={() => setIsDenyModalVisible(true)}
-        enabled={!isLoading}
-      >
-        <Text style={styles.handleText}>Descartar</Text>
-      </RectButton>
 
       <RectButton 
         style={[styles.handleButton, styles.confirm, isLoading && { opacity: 0.7 }]} 

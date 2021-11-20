@@ -10,10 +10,37 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontFamily: fonts.text,
-    marginBottom: 16,
+    marginVertical: 6,
     color: theme.colors.text
   },
-  progressBarText: {
-    position: 'absolute'
-  }
+  noMoreActivitiesContainer:{
+    zIndex: 10,
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center',
+  },
+  noMoreActivitiesText:{
+    fontFamily: fonts.text,
+    color: theme.colors.text
+  },
+  titleContainer: {
+    width: '100%',
+    backgroundColor: theme.colors.green300,
+    borderRadius: 7,
+    padding: 16,
+    zIndex: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10
+  },
+  titleActivities: {
+    color: theme.colors.white,
+    fontSize:24,
+    zIndex: 10
+  },
+  subtitle: {
+    color: theme.colors.gray100,
+    textAlign: 'center',
+    fontSize: 14
+  },
 })

@@ -28,6 +28,12 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14
   },
+  searchInputContainer: {
+
+  },
+  searchInput: {
+    
+  },
   noMoreActivitiesContainer:{
     zIndex: 10,
     flex: 1, 
@@ -37,5 +43,5 @@ export const styles = StyleSheet.create({
   noMoreActivitiesText:{
     fontFamily: fonts.text,
     color: theme.colors.text
-  }
+  },
 })

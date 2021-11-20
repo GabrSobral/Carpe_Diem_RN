@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView, useWindowDimensions } from 'react-native'
+import React, { useState } from 'react'
+import { View, Text, ScrollView } from 'react-native'
 import { MaterialIcons, Feather } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 import { RectButton } from 'react-native-gesture-handler'
 
 import { Header } from '../../components/Header'
@@ -11,10 +12,12 @@ import { ProfileHeader } from '../../components/ProfileHeader'
 import { styles } from './style'
 import { theme } from '../../styles/theme'
 import { useUsers } from '../../contexts/UserContext'
+import { ProfileContentItem } from './ProfileContentItem'
 
 export function Profile(){
   const [ isLogoutModalVisible, setIsLogoutModalVisible ] = useState(false)
   const { user, Logout } = useUsers()
+  const { navigate } = useNavigation()
 
   return(
     <View style={styles.container}>
@@ -37,12 +40,18 @@ export function Profile(){
         <ProfileHeader/>
 
         <View style={styles.profileContentContainer}>
-          <View style={styles.profileContentItem}>
+          <View style={[styles.profileContentItem, { marginTop: 0 }]}>
             <Text style={styles.profileContentItemText}>Atividades Realizadas:</Text>
             <Text style={styles.profileContentValueText}>{user?.all_activities_finished}</Text>
           </View>
 
           <OptionsButtons/>
+
+          <View style={styles.profileContentItemContainer}>
+            <ProfileContentItem route="MyFeedbacks" text="Meus Favoritos" icon="star"/>
+            <ProfileContentItem route="QuestionnaireAfter" text="Mudar respostas" icon="answers"/>
+            <ProfileContentItem route="ChangePassword" text="Mudar senha" icon="lock"/>
+          </View>
 
           <View style={styles.logoutButtonContainer}>
             <RectButton 
