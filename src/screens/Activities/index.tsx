@@ -22,56 +22,40 @@ export function Activities(){
       await fetchAllActivities()
       setIsFetching(false)
     })()
-  },[])
+  },[fetchAllActivities])
 
-  const renderItem = useCallback(({item}) => 
+  useEffect(() => { console.log(allActivities[0]) },[allActivities])
+
+  const renderItem = useCallback(({item}) => (
     <ActivityItem 
       onPress={() => navigate('ActivityDetailsFeedback', { activity: item })}
       key={item.id}
       item={item}
-    />,[])
+    />),[])
 
   const keyExtractor = useCallback((item: ActivitiesProps) => item.id, [])
 
-  const ListHeaderComponent = useCallback(() => ( 
+  const ListHeaderComponent = () => ( 
     <View style={styles.titleContainer}>
       <Text style={styles.title}>Atividades</Text>
       <Text style={styles.subtitle}>
-        Aqui você pode encontrar atividades {'\n'}
-        que serão geradas diariamente
+        Aqui você pode encontrar todas {'\n'}
+        as atividades.
       </Text>
     </View>
-  ),[])
-
-  const SearchAcitivties = useCallback(() => (
-    <View style={styles.searchInputContainer}>
-      <TextInput
-        style={styles.searchInput}
-      />
-    </View>
-  ),[])
+  )
 
   return(
     <SafeAreaView style={styles.container}>
       <Header/>
       <View style={{ paddingHorizontal: 16, flex: 1 }}>
         <FlatList
-          style={{ minHeight: 200,}}
+          style={{ minHeight: 200}}
           maxToRenderPerBatch={5}
           windowSize={5}
-          stickyHeaderIndices={[1]}
-          data={allActivities}
+          data={allActivities ? allActivities : []}
           keyExtractor={keyExtractor}
           ListHeaderComponent={ListHeaderComponent}
-          ListEmptyComponent={
-            !isFetching ?
-            <View style={styles.noMoreActivitiesContainer}>
-              <LottieView
-                source={happyAnimation}
-                style={{ width: 200, height: 200, backgroundColor: 'transparent' }}
-              />
-              <Text style={styles.noMoreActivitiesText}>Não há mais atividades para realizar hoje.</Text>
-            </View> : <View/>}
           renderItem={renderItem}
           onRefresh={async () => await fetchAllActivities()}
           refreshing={isFetching}

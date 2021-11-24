@@ -1,6 +1,6 @@
 import React,{ useState } from "react";
-import { View, Text, Modal, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { Feather, MaterialIcons } from '@expo/vector-icons'
+import { View, Text, TouchableOpacity } from 'react-native'
+import { MaterialIcons } from '@expo/vector-icons'
 import { api } from "../../services/api";
 
 import { styles } from './style';
@@ -15,19 +15,19 @@ interface FeedbackModalProps {
 export function FeedbackButtons({ activity }: FeedbackModalProps){
   const [ feedback, setFeedback ] = useState<boolean | undefined>(activity?.feedback.feedback)
   const [ previousFeedback, setPreviousFeedback ] = useState<boolean | undefined>(activity?.feedback.feedback)
-  const { changeFeedbackFromState, removeFeedbackFromState } = useFeedback()
+  const { changeFeedbackFromState } = useFeedback()
 
   async function handleClick(feedback: boolean){
     if(activity && feedback === previousFeedback) { 
       setPreviousFeedback(undefined)
       setFeedback(undefined)
-      removeFeedbackFromState(activity.id)
+      changeFeedbackFromState(activity || {} as ActivitiesProps, undefined)
       await api.delete(`/feedback/delete/${activity.id}`)
       return 
     }
     if(feedback === true)
       setFeedback(true)
-    else
+    else if(feedback === false)
       setFeedback(false)
 
     setPreviousFeedback(feedback)

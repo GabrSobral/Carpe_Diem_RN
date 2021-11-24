@@ -45,8 +45,12 @@ export function ActivityDetails({}){
 
           { activity.files.map(item => {
             if(item.format === "mp3")
-              return <Player file={item} key={item.id}/>
-
+              return (
+                <View style={styles.playerContainerActivity}>
+                  <Text style={styles.playerText}>Nós recomendamos ouvir isso:</Text>
+                  <Player file={item} key={item.id}/>
+                </View>
+              )
             return <Text key={item.id}></Text>
           }) }
 

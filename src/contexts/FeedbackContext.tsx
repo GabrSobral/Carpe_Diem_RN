@@ -9,8 +9,7 @@ interface FeedbackContextProps {
   feedbacks: ActivitiesProps[];
   fetchFeedbacks: () => Promise<void>;
   changeFeedbackFromState: (activity: ActivitiesProps, newFeedback: boolean | undefined) => void;
-  removeFeedbackFromState: (activity_id: string) => void;
-  isRequested: boolean;
+  isRequested: React.MutableRefObject<boolean>;
 }
 
 const FeedbackContext = createContext({} as FeedbackContextProps)
@@ -32,32 +31,22 @@ export function FeedbackProvider({children}: FeedbackProviderProps){
   const changeFeedbackFromState = useCallback((activity: ActivitiesProps, newFeedback: boolean | undefined) => {
     setFeedbacks(prev => {
       let exists = false;
-      prev.forEach(item => {
-        if(item.id === activity.id) {
-          exists = true;
-          item.feedback.feedback = newFeedback
-        }
-      })
-      if(exists){
-        return prev
-      } else {
-        return [ activity, ...prev ]
-      }
+      if(prev.length === 0 && !newFeedback)
+        return prev;
+      else
+        prev.forEach((item, index) => {
+          if((item.id === activity.id)) {
+            exists = true;
+            if(!newFeedback) 
+              prev.splice(index, 1);
+            else 
+              item.feedback.feedback = newFeedback;
+          };
+        });
+        if(!exists && !newFeedback) { return prev }
+      return exists ? prev : [ activity, ...prev ];
     })
     setActivityState(newFeedback, activity.id)
-  },[])
-
-  const removeFeedbackFromState = useCallback((activity_id: string) => {
-    setFeedbacks(prev => {
-      prev.forEach((item, index) => {
-        if(item.id === activity_id){
-          prev.splice(index, 1)
-        }
-      })
-      return prev
-    })
-
-    setActivityState(undefined, activity_id)
   },[])
 
   return(
@@ -66,8 +55,7 @@ export function FeedbackProvider({children}: FeedbackProviderProps){
         feedbacks,
         fetchFeedbacks,
         changeFeedbackFromState,
-        removeFeedbackFromState,
-        isRequested: isRequested.current
+        isRequested
       }}
     >
       {children}

@@ -48,7 +48,7 @@ export function Profile(){
           <OptionsButtons/>
 
           <View style={styles.profileContentItemContainer}>
-            <ProfileContentItem route="MyFeedbacks" text="Meus Favoritos" icon="star"/>
+            <ProfileContentItem route="MyFeedbacks" text={`Marcados como "Gostei"`} icon="star"/>
             <ProfileContentItem route="QuestionnaireAfter" text="Mudar respostas" icon="answers"/>
             <ProfileContentItem route="ChangePassword" text="Mudar senha" icon="lock"/>
           </View>

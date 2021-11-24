@@ -2,11 +2,8 @@ import React,{ useCallback, createContext, ReactNode, useContext, useState, useE
 import { api } from "../services/api";
 import { User } from "../types/user";
 import { loadRefreshToken, loadUser, removeActivity, removeRefreshToken, removeUser, saveActivities, saveRefreshToken, saveUser } from "../utils/handleStorage";
-import { removeToken, setToken } from "../utils/handleToken";
+import { getToken, removeToken, setToken } from "../utils/handleToken";
 
-interface UserProviderProps {
-  children: ReactNode;
-}
 interface SignProps {
   name?: String;
   email: String;
@@ -29,14 +26,14 @@ interface SignResult {
 interface UserContextProps {
   Sign: ({name, password, email, query}: SignProps) => any;
   Logout: () => Promise<unknown>;
-  user?: User;
+  user?: User | null;
   handleUpdate: (...args: any) => Promise<User>;
 }
 
 const UserContext = createContext({} as UserContextProps)
 
-export function UserProvider({ children }: UserProviderProps){
-  const [ user, setUser ] = useState<User | undefined>(undefined)
+export function UserProvider({ children }:{ children: ReactNode }){
+  const [ user, setUser ] = useState<User | undefined | null>(null)
 
   const loadUserWithRefreshToken = useCallback(async () => {
     const userStore = await loadUser()
@@ -61,10 +58,6 @@ export function UserProvider({ children }: UserProviderProps){
       setUser(undefined)
 
   },[loadUser, saveRefreshToken, saveUser, loadRefreshToken])
-
-  useEffect(() => {
-    console.log(user)
-  },[user])
 
   useEffect(() => {
     (async () => {

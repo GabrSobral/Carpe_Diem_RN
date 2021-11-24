@@ -50,6 +50,15 @@ export const styles = StyleSheet.create({
     color: theme.colors.text,
     fontFamily: fonts.text,
   },
+  playerContainerActivity: {
+    flex: 1,
+    marginTop: 12
+  },
+  playerText: {
+    fontFamily: fonts.text,
+    color: theme.colors.text,
+    marginBottom: 3
+  },
   feedbackTextContainer: {
     alignItems: 'center',
     justifyContent: 'center',

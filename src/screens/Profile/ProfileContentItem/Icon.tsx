@@ -8,7 +8,7 @@ interface IconProps { icon: string }
 export function IconProfile({ icon }: any){
   switch(icon){
     case 'star':
-      return <Feather name="star" size={24} color={theme.colors.gray500}/>
+      return <Feather name="thumbs-up" size={24} color={theme.colors.gray500}/>
     case 'lock':
       return <Feather name="lock" size={24} color={theme.colors.gray500}/>
     case 'answers':

@@ -2,7 +2,7 @@ import React, { createContext, ReactNode, useCallback, useContext, useState } fr
 import { api } from "../services/api";
 import { ActivitiesProps } from "../types/activity";
 import { User } from "../types/user";
-import { loadUser, saveActivities, saveUser } from "../utils/handleStorage";
+import { loadUser } from "../utils/handleStorage";
 import { useUsers } from "./UserContext";
 
 interface ActivityProviderProps { children: ReactNode }
@@ -26,7 +26,6 @@ export function ActivityProvider({children}: ActivityProviderProps){
   const fetchActivities = useCallback(async () => {
     try{
       const { data } = await api.get('/activity/get-activities')
-      await saveActivities(data)
       const storedUser = await loadUser()
 
       storedUser && (storedUser.activities_finished_today = 0);
@@ -39,11 +38,10 @@ export function ActivityProvider({children}: ActivityProviderProps){
         "You already request the activities, try again tomorrow") {
           console.log(error.response.data.error)
           const { data } = await api.get('/activity/my-list')
-          await saveActivities(data)
           setActivities(data);
         }
     }  
-  },[saveActivities, loadUser])
+  },[])
 
   const handleFinishActivity = useCallback(async (activity_id: string) => {
     const newArray: ActivitiesProps[] = []
@@ -53,8 +51,6 @@ export function ActivityProvider({children}: ActivityProviderProps){
     activities.forEach(item => item.id !== activity_id && newArray.push(item))
     setActivities(newArray)
     
-    await saveActivities(newArray)
-
     const all_activities_finished = (user?.all_activities_finished || 0) + 1;
     const activities_finished_today = (user?.activities_finished_today || 0) +1;
 
@@ -63,6 +59,13 @@ export function ActivityProvider({children}: ActivityProviderProps){
 
   const setActivityState = useCallback((feedback: boolean|undefined, activity_id: string) => {
     setActivities(prev => prev.map(item => {
+      if(item.id === activity_id){
+        item.feedback.feedback = feedback
+      }
+      return item
+    }))
+
+    setAllActivities(prev => prev.map(item => {
       if(item.id === activity_id){
         item.feedback.feedback = feedback
       }

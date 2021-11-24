@@ -31,11 +31,10 @@ export function MyFeedbacks(){
       <View style={{ paddingHorizontal: 16, flex: 1 }}>
 
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Meus favoritos</Text>
+          <Text style={styles.title}>Marcados como "Gostei"</Text>
           <Text style={styles.subtitle}>
-            Seus favoritos influenciam na {'\n'}
-            escolha das atividades diárias. Você {'\n'}
-            pode revisá-los aqui!
+            Atividades marcadas como "Gostei" {'\n'}
+            tendem a ser listadas mais vezes para você.{'\n'}
           </Text>
         </View>
       
@@ -51,7 +50,7 @@ export function MyFeedbacks(){
               item={item}
             />}
           ListEmptyComponent={
-            isRequested ?
+            isRequested.current ?
             <View style={styles.noMoreActivitiesContainer}>
               <LottieView
                 source={happyAnimation}
@@ -60,7 +59,7 @@ export function MyFeedbacks(){
               <Text style={styles.noMoreActivitiesText}>Não há feedbacks para mostrar.</Text>
             </View> : <View/>}
           refreshing={isFetching}
-          onRefresh={async () => await fetchFeedbacks()}
+          onRefresh={async () => {  isRequested.current = false; await fetchFeedbacks() }}
         />
 
       </View>

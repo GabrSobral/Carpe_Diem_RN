@@ -12,9 +12,11 @@ import { ProgressBar } from '../../components/ProgressBar'
 import { ActivitiesProps } from '../../types/activity'
 import happyAnimation from '../../../assets/happy.json'
 import { styles } from './style'
+import { useUsers } from '../../contexts/UserContext'
 
 export function Home(){
   const { fetchActivities, activities } = useActivity()
+  const { user } = useUsers()
   const [ isFetching, setIsFetching ] = useState(false)
   const { navigate } = useNavigation()
 
@@ -24,7 +26,7 @@ export function Home(){
       await fetchActivities()
       setIsFetching(false)
     })()
-  },[fetchActivities])
+  },[fetchActivities, user && user?.quantity_of_activities])
 
   return (
     <View style={styles.container}>
