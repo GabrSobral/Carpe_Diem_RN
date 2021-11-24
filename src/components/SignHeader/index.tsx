@@ -7,7 +7,7 @@ import { styles } from './style'
 
 interface SignHeaderProps{
   title: string;
-  button?: "Entrar" | "Cadastrar" | "Voltar"
+  button?: "Entrar" | "Cadastrar" | "Voltar" | "Pular"
 }
 
 export function SignHeader({ title, button }: SignHeaderProps){
@@ -18,6 +18,7 @@ export function SignHeader({ title, button }: SignHeaderProps){
       case "Cadastrar" : navigate('SignUp'); break;
       case "Entrar" : goBack(); break;
       case "Voltar" : goBack(); break;
+      case "Pular" : navigate('QuestionnaireInitial'); break;
     }
   }
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { format } from 'date-fns'
 import { 
   View, 
   Text, 
@@ -9,6 +10,7 @@ import {
   Image, 
   ActivityIndicator 
 } from 'react-native'
+import { RectButton } from 'react-native-gesture-handler';
 import { Feather, Entypo } from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker';
 
@@ -17,7 +19,6 @@ import { useUsers } from '../../contexts/UserContext'
 import { theme } from '../../styles/theme'
 import { styles } from './style'
 import { api } from '../../services/api';
-import { RectButton } from 'react-native-gesture-handler';
 
 export function ProfileHeader(){
   const { width } = useWindowDimensions()
@@ -30,17 +31,12 @@ export function ProfileHeader(){
   const [ isLoading, setIsLoading ] = useState(false)
 
   useEffect(() => {
-    const userCreatedAtDate = new Date(String(user?.created_at))
-    const day = userCreatedAtDate.getDay()
-    const month = userCreatedAtDate.getMonth()
-    const year = userCreatedAtDate.getFullYear()
-    const hour = userCreatedAtDate.getHours()
-    const minutes = userCreatedAtDate.getMinutes()
-    
-    const date = `${String(day).padStart(2, '0')}/${String(month).padStart(2, '0')}/${year}`
-    const time = `${String(hour).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`
+    const userCreatedAtDate = user && format(
+      new Date(user?.created_at), 
+      "dd/MM/yyyy 'ás' hh:mm"
+    )
 
-    setCreatedATFormatted(`${date} às ${time}`)
+    setCreatedATFormatted(userCreatedAtDate || '')
   }, []);
 
   const pickImage = async () => {
