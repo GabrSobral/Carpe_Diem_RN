@@ -28,7 +28,7 @@ export function UrgentModal({ isVisible, closeModal }: UrgentModalModalProps){
 
     if(userData && userData.emergency_number) {
       try{
-        await api.post('/users/sms', { to: userData?.emergency_number })
+        await api.post('/users/sms', { to: userData?.emergency_number, username: userData.name })
       } catch(error: any){
         Alert.alert("Erro ao tentar enviar mensagem de emergência.")
         console.log(error.response)
