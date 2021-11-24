@@ -24,6 +24,7 @@ import { ClockProtocol } from '../screens/Protocol/Clock'
 import { GuidedImagination } from '../screens/Protocol/GuidedImagination'
 import { InsertCode } from '../screens/InsertCode'
 import { Congrats } from '../screens/Congrats'
+import { EmergencyNumber } from '../screens/EmergencyNumber'
 
 export function Routes(){
   const { user } = useUsers()
@@ -46,6 +47,7 @@ export function Routes(){
           : ((!user.hasAnswered) ? (
             <>
               <Screen name="Onboarding"              component={Onboarding}/>
+              <Screen name="EmergencyNumber"         component={EmergencyNumber}/>
               <Screen name="QuestionnaireInitial"    component={QuestionnaireInitial}/>
             </>
             ) : (

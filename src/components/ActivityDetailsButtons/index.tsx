@@ -4,7 +4,7 @@ import { Text, View, ActivityIndicator } from 'react-native'
 import { useNavigation } from '@react-navigation/core';
 
 import { ModalComponent } from '../Modal'
-import { useUsers } from '../../contexts/UserContext';
+import phrases from './phrases.json';
 import { ActivitiesProps } from '../../types/activity';
 import { theme } from '../../styles/theme';
 import { styles } from './style'
@@ -29,11 +29,15 @@ export function ActivityDetailsButtons({ activity }: ActivityDetailsButtonsProps
     setIsFinishModalVisible(true)
   }
 
+  function random(min: number, max: number){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   return (
     <View style={styles.handleButtonsContainer}>  
       <ModalComponent 
         title="Parabéns! 😃"
-        description="Você conseguiu realizar uma tarefa, isso é ótimo!"
+        description={phrases[random(0, phrases.length - 1)].text}
         isVisible={isFinishModalVisible} 
         closeModal={() => setIsFinishModalVisible(false)}
         animation="congrats"

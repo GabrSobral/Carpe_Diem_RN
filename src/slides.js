@@ -19,7 +19,7 @@ export default [
   },
   {
     id: '4',
-    title: "Faça ...",
+    title: "Faça exercícios...",
     description: "Diariamente será listado atividades para realizar, totalmente baseadas em suas prefêrencias.",
     image: require('../assets/animation_8.json')
   },
