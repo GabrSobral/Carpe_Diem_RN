@@ -46,9 +46,9 @@ export function EmergencyNumber(){
       <SignHeader title="Emergência0" button="Pular"/>
       
       <Text style={[styles.forgotPasswordTitle, { fontSize: 16, fontFamily: fonts.text }]}>
-          Salve um número de telefone de alguém de sua confiança, para mandarmos uma mensagem via
-          <Text style={{ fontFamily: fonts.heading }}> WhatsApp </Text> 
-          para alertá-lo, caso o protocolo de crises seja acionado
+        Salve um número de telefone de alguém de sua confiança, para mandarmos uma mensagem via
+        <Text style={{ fontFamily: fonts.heading }}> WhatsApp </Text> 
+        para alertá-lo, caso o protocolo de crises seja acionado
       </Text>
 
       <KeyboardAvoidingView style={styles.formContainer} behavior='height'>

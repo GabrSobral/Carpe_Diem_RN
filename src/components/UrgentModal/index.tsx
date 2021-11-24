@@ -33,9 +33,7 @@ export function UrgentModal({ isVisible, closeModal }: UrgentModalModalProps){
         Alert.alert("Erro ao tentar enviar mensagem de emergência.")
         console.log(error.response)
       }
-    } else
-      Alert.alert("Nenhum número de emergência foi encontrado, não foi possível enviar a mensagem")
-    
+    }
     navigate("ClockProtocol" as never)
     closeModal()
   }

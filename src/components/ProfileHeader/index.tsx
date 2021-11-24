@@ -42,9 +42,9 @@ export function ProfileHeader(){
   const pickImage = async () => {
     if (Platform.OS !== 'web') {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
+      console.log(status)
+      if (status !== 'granted')
         alert('Sorry, we need camera roll permissions to make this work!');
-      }
     }
 
     let result: any = await ImagePicker.launchImageLibraryAsync({
@@ -54,9 +54,8 @@ export function ProfileHeader(){
       quality: 0.5
     });
 
-    if(!result.cancelled) {
+    if(!result.cancelled)
       setPreview(result)
-    }
   };
   async function handleSaveChanges() {
     const data = new FormData();

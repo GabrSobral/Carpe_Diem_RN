@@ -2,7 +2,14 @@
   "expo": {
     "name": "Carpe Diem",
     "plugins": [
-      "expo-av"
+      "expo-av",
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow Carpe Diem to access your photos.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ]
     ],
     "slug": "Carpe_Diem",
     "version": "1.0.0",
@@ -38,7 +45,6 @@
     "ios": {
       "supportsTablet": true
     },
-    
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
