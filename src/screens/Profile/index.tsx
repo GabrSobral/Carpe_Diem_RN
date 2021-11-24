@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { View, Text, ScrollView } from 'react-native'
-import { MaterialIcons, Feather } from '@expo/vector-icons'
-import { useNavigation } from '@react-navigation/native'
+import { Feather } from '@expo/vector-icons'
 import { RectButton } from 'react-native-gesture-handler'
 
 import { Header } from '../../components/Header'
@@ -17,7 +16,6 @@ import { ProfileContentItem } from './ProfileContentItem'
 export function Profile(){
   const [ isLogoutModalVisible, setIsLogoutModalVisible ] = useState(false)
   const { user, Logout } = useUsers()
-  const { navigate } = useNavigation()
 
   return(
     <View style={styles.container}>
@@ -27,9 +25,9 @@ export function Profile(){
         isVisible={isLogoutModalVisible}
         dualButtons
         animation="logout"
-        confirmFunction={() => {
+        confirmFunction={async () => {
           setIsLogoutModalVisible(false)
-          Logout()
+          await Logout()
         }}
         closeModal={() => setIsLogoutModalVisible(false)}
       />

@@ -28,7 +28,7 @@ export function ClockProtocol(){
   const sizeAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 300] })
   const radiusAnimation = sizeValue.interpolate({ inputRange: [0, 1], outputRange: [0, 150] })
 
-  const seconds = 7 * 1000 // 7 seconds 
+  const seconds = 5 * 1000 // 7 seconds 
   let intervalFunction: NodeJS.Timer
 
   const sizeAnim = {

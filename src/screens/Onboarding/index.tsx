@@ -24,7 +24,7 @@ export function Onboarding(){
     if(currentIndex < slides.length - 1){
       slidesRef?.current.scrollToIndex({ index: currentIndex + 1});
     } else {
-      navigate('QuestionnaireInitial')
+      navigate('EmergencyNumber')
     }
   }
   

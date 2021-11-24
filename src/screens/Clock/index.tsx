@@ -24,7 +24,7 @@ export function Clock(){
   }
   
   let timeOutFunction : NodeJS.Timeout
-  const seconds = 7 * 1000 // 7 seconds
+  const seconds = 5 * 1000 // 7 seconds
 
   function sizeMotion(value: 0 | 1, duration = seconds){
     Animated.timing(sizeValue, {
