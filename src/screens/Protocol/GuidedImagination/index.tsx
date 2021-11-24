@@ -73,7 +73,7 @@ export function GuidedImagination() {
           resizeMode="contain"
           onPlaybackStatusUpdate={(status: AVPlaybackStatus) => setStatus(() => status)}
           source={{ 
-            uri: 'https://res.cloudinary.com/dmv19qtjb/video/upload/v1637715553/lhleflgalf8sx3cbmqxt.mp4' 
+            uri: 'https://res.cloudinary.com/dmv19qtjb/video/upload/v1637721204/gcjpb1fmmwhcoh9r6gja.mp4' 
           }}
         />
        
