@@ -16,7 +16,6 @@ import { useUsers } from '../../contexts/UserContext'
 
 export function Home(){
   const { fetchActivities, activities } = useActivity()
-  const { user } = useUsers()
   const [ isFetching, setIsFetching ] = useState(false)
   const { navigate } = useNavigation()
 
@@ -26,7 +25,7 @@ export function Home(){
       await fetchActivities()
       setIsFetching(false)
     })()
-  },[fetchActivities, user && user?.quantity_of_activities])
+  },[fetchActivities])
 
   return (
     <View style={styles.container}>
