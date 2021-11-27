@@ -43,7 +43,7 @@ export function EmergencyNumber(){
   
   return(
     <View style={[styles.container, { justifyContent: 'space-evenly' }]}>
-      <SignHeader title="Emergência0" button="Pular"/>
+      <SignHeader title="Emergência" button="Pular"/>
       
       <Text style={[styles.forgotPasswordTitle, { fontSize: 16, fontFamily: fonts.text }]}>
         Salve um número de telefone de alguém de sua confiança, para mandarmos uma mensagem via
