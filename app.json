@@ -44,7 +44,11 @@
         "backgroundColor": "#658FF3"
       },
       "package": "com.sobral.carpe_diem",
-      "versionCode": 1
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -52,6 +56,11 @@
     "androidNavigationBar": {
       "barStyle": "dark-content",
       "backgroundColor": "#FFFFFF"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "3fd6801a-e492-473a-b066-c0fa91de8ed2"
+      }
     }
   }
 }
